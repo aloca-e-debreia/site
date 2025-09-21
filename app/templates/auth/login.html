@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% block title %} Aloca e Debreia | Login {% endblock %}
+
+
+{% block content %}
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p>{{ message }}</p> <br><br>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login.login') }}">
+        <label>Email</label><br>
+        <input type="text" name="email" id="email"><br><br>
+
+        <label>Senha</label><br>
+        <input type="password" name="senha" id="email"><br><br>
+        <button type="submit">Enviar</button><br><br>
+
+        <div class="links">
+            <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('cadastro.cadastro') }}">Criar conta</a>
+        </div>
+    </form>
+
+{% endblock %}

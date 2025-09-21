@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<p>{{ mensagem }}</p> <br><br>
+
+    <form method="POST" action="{{ url_for('cadastro.cadastro') }}">
+        <label>Nome</label><br>
+        <input type="text" name="nome"><br><br>
+
+        <label>Sobrenome</label><br>
+        <input type="text" name="sobrenome"><br><br>
+
+        <label>CPF</label><br>
+        <input type="text" name="cpf"><br><br>
+
+        <label>Idade</label><br>
+        <input type="number" name="idade"><br><br>
+
+        <label>Email</label><br>
+        <input type="text" name="email"><br><br>
+
+        <label>Senha</label><br>
+        <input type="password" name="senha"><br><br>
+        <button type="submit">Enviar</button>
+    </form>
+
+{% endblock %}
+
+<script src="{{ url_for(static, filename='js/script.js') }}"></script>
