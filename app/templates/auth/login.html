@@ -14,16 +14,14 @@
         {% endif %}
     {% endwith %}
 
-    <form id="auth-formulario" method="POST" action="{{ url_for('login.login') }}">
+    <form method="POST" action="{{ url_for('login.login') }}">
         <div class="input-group">
             <label>Email</label><br>
-            <input type="text" name="email" id="email"><br><br>
-            <div class="error-message"></div>
+            <input type="text" name="email" id="email" required><br><br>
         </div>
         <div class="input-group">
             <label>Senha</label><br>
-            <input type="password" name="senha" id="senha"><br><br>
-            <div class="error-message"></div>
+            <input type="password" name="senha" id="senha" required><br><br>
         </div>
         <button type="submit" class="btn" id="botao">Enviar</button><br><br>
         <div class="links">

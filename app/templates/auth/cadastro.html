@@ -1,44 +1,49 @@
 {% extends "base.html" %}
 
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}
+
 {% block title %} Login {% endblock %}
 
 {% block content %}
 
     <form id="auth-formulario" method="POST" action="{{ url_for('cadastro.cadastro') }}">
-        <div id="input-group">
+        <div class="input-group">
             <label>Nome</label><br>
             <input type="text" name="nome" id="nome" required>
-            <div id="nome-error" class="error-message"></div><br><br>
+            <div id="nome-error" class="error-message"></div>
         </div>
 
-        <div id="input-group">
+        <div class="input-group">
             <label>Sobrenome</label><br>
             <input type="text" name="sobrenome" id="sobrenome" required>
-            <div id="sobrenome-error" class="error-message"></div><br><br>
+            <div id="sobrenome-error" class="error-message"></div>
         </div>
 
-        <div id="input-group">
+        <div class="input-group">
             <label>CPF</label><br>
             <input type="text" name="CPF" id="CPF" required>
-            <div id="CPF-error" class="error-message"></div><br><br>
+            <div id="CPF-error" class="error-message"></div>
         </div>
 
-        <div id="input-group">
+        <div class="input-group">
             <label>Idade</label><br>
             <input type="number" name="idade" id="idade" required>
-            <div id="idade-error" class="error-message"></div><br><br>
+            <div id="idade-error" class="error-message"></div>
         </div>
 
-        <div id="input-group">
+        <div class="input-group">
             <label>Email</label><br>
             <input type="text" name="email" id="email" required>
-            <div id="email-error" class="error-message"></div><br><br>
+            <div id="email-error" class="error-message"></div>
         </div>
 
-        <div id="input-group">
+        <div class="input-group">
             <label>Senha</label><br>
             <input type="password" name="senha" id="senha" required>
-            <div id="senha-error" class="error-message"></div><br><br>
+            <div id="senha-error" class="error-message"></div>
         </div>
         
         <button type="submit" class="btn" id="botao">Enviar</button>
@@ -52,4 +57,5 @@
             {% endif %}
         {% endwith %}
     </div>
+
 {% endblock %}
