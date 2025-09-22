@@ -14,14 +14,18 @@
         {% endif %}
     {% endwith %}
 
-    <form method="POST" action="{{ url_for('login.login') }}">
-        <label>Email</label><br>
-        <input type="text" name="email" id="email"><br><br>
-
-        <label>Senha</label><br>
-        <input type="password" name="senha" id="senha"><br><br>
-        <button type="submit">Enviar</button><br><br>
-
+    <form id="auth-formulario" method="POST" action="{{ url_for('login.login') }}">
+        <div class="input-group">
+            <label>Email</label><br>
+            <input type="text" name="email" id="email"><br><br>
+            <div class="error-message"></div>
+        </div>
+        <div class="input-group">
+            <label>Senha</label><br>
+            <input type="password" name="senha" id="senha"><br><br>
+            <div class="error-message"></div>
+        </div>
+        <button type="submit" class="btn" id="botao">Enviar</button><br><br>
         <div class="links">
             <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('cadastro.cadastro') }}">Criar conta</a>
         </div>

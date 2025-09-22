@@ -46,6 +46,7 @@ form {
 }
 .links {
     margin-top: 15px;
+    text-align: center;
 }
 .links a {
     color: #007BFF;

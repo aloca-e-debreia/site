@@ -9,7 +9,7 @@ def cadastro():
         nome = request.form['nome'].lower().capitalize()
         sobrenome = request.form['sobrenome'].lower().capitalize()
         idade = int(request.form['idade'])
-        cpf = request.form['cpf']
+        cpf = request.form['CPF']
         email = request.form['email'].lower()
         senha = request.form['senha']
 
