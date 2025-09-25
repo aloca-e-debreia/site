@@ -1,11 +1,19 @@
 class Usuario:
-    def __init__(self, nome, sobrenome, cpf, idade, email, senha):
+    def __init__(self, user_id, nome, sobrenome, cpf, idade, email, senha):
+        self.__user_id = user_id
         self.__nome = nome
         self.__sobrenome = sobrenome
         self.__idade = idade
         self.__cpf = cpf
         self.__email = email
         self.__senha = senha
+
+    @property
+    def user_id(self):
+        return self.__user_id
+    @user_id.setter
+    def id (self, valor):
+        self.__user_id = valor
 
     @property
     def nome(self):
@@ -52,22 +60,31 @@ class Usuario:
 class Usuarios:
     def __init__(self):
         self.__lista = dict()
+        self.__next_id = 1
     
     @property
     def lista(self):
         return self.__lista
+    
+    @property
+    def next_id(self):
+        return self.__next_id
+    @next_id.setter
+    def next_id(self, valor):
+        self.__next_id = valor
 
     def criar(self, usuario: Usuario):
-        self.__lista[usuario.email] = usuario
-        with open('app/models/db.txt', 'a') as file:
-            file.write(f"{usuario.nome} {usuario.sobrenome} {usuario.cpf} {usuario.idade} {usuario.email} {usuario.senha}\n")
+        self.__lista[usuario.user_id] = usuario
+        self.__next_id += 1
+        with open('app/models/db.txt', 'a+') as file:
+            file.write(f"{usuario.user_id} {usuario.nome} {usuario.sobrenome} {usuario.cpf} {usuario.idade} {usuario.email} {usuario.senha}\n")
 
     def remover(self, usuario: Usuario):
-        self.__lista.pop(usuario.email)
+        self.__lista.pop(usuario.user_id)
 
 usuarios = Usuarios()
 
-with open('app/models/db.txt', 'r') as file:
+with open('app/models/db.txt', 'r+') as file:
     while (linha := file.readline().split()):
-        usuario = Usuario(nome=linha[0], sobrenome=linha[1], cpf=linha[2], idade=int(linha[3]), email=linha[4], senha=linha[5])
-        usuarios.lista[usuario.email] = usuario
+        usuario = Usuario(user_id=int(linha[0]), nome=linha[1], sobrenome=linha[2], cpf=linha[3], idade=int(linha[4]), email=linha[5], senha=linha[6])
+        usuarios.lista[usuario.user_id] = usuario

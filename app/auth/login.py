@@ -5,19 +5,18 @@ login_bp = Blueprint('login', __name__, template_folder='templates')
 
 @login_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.cookies.get('usuario'):
+        return redirect(url_for('index'))
     mensagem = "Faça login para acessar nossos serviços"
     if request.method == 'POST':
         email = request.form['email'].lower()
         senha = request.form['senha']
-        if usuarios.lista.get(email):
-            usuario = usuarios.lista[email]
-            if usuario.senha == senha:
+        for _, usuario in usuarios.lista.items():
+            if usuario.email == email and usuario.senha == senha:
                 resposta = make_response(redirect(url_for('index')))
                 resposta.set_cookie('usuario', usuario.nome, max_age=60*30)
                 return resposta
-            mensagem = "Usuário ou senha inválidos"
-        else:
-            mensagem = "Usuário não existe"
+            mensagem = "Usuário ou senha inválido"
     flash(mensagem)
     return render_template('auth/login.html')
     
