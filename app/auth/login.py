@@ -11,12 +11,13 @@ def login():
     if request.method == 'POST':
         email = request.form['email'].lower()
         senha = request.form['senha']
-        for _, usuario in usuarios.lista.items():
+        if email in usuarios.emails:
+            usuario = usuarios.lista[usuarios.emails[email]]
             if usuario.email == email and usuario.senha == senha:
                 resposta = make_response(redirect(url_for('index')))
                 resposta.set_cookie('usuario', usuario.nome, max_age=60*30)
                 return resposta
-            mensagem = "Usuário ou senha inválido"
+        mensagem = "Usuário ou senha inválido"
     flash(mensagem)
     return render_template('auth/login.html')
     

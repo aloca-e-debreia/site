@@ -1,21 +1,42 @@
 function valido(cpf) {
-    let soma, resto
-    soma = 0
+    let soma = 0, resto
     if (cpf == "00000000000") return false
 
-    for (i=1; i<=9; i++) soma = soma + parseInt(cpf.substring(i-1, i)) * (11 - i)
+    for (i=1; i<=9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i)
     resto = (soma * 10) % 11
 
     if ((resto == 10) || (resto == 11))  resto = 0
     if (resto != parseInt(cpf.substring(9, 10)) ) return false
 
     soma = 0
-    for (i = 1; i <= 10; i++) soma = soma + parseInt(cpf.substring(i-1, i)) * (12 - i)
+    for (i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i)
     resto = (soma * 10) % 11
 
-    if ((resto == 10) || (resto == 11))  resto = 0
+    if ((resto == 10) || (resto == 11)) resto = 0
     if (resto != parseInt(cpf.substring(10, 11) ) ) return false
     return true
+}
+
+async function CPFExistente(cpf, erroCampo) {
+    try {
+        const resposta = await fetch('/cadastro/api/cpf-existente', {
+            method : "POST",
+            headers : {"Content-Type" : "application/json"},
+            body : JSON.stringify({cpf})
+        })
+        const dados = await resposta.json()
+        if (!dados.success) { //usuário existente
+            erroCampo.textContent = dados.message
+            return true
+        }
+        return false
+    } catch(error) {
+        console.log('Erro:', error)
+    }
+}
+
+async function CPFExistenteValor(camposValidos) {
+    camposValidos['CPF'] = ! await CPFExistente(document.getElementById('CPF').value, document.getElementById('CPF-error'))
 }
 
 function CampoVazio(campo, erroCampo, mensagem) {
@@ -51,8 +72,7 @@ function validarEmail(valorCampo, erroCampo, mensagem) {
         erroCampo.textContent = mensagem
         return false
     }
-    erroCampo.textContent = ''
-    return false
+    return true
 }
 
 function validarSenha(valorCampo, erroCampo, mensagem) {
@@ -60,35 +80,37 @@ function validarSenha(valorCampo, erroCampo, mensagem) {
         erroCampo.textContent = mensagem
         return false
     }
-    erroCampo.textContent = ''
     return true
 }
 
-function validarCampo(id, mensagemValidar) {
+function validarCampo(id, camposValidos, mensagemValidar) {
     const campoValor = document.getElementById(id).value.trim()
     const campoErro = document.getElementById(id+'-error')
 
-    if (CampoVazio(campoValor, campoErro, `Por favor, digite seu ${id}`)) {
-        ++espacosVazios
-    } else ++camposValidos
+    camposValidos[id] = !CampoVazio(campoValor, campoErro, `Por favor, digite seu ${id}`)
+    if (!camposValidos[id]) ++espacosVazios
 
     switch (id) {
         case 'CPF':
-            camposValidos += validarCPF(campoValor, campoErro, mensagemValidar['CPF'])
+            camposValidos['CPF'] = validarCPF(campoValor, campoErro, mensagemValidar['CPF'])
             break
         case 'idade':
-            camposValidos += validarIdade(campoValor, campoErro, mensagemValidar['idade'])
+            camposValidos['idade'] = validarIdade(campoValor, campoErro, mensagemValidar['idade'])
             break
         case 'email':
-            camposValidos += validarEmail(campoValor, campoErro, mensagemValidar['email'])
+            camposValidos['email'] = validarEmail(campoValor, campoErro, mensagemValidar['email'])
             break
         case 'senha':
-            camposValidos += validarSenha(campoValor, campoErro, mensagemValidar['senha'])
+            camposValidos['senha'] = validarSenha(campoValor, campoErro, mensagemValidar['senha'])
             break
     }
 }
 
-var camposValidos
+function formularioValido(camposValidos) {
+    for (campo in camposValidos) if (!camposValidos[campo]) return false
+    return true
+}
+
 var espacosVazios
 
 document.addEventListener('DOMContentLoaded', () => {    
@@ -105,16 +127,26 @@ document.addEventListener('DOMContentLoaded', () => {
         'senha' : 'Por favor, digite uma senha de pelo menos 8 dígitos'
     }
 
-    formularioBotao.addEventListener('click', (event) => {
+    formularioBotao.addEventListener('click', async event => {
         event.preventDefault()
 
-        camposValidos = 0; espacosVazios = 0
+        let camposValidos = {
+            'nome' : false,
+            'sobrenome' : false,
+            'CPF' : false,
+            'idade' :  false,
+            'email' : false,
+            'senha' : false
+        }
+        espacosVazios = 0
 
-        elementos.forEach((id) => validarCampo(id, mensagemValidar))
+        elementos.forEach((id) => validarCampo(id, camposValidos, mensagemValidar))
 
+        if (camposValidos['CPF']) await CPFExistenteValor(camposValidos)
+        console.log(camposValidos)
         if (espacosVazios > 0) document.getElementById('aviso').textContent = 'Todos os campos são obrigatórios!'
+        else document.getElementById('aviso').textContent = ''
 
-        if (camposValidos === 9) authFormulario.submit()
-
+        if (formularioValido(camposValidos)) authFormulario.submit()
     })
 })

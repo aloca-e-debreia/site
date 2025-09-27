@@ -59,13 +59,23 @@ class Usuario:
 
 class Usuarios:
     def __init__(self):
-        self.__lista = dict()
+        self.__lista = dict() #user_id: usuario
+        self.__cpfs = dict() #cpf: user_id
+        self.__emails = dict() #email: user_id
         self.__next_id = 1
     
     @property
     def lista(self):
         return self.__lista
     
+    @property
+    def cpfs(self):
+        return self.__cpfs
+
+    @property
+    def emails(self):
+        return self.__emails
+
     @property
     def next_id(self):
         return self.__next_id
@@ -74,9 +84,11 @@ class Usuarios:
         self.__next_id = valor
 
     def criar(self, usuario: Usuario):
-        self.__lista[usuario.user_id] = usuario
-        self.__next_id += 1
-        with open('app/models/db.txt', 'a+') as file:
+        self.lista[usuario.user_id] = usuario
+        self.cpfs[usuario.cpf] = usuario.user_id
+        self.emails[usuario.email] = usuario.user_id
+        self.next_id += 1
+        with open('app/models/db.txt', 'a') as file:
             file.write(f"{usuario.user_id} {usuario.nome} {usuario.sobrenome} {usuario.cpf} {usuario.idade} {usuario.email} {usuario.senha}\n")
 
     def remover(self, usuario: Usuario):
@@ -84,7 +96,10 @@ class Usuarios:
 
 usuarios = Usuarios()
 
-with open('app/models/db.txt', 'r+') as file:
+with open('app/models/db.txt', 'r') as file:
     while (linha := file.readline().split()):
         usuario = Usuario(user_id=int(linha[0]), nome=linha[1], sobrenome=linha[2], cpf=linha[3], idade=int(linha[4]), email=linha[5], senha=linha[6])
         usuarios.lista[usuario.user_id] = usuario
+        usuarios.cpfs[usuario.cpf] = usuario.user_id
+        usuarios.emails[usuario.email] = usuario.user_id
+        usuarios.next_id = int(linha[0])+1
