@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Aloca e Debreia | Home page{% endblock %}
+{% block title %} Home page {% endblock %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
 
     <p>Venha conhecer os nossos serviços!</p>
 
-    <form method="GET" action="{{ url_for('login.logout') }}">
+    <form method="GET" action="{{ url_for('auth.logout') }}">
         <button type="submit">Logout</button>
     </form>
 
