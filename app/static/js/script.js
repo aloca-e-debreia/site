@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formularioBotao = document.getElementById('botao')
     const authFormulario = document.getElementById('auth-formulario')
 
-    let elementos = ['nome', 'sobrenome', 'CPF', 'idade', 'email', 'senha']
+    let elementos = ['nome', 'CPF', 'idade', 'email', 'senha']
 
     let mensagemValidar = {
         'CPF' : 'Por favor, digite um CPF válido',
@@ -132,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let camposValidos = {
             'nome' : false,
-            'sobrenome' : false,
             'CPF' : false,
             'idade' :  false,
             'email' : false,

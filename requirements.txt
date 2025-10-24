@@ -1,1 +1,6 @@
 Flask
+flask_sqlalchemy
+flask-login
+flask-security
+flask-bcrypt
+pycryptodome

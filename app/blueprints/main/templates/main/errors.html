@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %} Erro {{ dados_erro['codigo'] }} {% endblock %}
+
+{% block content %}
+
+    <h1>{{ dados_erro['titulo'] }}</h1>
+
+    <p>{{ dados_erro['mensagem'] }}<br>
+    <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+
+{% endblock %}

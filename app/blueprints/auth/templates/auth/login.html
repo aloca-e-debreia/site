@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-
-{% block title %} Aloca e Debreia | Login {% endblock %}
+{% block title %} Login {% endblock %}
 
 
 {% block content %}
@@ -14,7 +13,7 @@
         {% endif %}
     {% endwith %}
 
-    <form method="POST" action="{{ url_for('login.login') }}">
+    <form method="POST" action="{{ url_for('auth.login') }}">
         <div class="input-group">
             <label>Email</label><br>
             <input type="text" name="email" id="email" required><br><br>
@@ -25,7 +24,7 @@
         </div>
         <button type="submit" class="btn" id="botao">Enviar</button><br><br>
         <div class="links">
-            <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('cadastro.cadastro') }}">Criar conta</a>
+            <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('auth.cadastro') }}">Criar conta</a>
         </div>
     </form>
 

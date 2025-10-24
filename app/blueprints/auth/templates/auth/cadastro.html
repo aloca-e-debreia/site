@@ -5,21 +5,15 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
 
-{% block title %} Login {% endblock %}
+{% block title %} Cadastro {% endblock %}
 
 {% block content %}
 
-    <form id="auth-formulario" method="POST" action="{{ url_for('cadastro.cadastro') }}">
+    <form id="auth-formulario" method="POST" action="{{ url_for('auth.cadastro') }}">
         <div class="input-group">
             <label>Nome</label><br>
             <input type="text" name="nome" id="nome" placeholder="Digite seu primeiro nome" required>
             <div id="nome-error" class="error-message"></div>
-        </div>
-
-        <div class="input-group">
-            <label>Sobrenome</label><br>
-            <input type="text" name="sobrenome" id="sobrenome" placeholder="Digite seu primeiro sobrenome" required>
-            <div id="sobrenome-error" class="error-message"></div>
         </div>
 
         <div class="input-group">
