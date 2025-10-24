@@ -1,7 +1,9 @@
-from flask import request, redirect, url_for, render_template, make_response, jsonify
+from flask import request, redirect, url_for, render_template, jsonify
+from flask_login import login_user
 from app.blueprints.auth import auth_bp
 from app.models.user import Usuario
 from app import db
+from app import bcrypt
 
 @auth_bp.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -13,13 +15,18 @@ def cadastro():
         senha = request.form['senha']
 
         if not Usuario.query.filter_by(email=email).first():
-            usuario = Usuario(nome=nome, idade=int(idade), cpf=cpf, email=email, senha=senha)
+            usuario = Usuario (
+                nome=nome,
+                idade=int(idade),
+                cpf=cpf,
+                email=email,
+                senha=bcrypt.generate_password_hash(senha)
+            )
             db.session.add(usuario)
             db.session.commit()
 
-        resposta = make_response(redirect(url_for('main.index')))
-        resposta.set_cookie('usuario', usuario.nome, max_age=60*30)
-        return resposta
+        login_user(usuario)
+        return redirect(url_for('main.index'))
     
     return render_template('auth/cadastro.html')
 

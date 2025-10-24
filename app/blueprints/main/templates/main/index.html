@@ -4,12 +4,22 @@
 
 {% block content %}
 
-    <h1>Bem vindo ao site, {{ usuario }}!</h1>
+    {% if current_user.is_authenticated %}
+        <h1>Bem vindo ao site, {{ current_user.nome }}!</h1>
+    {% endif %}
 
     <p>Venha conhecer os nossos serviços!</p>
 
-    <form method="GET" action="{{ url_for('auth.logout') }}">
-        <button type="submit">Logout</button>
-    </form>
+    {% if current_user.is_authenticated %}
+        <form method="GET" action="{{ url_for('auth.logout') }}">
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <form method="GET" action="{{ url_for('auth.login') }}">
+            <button type="submit">Login</button>
+        </form>
+    {% endif %}
+
+        <button><a href="/admin">Clique para ganhar dinheiro!</a></button>
 
 {% endblock %}

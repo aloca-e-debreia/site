@@ -1,6 +1,7 @@
 from app import db
+from flask_login import UserMixin
 
-class Usuario(db.Model):
+class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuarios'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -9,6 +10,7 @@ class Usuario(db.Model):
     cpf = db.Column(db.String(11), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     senha = db.Column(db.String(200), nullable=False)
+    pass
 
     def __repr__(self):
         return f"<Usuario(nome='{self.nome}, idade='{self.idade}', cpf='{self.cpf}', email='{self.email}', senha='{self.senha}')>"
