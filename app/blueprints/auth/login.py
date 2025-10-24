@@ -13,10 +13,10 @@ def login():
     
     if request.method == 'POST':
         email = request.form['email'].lower()
-        senha = request.form['senha']
+        password = request.form['password']
 
         usuario = Usuario.query.filter_by(email=email).first()
-        if usuario and bcrypt.check_password_hash(usuario.senha, senha):
+        if usuario and bcrypt.check_password_hash(usuario.password, password):
             login_user(usuario, remember=False)
             return redirect(url_for('main.index'))
         

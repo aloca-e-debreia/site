@@ -1,6 +1,6 @@
 Flask
 flask_sqlalchemy
 flask-login
-flask-security
+flask-security-too
 flask-bcrypt
 pycryptodome

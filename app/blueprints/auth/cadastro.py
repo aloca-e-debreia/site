@@ -12,15 +12,16 @@ def cadastro():
         idade = int(request.form['idade'])
         cpf = request.form['CPF']
         email = request.form['email'].lower()
-        senha = request.form['senha']
+        password = request.form['password']
 
-        if not Usuario.query.filter_by(email=email).first():
+        usuario = Usuario.query.filter_by(email=email).first()
+        if not usuario:
             usuario = Usuario (
                 nome=nome,
                 idade=int(idade),
                 cpf=cpf,
                 email=email,
-                senha=bcrypt.generate_password_hash(senha)
+                password=bcrypt.generate_password_hash(password).decode('utf-8')
             )
             db.session.add(usuario)
             db.session.commit()
