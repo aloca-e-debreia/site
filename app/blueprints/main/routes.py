@@ -12,7 +12,6 @@ def load_user(usuario_id):
 def index():
     return render_template('main/index.html', current_user=current_user)
 
-@login_required
 @main_bp.route('/admin')
 def painel_admin():
     if current_user.is_authenticated:

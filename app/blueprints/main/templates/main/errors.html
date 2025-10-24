@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %} Erro 404 {% endblock %}
+{% block title %} Erro {{ dados_erro['codigo'] }} {% endblock %}
 
 {% block content %}
 
-    <h1>Erro 401 - Acesso negado</h1>
+    <h1>{{ dados_erro['titulo'] }}</h1>
 
-    <p>Pra acessar nossos serviços, tem que logar, né, meu rei?<br>
+    <p>{{ dados_erro['mensagem'] }}<br>
     <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
 
 {% endblock %}
