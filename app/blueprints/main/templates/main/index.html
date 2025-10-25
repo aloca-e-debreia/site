@@ -12,6 +12,9 @@
         <form method="GET" action="{{ url_for('auth.logout') }}">
             <button type="submit">Logout</button>
         </form>
+        <form method="GET" action="{{ url_for('auth.register_update') }}">
+            <button type="submit">Atualizar dados cadastrais</button>
+        </form>
     {% else %}
         <p>Faça login e venha conhecer os nossos serviços!</p>
         <form method="GET" action="{{ url_for('auth.cadastro') }}">

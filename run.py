@@ -1,5 +1,4 @@
 from app import db, create_app, get_user_datastore, bcrypt
-from app.models.user import Role
 
 app = create_app()
 
