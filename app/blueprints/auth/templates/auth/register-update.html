@@ -20,13 +20,13 @@
 
         <div class="input-group">
             <label>CPF</label><br>
-            <input type="text" name="CPF" id="CPF" placeholder="Digite seu CPF" value="{{ current_user.cpf }}" required>
+            <input type="text" name="CPF" id="CPF" placeholder="Digite seu CPF" value="{% if current_user.cpf is not none %}{{ current_user.cpf }}{% endif %}" required>
             <div id="CPF-error" class="error-message"></div>
         </div>
 
         <div class="input-group">
             <label>Idade</label><br>
-            <input type="number" name="idade" id="idade" placeholder="Digite sua idade" value="{{ current_user.idade }}" required>
+            <input type="number" name="idade" id="idade" placeholder="Digite sua idade" value="{% if current_user.idade is not none %}{{ current_user.idade }}{% endif %}" required>
             <div id="idade-error" class="error-message"></div>
         </div>
 

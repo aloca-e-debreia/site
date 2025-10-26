@@ -1,12 +1,11 @@
 import uuid
 from app import db
-from flask_login import UserMixin
 from flask_security.models import fsqla_v3
 
 role_usuario = db.Table(
     'role_usuario',
-    db.Column('usuario_id', db.Integer(), db.ForeignKey('usuario.id')),
-    db.Column('funcao_id', db.Integer(), db.ForeignKey('role.id'))
+    db.Column('usuario_id', db.Integer(), db.ForeignKey('usuario.id'), primary_key=True),
+    db.Column('funcao_id', db.Integer(), db.ForeignKey('role.id'), primary_key=True)
 )
 
 class Role(db.Model, fsqla_v3.FsRoleMixin):
@@ -33,3 +32,10 @@ class Usuario(db.Model, fsqla_v3.FsUserMixin):
 
     def __repr__(self):
         return f"<Usuario(nome='{self.nome}, idade='{self.idade}', cpf='{self.cpf}', email='{self.email}', senha='{self.senha}')>"
+    
+def select_users_with_role(role):
+    user_role = Role.query.filter_by(name=role).first()
+    if user_role:
+        users = user_role.usuarios
+        return users
+    return []

@@ -12,7 +12,7 @@ async function CPFExistente(cpf, email, erroCampo) {
         }
         return false
     } catch(error) {
-        console.log('Erro:', error)
+        console.error('Erro:', error)
     }
 }
 

@@ -2,8 +2,7 @@ from flask import request, redirect, url_for, render_template, jsonify, flash
 from flask_login import login_user, login_required, current_user
 from app.blueprints.auth import auth_bp
 from app.models.user import Usuario
-from app import db
-from app import bcrypt
+from app import db, bcrypt, user_datastore
 
 @auth_bp.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -19,6 +18,8 @@ def cadastro():
                 email=email,
                 password=bcrypt.generate_password_hash(password).decode('utf-8')
             )
+            user_datastore.add_role_to_user(usuario, 'client')
+
             db.session.add(usuario)
             db.session.commit()
 
@@ -57,7 +58,6 @@ def verificar_cpf_existente():
     data = request.get_json()
     cpf = data.get("cpf")
     email = data.get("email")
-    print (cpf, email)
     usuario = Usuario.query.filter_by(cpf=cpf).first()
     if usuario and usuario.email != email:
         return jsonify({"success" : False, "message" : "Já existe um usuário com mesmo CPF"})

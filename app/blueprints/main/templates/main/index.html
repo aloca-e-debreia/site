@@ -24,7 +24,8 @@
             <button type="submit">Login</button>
         </form>
     {% endif %}
-
-        <button><a href="/gerente">Clique para testar sua permissão!</a></button>
+        <form method="GET" action="{{ url_for('main.dashboard') }}">
+            <button type="submit">Clique para testar sua permissão!</a></button>
+        </form>
 
 {% endblock %}

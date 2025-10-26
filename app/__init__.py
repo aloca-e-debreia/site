@@ -14,6 +14,12 @@ user_datastore = None
 def get_user_datastore():
     return user_datastore
 
+def create_roles():
+    global user_datastore
+    user_datastore.find_or_create_role(name='manager', descricao='Gerente do sistema')
+    user_datastore.find_or_create_role(name='worker', descricao='Funcionário do sistema')
+    user_datastore.find_or_create_role(name='client', descricao='Cliente do sistema')
+
 def create_app():
     global user_datastore
 
