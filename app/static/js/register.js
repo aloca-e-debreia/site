@@ -1,36 +1,36 @@
-import {checarCamposVazios, validarCampo, formularioValido} from './registerFunctions.js'
+import {isFieldBlank, isValidField, isValidForm} from './registerFunctions.js'
 
-var espacosVazios = 0
+var blankSpaces = 0
 
 document.addEventListener('DOMContentLoaded', () => {    
 
-    const formularioBotao = document.getElementById('botao')
-    const authFormulario = document.getElementById('auth-formulario')
+    const buttonForm = document.getElementById('button')
+    const authForm = document.getElementById('auth-form')
 
-    let elementos = ['email', 'senha']
+    let elements = ['name', 'email', 'password']
 
-    let mensagemValidar = {
+    let validateMessage = {
         'email' : 'Por favor, digite um email válido',
-        'senha' : 'Por favor, digite uma senha de pelo menos 8 dígitos'
+        'password' : 'Por favor, digite uma senha de pelo menos 8 dígitos'
     }
 
-    formularioBotao.addEventListener('click', async event => {
+    buttonForm.addEventListener('click', event => {
         event.preventDefault()
 
-        let camposValidos = {
+        let validFields = {
             'email' : false,
-            'senha' : false
+            'password' : false
         }
-        espacosVazios = 0
+        blankSpaces = 0
         
-        elementos.forEach((id) => espacosVazios += checarCamposVazios(id, camposValidos))
+        elements.forEach((id) => blankSpaces += isFieldBlank(id, validFields))
+ 
+        elements.forEach((id) => isValidField(id, validFields, validateMessage))
 
-        elementos.forEach((id) => validarCampo(id, camposValidos, mensagemValidar))
-
-        if (espacosVazios > 0) document.getElementById('aviso').textContent = 'Todos os campos são obrigatórios!'
+        if (blankSpaces > 0) document.getElementById('warning').textContent = 'Todos os campos são obrigatórios!'
         
-        else document.getElementById('aviso').textContent = ''
+        else document.getElementById('warning').textContent = ''
 
-        if (formularioValido(camposValidos)) authFormulario.submit()
+        if (isValidForm(validFields)) authForm.submit()
     })
 })

@@ -5,7 +5,7 @@
 {% block content %}
 
     {% if current_user.is_authenticated %}
-        <h1>Bem vindo ao site, {{ current_user.nome }}!</h1>
+        <h1>Bem vindo ao site, {{ current_user.name }}!</h1>
     {% endif %}
 
     {% if current_user.is_authenticated %}
@@ -17,7 +17,7 @@
         </form>
     {% else %}
         <p>Faça login e venha conhecer os nossos serviços!</p>
-        <form method="GET" action="{{ url_for('auth.cadastro') }}">
+        <form method="GET" action="{{ url_for('auth.register') }}">
             <button type="submit">Sign in</button>
         </form>
         <form method="GET" action="{{ url_for('auth.login') }}">

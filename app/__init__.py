@@ -16,9 +16,9 @@ def get_user_datastore():
 
 def create_roles():
     global user_datastore
-    user_datastore.find_or_create_role(name='manager', descricao='Gerente do sistema')
-    user_datastore.find_or_create_role(name='worker', descricao='Funcionário do sistema')
-    user_datastore.find_or_create_role(name='client', descricao='Cliente do sistema')
+    user_datastore.find_or_create_role(name='manager', description='Gerente do sistema')
+    user_datastore.find_or_create_role(name='worker', description='Funcionário do sistema')
+    user_datastore.find_or_create_role(name='client', description='Cliente do sistema')
 
 def create_app():
     global user_datastore
@@ -39,15 +39,15 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
-    from app.models.user import Usuario, Role
-    user_datastore = SQLAlchemyUserDatastore(db, Usuario, Role)
+    from app.models.user import User, Role
+    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore, register_blueprint=False)
 
     from app.blueprints.auth import auth_bp
     from app.blueprints.main.routes import main_bp
-    from app.blueprints.main.errors import registrar_erros
+    from app.blueprints.main.errors import register_errors
 
-    registrar_erros(app)
+    register_errors(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)
 

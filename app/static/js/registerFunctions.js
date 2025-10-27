@@ -1,13 +1,13 @@
-async function CPFExistente(cpf, email, erroCampo) {
+async function existantCPF(cpf, email, errorField) {
     try {
-        const resposta = await fetch('/auth/cadastro/api/cpf-existente', {
+        const response = await fetch('/auth/register/api/existant-cpf', {
             method : "POST",
             headers : {"Content-Type" : "application/json"},
             body : JSON.stringify({"cpf" : cpf, "email" : email})
         })
-        const dados = await resposta.json()
-        if (!dados.success) { //usuário existente
-            erroCampo.textContent = dados.message
+        const data = await response.json()
+        if (!data.success) { //usuário existente
+            errorField.textContent = data.message
             return true
         }
         return false
@@ -16,104 +16,104 @@ async function CPFExistente(cpf, email, erroCampo) {
     }
 }
 
-export async function CPFExistenteValor(camposValidos) {
-    camposValidos['CPF'] = ! await CPFExistente(document.getElementById('CPF').value.trim(), document.getElementById('email').value.trim(), document.getElementById('CPF-error'))
+export async function existantCPFValue(validFields) {
+    validFields['CPF'] = ! await existantCPF(document.getElementById('CPF').value.trim(), document.getElementById('email').value.trim(), document.getElementById('CPF-error'))
 }
 
-function valido(cpf) {
-    let soma = 0, resto
+function valid(cpf) {
+    let sum = 0, remainder
     if (cpf == "00000000000") return false
 
-    for (let i=1; i<=9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i)
-    resto = (soma * 10) % 11
+    for (let i=1; i<=9; i++) sum += parseInt(cpf.substring(i-1, i)) * (11 - i)
+    remainder = (sum * 10) % 11
 
-    if ((resto == 10) || (resto == 11))  resto = 0
-    if (resto != parseInt(cpf.substring(9, 10)) ) return false
+    if ((remainder == 10) || (remainder == 11))  remainder = 0
+    if (remainder != parseInt(cpf.substring(9, 10)) ) return false
 
-    soma = 0
-    for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i)
-    resto = (soma * 10) % 11
+    sum = 0
+    for (let i = 1; i <= 10; i++) sum += parseInt(cpf.substring(i-1, i)) * (12 - i)
+    remainder = (sum * 10) % 11
 
-    if ((resto == 10) || (resto == 11)) resto = 0
-    if (resto != parseInt(cpf.substring(10, 11) ) ) return false
+    if ((remainder == 10) || (remainder == 11)) remainder = 0
+    if (remainder != parseInt(cpf.substring(10, 11) ) ) return false
     return true
 }
 
-function CampoVazio(campo, erroCampo, mensagem) {
-    if (campo === '') {
-        erroCampo.textContent = mensagem
+function blankField(field, errorField, message) {
+    if (field === '') {
+        errorField.textContent = message
         return true
     }
-    erroCampo.textContent = ''
+    errorField.textContent = ''
     return false
 }
 
-function validarIdade(valorCampo, erroCampo, mensagem) {
-    if (!(Number(valorCampo) > 0 && Number(valorCampo) < 120)) {
-        erroCampo.textContent = mensagem
+function isValidAge(fieldValue, errorField, message) {
+    if (!(Number(fieldValue) > 0 && Number(fieldValue) < 120)) {
+        errorField.textContent = message
         return false
     }
-    erroCampo.textContent = ''
+    errorField.textContent = ''
     return true
 }
 
-function validarCPF(valorCampo, erroCampo, mensagem) {
-    if (!valido(valorCampo)) {
-        erroCampo.textContent = mensagem
+function isValidCPF(fieldValue, errorField, message) {
+    if (!valid(fieldValue)) {
+        errorField.textContent = message
         return false
     }
-    erroCampo.textContent = ''
+    errorField.textContent = ''
     return true
 }
 
-function validarEmail(valorCampo, erroCampo, mensagem) {
+function isValidEmail(fieldValue, errorField, message) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(valorCampo)) {
-        erroCampo.textContent = mensagem
+    if (!emailRegex.test(fieldValue)) {
+        errorField.textContent = message
         return false
     }
     return true
 }
 
-function validarSenha(valorCampo, erroCampo, mensagem) {
-    if (valorCampo.length < 8) {
-        erroCampo.textContent = mensagem
+function isValidPassword(fieldValue, errorField, message) {
+    if (fieldValue.length < 8) {
+        errorField.textContent = message
         return false
     }
     return true
 }
 
-export function validarCampo(id, camposValidos, mensagemValidar) {
-    const campoValor = document.getElementById(id).value.trim()
-    const campoErro = document.getElementById(id+'-error')
+export function isValidField(id, validFields, validateMessage) {
+    const fieldValue = document.getElementById(id).value.trim()
+    const errorField = document.getElementById(id+'-error')
 
     switch (id) {
         case 'CPF':
-            camposValidos['CPF'] = validarCPF(campoValor, campoErro, mensagemValidar['CPF'])
+            validFields['CPF'] = isValidCPF(fieldValue, errorField, validateMessage['CPF'])
             break
-        case 'idade':
-            camposValidos['idade'] = validarIdade(campoValor, campoErro, mensagemValidar['idade'])
+        case 'age':
+            validFields['age'] = isValidAge(fieldValue, errorField, validateMessage['age'])
             break
         case 'email':
-            camposValidos['email'] = validarEmail(campoValor, campoErro, mensagemValidar['email'])
+            validFields['email'] = isValidEmail(fieldValue, errorField, validateMessage['email'])
             break
-        case 'senha':
-            camposValidos['senha'] = validarSenha(campoValor, campoErro, mensagemValidar['senha'])
+        case 'password':
+            validFields['password'] = isValidPassword(fieldValue, errorField, validateMessage['password'])
             break
     }
 }
 
-export function checarCampoVazio(id, camposValidos) {
-    const campoValor = document.getElementById(id).value.trim()
-    const campoErro = document.getElementById(id+'-error')
-    if (CampoVazio(campoValor, campoErro, `Por favor, digite seu ${id}`)) {
-        camposValidos[id] = false
+export function isFieldBlank(id, validFields) {
+    const fieldValue = document.getElementById(id).value.trim()
+    const errorField = document.getElementById(id+'-error')
+    if (blankField(fieldValue, errorField, `Por favor, digite seu ${id}`)) {
+        validFields[id] = false
         return true
     }
     return false
 }
 
-export function formularioValido(camposValidos) {
-    for (let campo in camposValidos) if (!camposValidos[campo]) return false
+export function isValidForm(validFields) {
+    for (let field in validFields) if (!validFields[field]) return false
     return true
 }

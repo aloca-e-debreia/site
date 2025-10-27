@@ -2,17 +2,17 @@
 
 {% block head %}
     {{ super() }}
-    <script type="module" src="{{ url_for('static', filename='js/promover.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/promote.js') }}"></script>
 {% endblock %}
 
-{% block title %} Dashboard - {{ usuario_funcao }} {% endblock %}
+{% block title %} Dashboard - {{ user_role }} {% endblock %}
 
 {% block content %}
 
     <h1>Lista de clientes:</h1>
 
     {% for client in clients %}
-        <p>{{ client.nome }} - {% if client.is_active %} Ativo {% else %} Inativo {% endif %}</p> <button type="button" class="promover" data-id="{{ client.id }}" data-funcao="client"> Promover </button>
+        <p>{{ client.name }} - {% if client.is_active %} Ativo {% else %} Inativo {% endif %}</p> <button type="button" class="promote" data-id="{{ client.id }}" data-role="client"> Promover </button>
     {% endfor %}
 
     <br>
@@ -20,7 +20,7 @@
     {% if workers is not none %}
         <h1>Lista de funcionários</h1>
         {% for worker in workers %}
-            <p>{{ worker.nome }} - {% if worker.is_active %} Ativo {% else %} Inativo {% endif %}</p> <button type="button" class="promover" data-id="{{ worker.id }}" data-funcao="worker"> Promover </button>
+            <p>{{ worker.name }} - {% if worker.is_active %} Ativo {% else %} Inativo {% endif %}</p> <button type="button" class="promote" data-id="{{ worker.id }}" data-role="worker"> Promover </button>
         {% endfor %}
     {% endif %}
 
@@ -29,7 +29,7 @@
     {% if managers is not none %}
         <h1>Lista de gerentes</h1>
         {% for manager in managers %}
-            <p>{{ manager.nome }} - {% if manager.is_active %} Ativo {% else %} Inativo {% endif %}</p>
+            <p>{{ manager.name }} - {% if manager.is_active %} Ativo {% else %} Inativo {% endif %}</p>
         {% endfor %}
     {% endif %}
 

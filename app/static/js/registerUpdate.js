@@ -1,42 +1,41 @@
-import {CPFExistenteValor, checarCampoVazio, validarCampo, formularioValido} from './registerFunctions.js'
+import {existantCPFValue, isFieldBlank, isValidField, isValidForm} from './registerFunctions.js'
 
-var espacosVazios = 0
+var blankSpaces = 0
 
 document.addEventListener('DOMContentLoaded', () => {    
 
-    const formularioBotao = document.getElementById('botao')
-    const authFormulario = document.getElementById('auth-formulario')
+    const buttonForm = document.getElementById('button')
+    const authForm = document.getElementById('auth-form')
 
 
-    let elementos = ['nome', 'CPF', 'idade', 'email']
+    let elements = ['name', 'CPF', 'age', 'email']
 
-    let mensagemValidar = {
+    let validateMessage = {
         'CPF' : 'Por favor, digite um CPF válido',
-        'idade' : 'Por favor, digite uma idade entre 0 e 120 anos',
+        'age' : 'Por favor, digite uma idade entre 0 e 120 anos',
         'email' : 'Por favor, digite um email válido',
     }
 
-    formularioBotao.addEventListener('click', async event => {
+    buttonForm.addEventListener('click', async event => {
         event.preventDefault()
 
-        let camposValidos = {
-            'nome' : true,
+        let validFields = {
+            'name' : true,
             'CPF' : false,
-            'idade' :  false,
+            'age' :  false,
             'email' : false,
         }
 
-        espacosVazios = 0
-        elementos.forEach((id) => espacosVazios += checarCampoVazio(id, camposValidos))
+        blankSpaces = 0
+        elements.forEach((id) => blankSpaces += isFieldBlank(id, validFields))
 
-        elementos.forEach((id) => validarCampo(id, camposValidos, mensagemValidar))
+        elements.forEach((id) => isValidField(id, validFields, validateMessage))
 
-        if (camposValidos['CPF']) await CPFExistenteValor(camposValidos)
+        if (validFields['CPF']) await existantCPFValue(validFields)
 
-        if (espacosVazios > 0) document.getElementById('aviso').textContent = 'Todos os campos são obrigatórios!'        
-        else document.getElementById('aviso').textContent = ''
-        console.log(camposValidos)
-        console.log(espacosVazios)
-        if (formularioValido(camposValidos)) authFormulario.submit()
+        if (blankSpaces > 0) document.getElementById('warning').textContent = 'Todos os campos são obrigatórios!'        
+        else document.getElementById('warning').textContent = ''
+        
+        if (isValidForm(validFields)) authForm.submit()
     })
 })

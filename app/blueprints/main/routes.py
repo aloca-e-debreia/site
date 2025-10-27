@@ -2,12 +2,12 @@ from flask import render_template, request, jsonify
 from flask_login import login_required, current_user
 from flask_security import roles_accepted
 from app.blueprints.main import main_bp
-from app.models.user import Usuario, select_users_with_role
+from app.models.user import User, select_users_with_role
 from app import login_manager, user_datastore, db
 
 @login_manager.user_loader
-def load_user(usuario_id):
-    return Usuario.query.get(int(usuario_id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @main_bp.route('/')
 def index():
@@ -20,22 +20,22 @@ def dashboard():
     clients = select_users_with_role('client')
     if current_user.has_role('manager'):
         workers, managers = select_users_with_role('worker'), select_users_with_role('manager')
-        return render_template('main/dashboard.html', usuario_funcao='Gerente', clients=clients, workers=workers, managers=managers)
+        return render_template('main/dashboard.html', user_role='Gerente', clients=clients, workers=workers, managers=managers)
     else:
-        return render_template('main/dashboard.html', usuario_funcao='Funcionário', clients=clients, workers=None, managers=None)
+        return render_template('main/dashboard.html', user_role='Funcionário', clients=clients, workers=None, managers=None)
     
-@main_bp.route('/dashboard/api/promover', methods=['GET', 'POST'])
-def promover_usuario():
+@main_bp.route('/dashboard/api/promote', methods=['GET', 'POST'])
+def promover_user():
     data = request.get_json()
     
-    usuarioID = data.get("id")
-    usuarioFuncao = data.get("funcao")
-    promocao = data.get("promocao")
+    user_id = data.get("id")
+    user_role = data.get("role")
+    promotion = data.get("promotion")
 
-    usuario = Usuario.query.get(int(usuarioID))
-    if usuario:
-        user_datastore.remove_role_from_user(usuario, usuarioFuncao)
-        user_datastore.add_role_to_user(usuario, promocao)
+    user = User.query.get(int(user_id))
+    if user:
+        user_datastore.remove_role_from_user(user, user_role)
+        user_datastore.add_role_to_user(user, promotion)
 
         db.session.commit()
 
