@@ -1,14 +1,5 @@
-from flask import Flask
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore
-from flask_bcrypt import Bcrypt
+from app.extensions import *
 
-login_manager = LoginManager()
-login_manager.login_view = 'app.blueprints.auth.login'
-db = SQLAlchemy()
-bcrypt = Bcrypt()
-security = Security()
 user_datastore = None
 
 def get_user_datastore():
@@ -21,19 +12,14 @@ def create_roles():
     user_datastore.find_or_create_role(name='client', description='Cliente do sistema')
 
 def create_app():
+    from flask import Flask
+    from flask_security import SQLAlchemyUserDatastore
+
     global user_datastore
 
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = "f53f95be4bd2b7e3b45ef48c5c78614a538a99539406b2efee72b174b8d47bde"
-    app.config['SECURITY_PASSWORD_HASH'] = 'bcrypt'
-    app.config['SECURITY_PASSWORD_SALT'] = '5f3a2e9a76b8bde4a122cd3e671f81c2'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    
-    app.config['SECURITY_BLUEPRINT_NAME'] = 'auth'
-    app.config['SECURITY_VIEWS'] = False
-    app.config['SECURITY_LOGIN_URL'] = '/auth/login'
+    app.config.from_pyfile('config.py')
 
     db.init_app(app)
     login_manager.init_app(app)

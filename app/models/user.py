@@ -17,7 +17,6 @@ class Role(db.Model, fsqla_v3.FsRoleMixin):
 
 class User(db.Model, fsqla_v3.FsUserMixin):
     __tablename__ = 'user'
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     age = db.Column(db.Integer, nullable=True) #change to birhtdate
