@@ -1,31 +1,40 @@
-from flask import Flask
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
+from app.extensions import *
 
-login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-db = SQLAlchemy()
-bcrypt = Bcrypt()
+user_datastore = None
+
+def get_user_datastore():
+    return user_datastore
+
+def create_roles():
+    global user_datastore
+    user_datastore.find_or_create_role(name='manager', description='Gerente do sistema')
+    user_datastore.find_or_create_role(name='worker', description='Funcionário do sistema')
+    user_datastore.find_or_create_role(name='client', description='Cliente do sistema')
 
 def create_app():
+    from flask import Flask
+    from flask_security import SQLAlchemyUserDatastore
+
+    global user_datastore
 
     app = Flask(__name__)
-    app.secret_key = "f53f95be4bd2b7e3b45ef48c5c78614a538a99539406b2efee72b174b8d47bde"
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_pyfile('config.py')
 
     db.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
-    from app.blueprints.auth.cadastro import auth_bp
-    from app.blueprints.main.routes import main_bp
-    from app.blueprints.main.errors import registrar_erros
+    from app.models.user import User, Role
+    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    security.init_app(app, user_datastore, register_blueprint=False)
 
-    registrar_erros(app)
-    app.register_blueprint(auth_bp)
+    from app.blueprints.auth import auth_bp
+    from app.blueprints.main.routes import main_bp
+    from app.blueprints.main.errors import register_errors
+
+    register_errors(app)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)
 
     return app

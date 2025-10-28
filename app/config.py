@@ -1,0 +1,19 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+FLASK_APP = os.environ.get("FLASK_APP")
+FLASK_DEBUG = os.environ.get("FLASK_DEBUG")
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+SECURITY_PASSWORD_SALT = os.environ.get("SECURITY_PASSWORD_SALT")
+SECURITY_PASSWORD_HASH = os.environ.get("SECURITY_PASSWORD_HASH")
+
+SECURITY_VIEWS = os.environ.get("SECURITY_VIEWS")
+SECURITY_BLUEPRINT_NAME = os.environ.get("SECURITY_BLUEPRINT_NAME")
+SECURITY_LOGIN_URL = os.environ.get("SECURITY_LOGIN_URL")
+
+SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get("SQLALCHEMY_TRACK_MODIFICATIONS")
