@@ -10,6 +10,7 @@ def create_roles():
     user_datastore.find_or_create_role(name='manager', description='Gerente do sistema')
     user_datastore.find_or_create_role(name='worker', description='Funcionário do sistema')
     user_datastore.find_or_create_role(name='client', description='Cliente do sistema')
+    db.session.commit()
 
 def create_app():
     from flask import Flask
@@ -36,5 +37,8 @@ def create_app():
     register_errors(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)
+
+    from app.seeds import seed_init
+    seed_init(app)
 
     return app
