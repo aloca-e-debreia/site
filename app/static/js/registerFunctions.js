@@ -1,12 +1,12 @@
-async function existantCPF(cpf, email, errorField) {
+async function existantData(dataType, dataContent, errorField) {
     try {
-        const response = await fetch('/auth/register/api/existant-cpf', {
+        const response = await fetch(`/auth/register/api/existant-${dataType}`, {
             method : "POST",
             headers : {"Content-Type" : "application/json"},
-            body : JSON.stringify({"cpf" : cpf, "email" : email})
+            body : JSON.stringify({ [dataType] : dataContent})
         })
         const data = await response.json()
-        if (!data.success) { //usuário existente
+        if (!data.success) { //existant data
             errorField.textContent = data.message
             return true
         }
@@ -16,8 +16,8 @@ async function existantCPF(cpf, email, errorField) {
     }
 }
 
-export async function existantCPFValue(validFields) {
-    validFields['CPF'] = ! await existantCPF(document.getElementById('CPF').value.trim(), document.getElementById('email').value.trim(), document.getElementById('CPF-error'))
+export async function existantDataValue(data, validFields) {
+    validFields[data] = ! await existantData(data.toLowerCase(), document.getElementById(data).value.trim(), document.getElementById(data+'-error'))
 }
 
 function valid(cpf) {

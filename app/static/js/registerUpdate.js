@@ -1,4 +1,4 @@
-import {existantCPFValue, isFieldBlank, isValidField, isValidForm} from './registerFunctions.js'
+import {existantDataValue, isFieldBlank, isValidField, isValidForm} from './registerFunctions.js'
 
 var blankSpaces = 0
 
@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         elements.forEach((id) => isValidField(id, validFields, validateMessage))
 
-        if (validFields['CPF']) await existantCPFValue(validFields)
+        if (validFields['CPF']) await existantDataValue('CPF', validFields)
+
+        if (validFields['email']) await existantDataValue('email', validFields)
 
         if (blankSpaces > 0) document.getElementById('warning').textContent = 'Todos os campos são obrigatórios!'        
         else document.getElementById('warning').textContent = ''

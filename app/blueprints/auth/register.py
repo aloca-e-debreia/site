@@ -12,7 +12,7 @@ def register():
         password = request.form['password']
 
         user = User.query.filter_by(email=email).first()
-        if not user: #precisa implementar checagem de email existente!
+        if not user:
             user = User (
                 name=name,
                 email=email,
@@ -23,8 +23,8 @@ def register():
             db.session.add(user)
             db.session.commit()
 
-        login_user(user)
-        return redirect(url_for('main.index'))
+            login_user(user)
+            return redirect(url_for('main.index'))
     
     return render_template('auth/register.html')
 
@@ -37,7 +37,7 @@ def register_update():
         cpf = request.form['CPF']
         email = request.form['email'].lower()
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.get(current_user.id)
         if user:
             user.name = name
             user.age = age
@@ -57,8 +57,28 @@ def register_update():
 def verify_existant_cpf():
     data = request.get_json()
     cpf = data.get("cpf")
-    email = data.get("email")
-    user = User.query.filter_by(cpf=cpf).first()
-    if user and user.email != email:
+
+    if current_user.is_authenticated: # register uptdate
+        user_id = current_user.id
+        existant_cpf = User.query.filter(User.cpf == cpf, User.id != user_id).first()
+    else: # first access
+        existant_cpf = User.query.filter_by(cpf=cpf).first()
+
+    if existant_cpf:
         return jsonify({"success" : False, "message" : "Já existe um usuário com mesmo CPF"})
+    return jsonify({'success' : True, "message" : "Usuário cadastrado com sucesso"})
+
+@auth_bp.route('/register/api/existant-email', methods=['GET', 'POST'])
+def verify_existant_email():
+    data = request.get_json()
+    email = data.get("email")
+
+    if current_user.is_authenticated: #register update
+        user_id = current_user.id
+        existant_email = User.query.filter(User.email == email, User.id != user_id).first()
+    else: # first access
+        existant_email = User.query.filter_by(email=email).first()
+
+    if existant_email:
+        return jsonify({"success" : False, "message" : "Já existe um usuário com mesmo email"})
     return jsonify({'success' : True, "message" : "Usuário cadastrado com sucesso"})
