@@ -4,28 +4,45 @@
 
 
 {% block content %}
-
+    <header>
+        <div id="ContHeader">
+            <div id="logo">
+                <img src="" alt="CLICK & DRIVE">
+            </div>
+            <div class="elementosHeader">
+                <ul>
+                    <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
+                    <li><i class="ri-car-line"></i> LISTA DE CARROS</li>
+                    <li><i class="ri-question-line"></i> AJUDA</li>
+                    <li class="login"><i class="ri-user-fill"></i> <a href="{{ url_for('auth.login') }}">ENTRAR</a></li>
+                </ul>
+            </div>
+        </div>
+    </header> <br>
+    
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
             {% for category, message in messages %}
-                <p>{{ message }}</p> <br><br>
+                <div id="msg"><p>{{ message }}</p></div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
-    <form method="POST" action="{{ url_for('auth.login') }}">
-        <div class="input-group">
-            <label>Email</label><br>
-            <input type="text" name="email" id="email" required><br><br>
-        </div>
-        <div class="input-group">
-            <label>Senha</label><br>
-            <input type="password" name="password" id="password" required><br><br>
-        </div>
-        <button type="submit" class="btn" id="button">Enviar</button><br><br>
-        <div class="links">
-            <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('auth.register') }}">Criar conta</a>
-        </div>
-    </form>
+    <div class="ContLogin"; style="display: flex; align-items: center; justify-content: center;">
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <div class="input-group">
+                <label>Email</label><br>
+                <input type="text" name="email" id="email" required placeholder="Digite seu e-mail"><br><br>
+            </div>
+            <div class="input-group">
+                <label>Senha</label><br>
+                <input type="password" name="password" id="password" required placeholder="Digite sua senha"><br><br>
+            </div>
+            <button type="submit" class="btn" id="button">Enviar</button><br><br>
+            <div class="links">
+                <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('auth.register') }}">Criar conta</a>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}
