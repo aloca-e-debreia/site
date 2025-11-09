@@ -1,0 +1,11 @@
+transmissions:
+  - id: 1
+    name: Manual
+  - id: 2
+    name: Automatic
+  - id: 3
+    name: CVT
+  - id: 4
+    name: Semi-Automatic
+  - id: 5
+    name: Electric

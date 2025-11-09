@@ -3,7 +3,7 @@ from random import randint
 
 def seed_users(app):
 
-    @app.cli.command("seed")
+    @app.cli.command("seed_users")
     def seed(qnt_users=10):
 
         user_datastore = get_user_datastore()
