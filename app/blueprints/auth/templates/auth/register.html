@@ -17,27 +17,29 @@
         {% endif %}
     {% endwith %}
 
-    <form id="auth-form" method="POST" action="{{ url_for('auth.register') }}">
-        <div class="input-group">
-            <label>Nome</label><br>
-            <input type="text" name="name" id="name" placeholder="Digite seu primeiro nome" required>
-            <div id="name-error" class="error-message"></div>
-        </div>
+    <div class="ContLogin"; style="display: flex; align-items: center; justify-content: center;">
+        <form id="auth-form" method="POST" action="{{ url_for('auth.register') }}">
+            <div class="input-group">
+                <label>Nome</label><br>
+                <input type="text" name="name" id="name" placeholder="Digite seu primeiro nome" required>
+                <div id="name-error" class="error-message"></div>
+            </div>
 
-        <div class="input-group">
-            <label>Email</label><br>
-            <input type="text" name="email" id="email" placeholder="Digite seu email" required>
-            <div id="email-error" class="error-message"></div>
-        </div>
+            <div class="input-group">
+                <label>Email</label><br>
+                <input type="text" name="email" id="email" placeholder="Digite seu email" required>
+                <div id="email-error" class="error-message"></div>
+            </div>
 
-        <div class="input-group">
-            <label>Senha</label><br>
-            <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
-            <div id="password-error" class="error-message"></div>
-        </div>
-        
-        <button type="submit" class="btn" id="button">Enviar</button>
-    </form>
+            <div class="input-group">
+                <label>Senha</label><br>
+                <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
+                <div id="password-error" class="error-message"></div>
+            </div>
+            
+            <button type="submit" class="btn" id="button">Enviar</button>
+        </form>
+    </div>
     <div class="warning" id="warning">
         {% with messages = get_flashed_messages()%}
             {% if messages%}

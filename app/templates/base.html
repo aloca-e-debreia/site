@@ -5,11 +5,36 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Aloca e Debreia | {% block title %} {% endblock %}</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
         <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
+        <script src="{{ url_for('static', filename='js/buttonLogin.js') }}"></script>
     {% endblock %}
 </head>
 <body>
+
+    <header>
+        <div id="ContHeader">
+            <div id="logo">
+                <a href="{{ url_for('main.index') }}" style="text-decoration: none; color: black;">
+                    <img src="" alt="CLICK & DRIVE">
+                </a>
+            </div>
+            <div class="elementosHeader">
+                <ul>
+                    <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
+                    <li><i class="ri-car-line"></i> LISTA DE CARROS</li>
+                    <li><i class="ri-question-line"></i> AJUDA</li>
+                    <div style="display: flex;">
+                        <img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt=""  width="35px" height="35px">    
+                        <li class="login" id="entrar" style="margin-right: -20px;"><i class="ri-user-fill"></i><a href="{{ url_for('auth.login') }}">ENTRAR</a>|</li> <br>
+                        <li><a href="{{ url_for('auth.register') }}" style="color: black; text-decoration: none;">CADASTRAR</a></li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </header> <br>
+
     <main>
         {% block content %}
         {% endblock %}
