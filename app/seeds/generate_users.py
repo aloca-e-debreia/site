@@ -7,7 +7,6 @@ def seed_users(app):
     def seed(qnt_users=10):
 
         user_datastore = get_user_datastore()
-
         #creates n fake users
         roles = qnt_users//2*['client'] + qnt_users//2*['worker']
         if len(roles) != qnt_users: roles.append('worker')

@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from flask_security import roles_accepted
 from app.blueprints.main import main_bp
 from app.models.user import User, select_users_with_role
+from app.models.vehicle import Vehicle
 from app import login_manager, user_datastore, db
 
 @login_manager.user_loader
@@ -11,7 +12,8 @@ def load_user(user_id):
 
 @main_bp.route('/')
 def index():
-    return render_template('main/index.html', current_user=current_user)
+    vehicles = Vehicle.query.all()
+    return render_template('main/index.html', current_user=current_user, vehicles=vehicles)
 
 @main_bp.route('/dashboard')
 @login_required

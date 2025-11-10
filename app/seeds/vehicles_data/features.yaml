@@ -1,0 +1,11 @@
+features:
+  - id: 1
+    name: "ABS"
+  - id: 2
+    name: "Electric Steering"
+  - id: 3
+    name: "Hidraulic Steering"
+  - id: 4
+    name: "Air conditioner"
+  - id: 5
+    name: "Reverse camera"

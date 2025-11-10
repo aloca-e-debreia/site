@@ -28,4 +28,11 @@
             <button type="submit">Clique para testar sua permissão!</a></button>
         </form>
 
+    {% for vehicle in vehicles %}
+        <div>
+            <p>{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
+        </div>
+    {% endfor %}
+
+
 {% endblock %}
