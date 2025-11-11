@@ -4,11 +4,13 @@
 
 {% block content %} 
     <div class="user">
-        <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
-        <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
-        <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
-
+        <div class="boxes">
+            <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
+            <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
+            <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
+        </div>
         {% if UserData_chosen == "1" %}
+        <div class="ContUser">
             <div class="PersonalData">
                 <div class="PersonalData-Text">
                     Dados Pessoais <br>
@@ -36,6 +38,7 @@
                     Ver resumo da reserva
                 </div>
             </div>
+        </div>
         {% endif %}
 
 

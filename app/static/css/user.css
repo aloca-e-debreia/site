@@ -1,12 +1,17 @@
 .user{
     width: 80%;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     padding: 0px;
     background-color: #fa7921;
 }
+.boxes{
+    display: flex;
+    justify-content: space-around;
+}
 
 .box {
+    
     padding: 15px;
     border-radius: 10px 10px 0 0;
     cursor: pointer;
@@ -15,4 +20,15 @@
     line-height: 100px;  /* centraliza o texto verticalmente */
     background-color: #ff974f;
     flex: 1;
+}
+
+.ContUser{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.PersonalData{
+    
 }
