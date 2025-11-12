@@ -3,6 +3,6 @@ flask-sqlalchemy
 flask-login
 flask-security-too
 flask-bcrypt
-pycryptodome
+pyyaml
 dotenv
 faker
