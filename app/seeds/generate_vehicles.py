@@ -34,7 +34,7 @@ def seed_vehicles(app):
 
         if Vehicle.query.first() == None:
             
-            from random import choice, randint
+            from random import choice, uniform
 
             versions = [version.id for version in Version.query.all()]
             transmissions = [transmission.id for transmission in Transmission.query.all()]
@@ -52,9 +52,9 @@ def seed_vehicles(app):
                         features = [choice(features) for _ in range (5)],
 
                         plate = faker.license_plate(),
-                        year = randint(1990, 2025),
-                        mileage = float(randint(0, 2000)),
-                        rental_price = float(randint(600, 2000)),
+                        year = faker.year(min=2000, max=2025),
+                        mileage = uniform(0, 1000),
+                        rental_price = uniform(0, 600)
                     )
                     db.session.add(vehicle)
                     print("Create vehicle:", repr(vehicle))

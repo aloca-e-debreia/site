@@ -31,7 +31,14 @@
     {% for vehicle in vehicles %}
         <div>
             <p>{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
-        </div>
+            <div>
+                <p>{{ vehicle.category.name }}</p>
+                <li>{{ vehicle.engine.fuel }}</li>
+                {% for feature in vehicle.features %}
+                    <li>{{ feature.name }}</li>
+                {% endfor %}
+            </div>
+        </div> <br>
     {% endfor %}
 
 
