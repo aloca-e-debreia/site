@@ -3,42 +3,68 @@
 {% block title %} {{ current_user.name }} {% endblock %}
 
 {% block content %} 
+<div class="AllUser">
     <div class="user">
         <div class="boxes">
             <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
             <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
             <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
         </div>
+        <div class="AllCont">
+        <div class="ContUser">        
         {% if UserData_chosen == "1" %}
-        <div class="ContUser">
-            <div class="PersonalData">
+            <div class="Cont">
+                <div class="icon"><img src="" alt="Person" style="font-size: 40px;"></div>
                 <div class="PersonalData-Text">
-                    Dados Pessoais <br>
-                    Confira e atualize seus dados
+                    <h3>Dados Pessoais</h3>
+                    <p>Confira e atualize seus dados</p>
                 </div>
             </div>
 
-            <div class="Adress">
+            <div class="Cont">
+                <div class="icon"><img src="" alt="Adress"></div>
                 <div class="Adress-Text">
-                    Endereço <br>
-                    Dados do seu endereço
+                    <h3>Endereço</h3> 
+                    <p>Dados do seu endereço</p>
                 </div>
             </div>
         {% elif UserData_chosen == "2" %}
-            <div class="PersonalData">
+            <div class="Cont">
+                <div class="icon"><img src="" alt="Car"></div>
                 <div class="PersonalData-Text">
-                    Reserva 1 <br>
-                    Ver resumo da reserva
+                    <h3>Reserva 1</h3>
+                    <p>Ver resumo da reserva</p>
                 </div>
             </div>
 
-            <div class="Adress">
+            <div class="Cont">
+                <div class="icon"><img src="" alt="Car"></div>
                 <div class="Adress-Text">
-                    Reserva 2 <br>
-                    Ver resumo da reserva
+                    <h3>Reserva 2</h3>
+                    <p>Ver resumo da reserva</p>
+                </div>
+            </div>
+        
+        {% elif UserData_chosen == "3" %}
+            <div class="Cont">
+                    <div class="icon"><img src="" alt="Car"></div>
+                    <div class="PersonalData-Text">
+                        <h3>Reserva Passada 1</h3>
+                        <p>Ver resumo da reserva</p>
+                    </div>
+                </div>
+
+                <div class="Cont">
+                    <div class="icon"><img src="" alt="Car"></div>
+                    <div class="Adress-Text">
+                        <h3>Reserva Passada 2</h3>
+                        <p>Ver resumo da reserva</p>
+                    </div>
                 </div>
             </div>
         </div>
+</div>        
+</div>
         {% endif %}
 
 
