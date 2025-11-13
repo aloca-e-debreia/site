@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %} Cadastrar Veículo {% endblock %}
+
+{% block content %}
+
+    <h1>Cadastrar Veículo</h1>
+
+    <form id="register-car" action="{{ url_for('main.register_vehicles') }}" method="POST">
+        <fieldset>
+            <legend>Dados comuns</legend>
+            <label for="brand">Marca</label> <br>
+            <input type="text" class="search-bar" name="search-bar" placeholder="Digite a marca..."> <br><br>
+
+            <label for="brand">Modelo</label> <br>
+            <input type="text" class="search-bar" name="search-bar" placeholder="Digite o modelo..."> <br><br>
+            
+            <label for="brand">Ano</label> <br>
+            <input type="number" id="year" name="year" min="2000" max="2025" placeholder="Digite o ano..."> <br><br>
+
+            <label for="brand">Categoria</label> <br>
+            <input type="text" class="search-bar" name="search-bar" placeholder="Digite a categoria..."> <br><br>
+        </fieldset>
+        <fieldset>
+            <legend>Dados mecânicos</legend> 
+            <label for="displacement">Volume de deslocamendo (cilindrada)</label> <br>
+            <input type="text" class="search-bar" name="search-bar" placeholder="Digite a cilindrada..."> <br><br>
+
+            <label for="fuel">Tipo de combustível</label> <br>
+            <input type="text" class="search-bar" name="search-bar" placeholder="Digite o combustível..."><br><br>
+        </fieldset>
+        <fieldset>
+            <legend>Recursos</legend>
+            {% for feature in features %}
+                <input type="checkbox" class="feature" name="feature" placeholder="{{ feature.name }}">
+                <label for="{{ feature.name }}">{{ feature.name }}</label> <br>
+            {% endfor %}
+        </fieldset> <br>
+        <button type="submit" class="btn">Enviar</button>
+    </form>
+
+
+    <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+
+{% endblock %}

@@ -9,6 +9,10 @@
 
 {% block content %}
 
+    {% if user_role != 'Cliente' %}
+        <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
+    {% endif %}
+
     <h1>Lista de clientes:</h1>
 
     {% for client in clients %}

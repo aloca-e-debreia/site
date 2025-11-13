@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from flask_security import roles_accepted
 from app.blueprints.main import main_bp
 from app.models.user import User, select_users_with_role
+from app.models.vehicle import Vehicle, Feature
 from app import login_manager, user_datastore, db
 
 @login_manager.user_loader
@@ -11,12 +12,8 @@ def load_user(user_id):
 
 @main_bp.route('/')
 def index():
-    cars = [
-        {"id": 1, "nome": "Carro 1", "preco": 65},
-        {"id": 2, "nome": "Carro 2", "preco": 72},
-        {"id": 3, "nome": "Carro 3", "preco": 63},
-    ]
-    return render_template('main/index.html', current_user=current_user, cars=cars)
+    vehicles = Vehicle.query.all()
+    return render_template('main/index.html', current_user=current_user, vehicles=vehicles)
 
 @main_bp.route('/dashboard')
 @login_required
@@ -28,7 +25,14 @@ def dashboard():
         return render_template('main/dashboard.html', user_role='Gerente', clients=clients, workers=workers, managers=managers)
     else:
         return render_template('main/dashboard.html', user_role='Funcionário', clients=clients, workers=None, managers=None)
-    
+
+@main_bp.route('/dashboard/register-vehicles')
+@login_required
+@roles_accepted('manager', 'worker')
+def register_vehicles():
+    features = Feature.query.all()
+    return render_template('main/register-vehicles.html', features=features)
+
 @main_bp.route('/dashboard/api/promote', methods=['GET', 'POST'])
 def promover_user():
     data = request.get_json()

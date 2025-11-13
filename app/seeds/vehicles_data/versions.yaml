@@ -1,0 +1,11 @@
+versions:
+  - id: 1
+    name: Standard
+  - id: 2
+    name: Sport
+  - id: 3
+    name: Limited
+  - id: 4
+    name: Premium
+  - id: 5
+    name: Hybrid
