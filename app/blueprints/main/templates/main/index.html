@@ -5,6 +5,7 @@
 {% block title %} Home page {% endblock %}
 
 {% block content %}
+    <!--
     <div class="cadastro">
         {% if current_user.is_authenticated %}
             <h1>Bem vindo ao site, {{ current_user.name }}!</h1>
@@ -29,5 +30,41 @@
             <form method="GET" action="{{ url_for('main.dashboard') }}" id="Forms">
                 <button type="submit">Clique para testar sua permissão!</a></button>
             </form>
-        </div>    
+        </div> 
+    -->
+    <div class="container">
+    <div class="search-box">
+        <div class="input-group">
+            <label>Local da retirada</label>
+            <input type="text" placeholder="Onde você irá retirar?">
+        </div>
+        <div class="input-group">
+            <label>Data da retirada</label>
+            <input type="date">
+        </div>
+        <div class="input-group">
+            <label>Data da devolução</label>
+            <input type="date">
+        </div>
+    </div>
+
+    <div class="cars-section">
+        <h2>Lista de carros</h2>
+        <div class="car-list">
+        {% for car in cars %}
+            <div class="car-card">
+                <img src="" alt="Carro" width="100px">
+                <h3>{{ car.name }}</h3>
+                <p class="price">R$ {{ car.preco }}/dia</p>
+                {% if current_user.is_autheticated %}
+                    <a href="" class="rent-btn">Alugar ></a>
+                {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="rent-btn">Alugar ></a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+
 {% endblock %}

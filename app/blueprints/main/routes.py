@@ -11,7 +11,12 @@ def load_user(user_id):
 
 @main_bp.route('/')
 def index():
-    return render_template('main/index.html', current_user=current_user)
+    cars = [
+        {"id": 1, "nome": "Carro 1", "preco": 65},
+        {"id": 2, "nome": "Carro 2", "preco": 72},
+        {"id": 3, "nome": "Carro 3", "preco": 63},
+    ]
+    return render_template('main/index.html', current_user=current_user, cars=cars)
 
 @main_bp.route('/dashboard')
 @login_required
@@ -50,3 +55,4 @@ def user():
 @main_bp.route('/user/<UserData_chosen>')
 def UserData(UserData_chosen):
     return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen)
+
