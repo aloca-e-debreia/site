@@ -1,32 +1,71 @@
 {% extends "base.html" %}
 
+
+
 {% block title %} Home page {% endblock %}
 
 {% block content %}
+    <!--
+    <div class="cadastro">
+        {% if current_user.is_authenticated %}
+            <h1>Bem vindo ao site, {{ current_user.name }}!</h1>
+        {% endif %}
 
-    {% if current_user.is_authenticated %}
-        <h1>Bem vindo ao site, {{ current_user.name }}!</h1>
-    {% endif %}
+        {% if current_user.is_authenticated %}
+            <form method="GET" action="{{ url_for('auth.logout') }}" id="Forms">
+                <button type="submit">Logout</button>
+            </form>
+            <form method="GET" action="{{ url_for('auth.register_update') }}" id="Forms">
+                <button type="submit">Atualizar dados cadastrais</button>
+            </form>
+        {% else %}
+            <p>Faça login e venha conhecer os nossos serviços!</p>
+            <form method="GET" action="{{ url_for('auth.register') }}" id="Forms">
+                <button type="submit">Sign in</button>
+            </form>
+            <form method="GET" action="{{ url_for('auth.login') }}" id="Forms">
+                <button type="submit">Login</button>
+            </form>
+        {% endif %}
+            <form method="GET" action="{{ url_for('main.dashboard') }}" id="Forms">
+                <button type="submit">Clique para testar sua permissão!</a></button>
+            </form>
+        </div> 
+    -->
+    <div class="container">
+    <div class="search-box">
+        <div class="input-group">
+            <label>Local da retirada</label>
+            <input type="text" placeholder="Onde você irá retirar?">
+        </div>
+        <div class="input-group">
+            <label>Data da retirada</label>
+            <input type="date">
+        </div>
+        <div class="input-group">
+            <label>Data da devolução</label>
+            <input type="date">
+        </div>
+    </div>
 
-    {% if current_user.is_authenticated %}
-        <form method="GET" action="{{ url_for('auth.logout') }}">
-            <button type="submit">Logout</button>
-        </form>
-        <form method="GET" action="{{ url_for('auth.register_update') }}">
-            <button type="submit">Atualizar dados cadastrais</button>
-        </form>
-    {% else %}
-        <p>Faça login e venha conhecer os nossos serviços!</p>
-        <form method="GET" action="{{ url_for('auth.register') }}">
-            <button type="submit">Sign in</button>
-        </form>
-        <form method="GET" action="{{ url_for('auth.login') }}">
-            <button type="submit">Login</button>
-        </form>
-    {% endif %}
-        <form method="GET" action="{{ url_for('main.dashboard') }}">
-            <button type="submit">Clique para testar sua permissão!</a></button>
-        </form>
+    <div class="cars-section">
+        <h2>Lista de carros</h2>
+        <div class="car-list">
+        {% for car in cars %}
+            <div class="car-card">
+                <img src="" alt="Carro" width="100px">
+                <h3>{{ car.name }}</h3>
+                <p class="price">R$ {{ car.preco }}/dia</p>
+                {% if current_user.is_autheticated %}
+                    <a href="" class="rent-btn">Alugar ></a>
+                {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="rent-btn">Alugar ></a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    </div>
 
     {% for vehicle in vehicles %}
         <div>

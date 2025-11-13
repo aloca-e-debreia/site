@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %} {{ current_user.name }} {% endblock %}
+
+{% block content %} 
+<div class="AllUser">
+    <div class="user">
+        <div class="boxes">
+            <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
+            <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
+            <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
+        </div>
+        <div class="AllCont">
+        <div class="ContUser">        
+        {% if UserData_chosen == "1" %}
+            <div class="Cont" onclick="toggleContent(this)">
+                <div class="icon"><img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt="Person" style="width:70px ;"></div>
+                <div class="PersonalData-Text">
+                    <h3>Dados Pessoais</h3>
+                    <p>Confira e atualize seus dados</p>
+                </div>
+                <div class=""></div>
+            </div>
+            <div class="Cont-Details">
+                <p>Username: {{ current_user.name }}</p>
+                <!--Descriptografar-->
+                <p>Senha: {{ current_user.password }}</p>
+                <button>Editar Dados</button> 
+            </div>  
+
+            <div class="Cont" onclick="toggleContent(this)">
+                <div class="icon"><img src="../../../../static/Images/Adress.png" alt="Adress" width="70px"></div>
+                <div class="Adress-Text">
+                    <h3>Endereço</h3> 
+                    <p>Dados do seu endereço</p>
+                </div>
+            </div>
+            <div class="Cont-Details">
+                <p>Cidade: </p>
+                <p>Bairro: </p>
+                <p>Rua: </p>
+                <button>Editar Dados</button> 
+            </div> 
+        {% elif UserData_chosen == "2" %}
+        <!--Precisa ver quantas reservas tem, fazer um for, se tiver 0, nenhuma reserva aparecerá.-->
+            <div class="Cont" onclick="toggleContent(this)">
+                <div class="icon"><img src="" alt="Car" width="70px"></div>
+                <div class="PersonalData-Text">
+                    <h3>Reserva 1</h3>
+                    <p>Ver resumo da reserva</p>
+                </div>
+            </div>
+            <div class="Cont-Details">
+                <p>Carro escolhido: </p>
+                <p>Data da reserva: </p>
+                <p>Preço total: </p>
+                <button>Editar Dados</button> 
+            </div> 
+
+            <div class="Cont" onclick="toggleContent(this)">
+                <div class="icon"><img src="" alt="Car" width="70px"></div>
+                <div class="Adress-Text">
+                    <h3>Reserva 2</h3>
+                    <p>Ver resumo da reserva</p>
+                </div>
+            </div>
+            <div class="Cont-Details">
+                <p>Carro escolhido: </p>
+                <p>Data da reserva: </p>
+                <p>Preço total: </p>
+                <button>Editar Dados</button> 
+            </div> 
+
+        
+        {% elif UserData_chosen == "3" %}
+            <div class="Cont" onclick="toggleContent(this)">
+                    <div class="icon"><img src="" alt="Car" width="70px"></div>
+                    <div class="PersonalData-Text">
+                        <h3>Reserva Passada 1</h3>
+                        <p>Ver resumo da reserva</p>
+                    </div>
+                </div>
+                <div class="Cont-Details">
+                    <p>Carro escolhido: </p>
+                    <p>Data da reserva: </p>
+                    <p>Preço total: </p>
+                    <button>Editar Dados</button> 
+                </div> 
+
+                <div class="Cont" onclick="toggleContent(this)">
+                    <div class="icon"><img src="" alt="Car" width="70px"></div>
+                    <div class="Adress-Text">
+                        <h3>Reserva Passada 2</h3>
+                        <p>Ver resumo da reserva</p>
+                    </div>
+                </div>
+                <div class="Cont-Details">
+                    <p>Carro escolhido: </p>
+                    <p>Data da reserva: </p>
+                    <p>Preço total: </p>
+                    <button>Editar Dados</button> 
+                </div> 
+            </div>
+        </div>
+</div>        
+</div>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

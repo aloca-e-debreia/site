@@ -51,3 +51,12 @@ def promover_user():
         return jsonify({"success" : True, "message" : "Usuário promovido com sucesso"})
     
     return jsonify({"success" : False, "message" : "Usuário não cadastrado"})
+
+@main_bp.route('/user')
+def user():
+    return render_template('main/user.html', current_user=current_user)
+
+@main_bp.route('/user/<UserData_chosen>')
+def UserData(UserData_chosen):
+    return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen)
+

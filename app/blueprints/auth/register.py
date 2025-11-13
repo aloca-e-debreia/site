@@ -18,11 +18,12 @@ def register():
                 email=email,
                 password=bcrypt.generate_password_hash(password).decode('utf-8')
             )
-            user_datastore.add_role_to_user(user, 'client')
 
             db.session.add(user)
             db.session.commit()
 
+            user_datastore.add_role_to_user(user, 'client')
+            db.session.commit()
             login_user(user)
             return redirect(url_for('main.index'))
     
