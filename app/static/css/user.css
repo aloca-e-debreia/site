@@ -8,7 +8,6 @@
     justify-content: center;
     width: 100%;
     padding: 20px;
-    min-height: 100vh;
 }
 .user{
     width: 90%;
@@ -27,7 +26,7 @@
 }
 
 .box {
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
     font-weight: 500;
     color: black;
@@ -51,6 +50,7 @@
     width: 95%;
     gap: 25px;
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 
 a{    
@@ -71,11 +71,12 @@ transition: 0.7s;
     background-color: #f0f0f0;
     align-items: center;
     padding: 20px;
+    transition: 0.3 ease;
+    position: relative;
+    z-index: 2;
 }
 
-.Cont .icon {
-  font-size: 40px;
-}
+
 
 .Cont .PersonalData_Text h3 {
   margin: 0;
@@ -91,4 +92,30 @@ transition: 0.7s;
 .AllCont{
     display: flex;
     justify-content: center;
+}
+
+.Cont.active{
+    border-radius: 15px 15px 0 0;
+}
+
+.Cont-Details {
+  max-height: 0;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-top: 10px;
+  padding: 0 20px;
+  transition: all 0.5s ease;
+  opacity: 0;
+  margin-top: -15px;
+  position: relative;
+  z-index: 1;
+  border-top: 2px solid #ddd;
+}
+
+.Cont-Details.open {
+  max-height: 300px; 
+  opacity: 1;
+  padding: 20px;
+  margin-top: 0;
 }

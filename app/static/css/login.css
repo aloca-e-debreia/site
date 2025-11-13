@@ -8,17 +8,6 @@
     text-align: left;
 }
 
-#ContHeader{
-    display: flex;
-    justify-content: space-between;
-}
-
-header{
-    background-color:#fa7921 ;
-    width: 100%;
-    padding: 25px 30px;
-    box-sizing: border-box;
-}
 
 
 .elementosHeader ul{
@@ -70,3 +59,4 @@ li{
       padding: 20px;
       z-index: 10;
 }
+
