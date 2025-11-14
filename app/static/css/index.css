@@ -82,32 +82,127 @@ body {
 }
 
 .container {
-  width: 90%;
-  margin: 30px auto;
+  width: 95%;
+  max-width: 1100px;
+  margin: 28px auto;
+  padding: 8px;
 }
 
 .search-box {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #f77f00;
-  padding: 20px;
-  border-radius: 8px;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 18px;
+  align-items: center;
+  background: linear-gradient(180deg, #f77f00 0%, #f36d00 100%);
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.Retirada {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.Retirada h3 {
+  margin: 0;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
+  min-width: 220px;
+  width: calc(33.33% - 12px); 
   color: #fff;
 }
 
+.input-group label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: white;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
 .input-group input {
+  background: white;
+  color: #222;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.03);
+}
+
+.input-group input[type="date"],
+.input-group input[type="time"],
+.input-group input[list] {
+  width: 100%;
+}
+
+#devolucao {
+  display: none; /* aparece quando o JS mostrar */
+  
+  background: #f77f00; /* MESMA COR da retirada */
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  /* deixar igual à search-box */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Título igual ao da retirada */
+#devolucao h3 {
+  width: 100%;
+  margin: 0 0 10px 0;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Inputs iguais aos da retirada */
+#devolucao .input-group {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  min-width: 220px;
+}
+
+#devolucao .input-group label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: white;
+}
+
+#devolucao .input-group input {
   padding: 8px;
   border: none;
   border-radius: 4px;
+  background: #ffffff;
+  color: #333;
   margin-top: 4px;
+}
+@media (max-width: 700px) {
+  #devolucao {
+    padding: 15px;
+  }
 }
 
 .cars-section {

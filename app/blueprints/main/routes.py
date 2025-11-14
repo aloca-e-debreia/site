@@ -60,3 +60,7 @@ def user():
 def UserData(UserData_chosen):
     return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen)
 
+@main_bp.route('/cars')
+def cars():
+    #precisa colocar os veiculos aqui
+    return render_template('main/cars.html')

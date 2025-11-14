@@ -5,80 +5,93 @@
 {% block title %} Home page {% endblock %}
 
 {% block content %}
-    <!--
-    <div class="cadastro">
-        {% if current_user.is_authenticated %}
-            <h1>Bem vindo ao site, {{ current_user.name }}!</h1>
-        {% endif %}
-
-        {% if current_user.is_authenticated %}
-            <form method="GET" action="{{ url_for('auth.logout') }}" id="Forms">
-                <button type="submit">Logout</button>
-            </form>
-            <form method="GET" action="{{ url_for('auth.register_update') }}" id="Forms">
-                <button type="submit">Atualizar dados cadastrais</button>
-            </form>
-        {% else %}
-            <p>Faça login e venha conhecer os nossos serviços!</p>
-            <form method="GET" action="{{ url_for('auth.register') }}" id="Forms">
-                <button type="submit">Sign in</button>
-            </form>
-            <form method="GET" action="{{ url_for('auth.login') }}" id="Forms">
-                <button type="submit">Login</button>
-            </form>
-        {% endif %}
-            <form method="GET" action="{{ url_for('main.dashboard') }}" id="Forms">
-                <button type="submit">Clique para testar sua permissão!</a></button>
-            </form>
-        </div> 
-    -->
     <div class="container">
-    <div class="search-box">
+        
+        <div class="search-box">
+        <div class="Retirada" style="display: flex; flex-direction: row;"><h3>Dados da Retirada</h3></div>
         <div class="input-group">
             <label>Local da retirada</label>
-            <input type="text" placeholder="Onde você irá retirar?">
+            <input list="locais" type="text" placeholder="Onde você irá retirar?" id="LocalRet">
+            <datalist id="locais">
+                <option value="São Paulo - SP">
+                <option value="Rio de Janeiro - RJ">
+                <option value="Salvador - BA">
+                <option value="Belo Horizonte - MG">
+                <option value="Brasília - DF">
+            </datalist>
         </div>
+        
         <div class="input-group">
             <label>Data da retirada</label>
-            <input type="date">
+            <input type="date" min="2025-11-18" max="2027-01-01" id="DateRet">
         </div>
         <div class="input-group">
+            <label>Hora da retirada</label>
+            <input type="time" id="hourRet">
+        </div>
+    </div>
+    <div id="devolucao" class="hidden" style="display: none;">
+        <h3>Dados da devolução</h3>
+
+        <div class="input-group">
+            <label>Local da devolução</label>
+            <input list="locais" type="text" placeholder="Onde você irá retirar?" id="localDev">
+            <datalist id="locais">
+                <option value="São Paulo - SP">
+                <option value="Rio de Janeiro - RJ">
+                <option value="Salvador - BA">
+                <option value="Belo Horizonte - MG">
+                <option value="Brasília - DF">
+            </datalist>
+        </div>
+
+        <div class="input-group">
             <label>Data da devolução</label>
-            <input type="date">
+            <input type="date" id="dataDev">
         </div>
+
+        <div class="input-group">
+            <label>Hora da devolução</label>
+            <input type="time" id="hourDev">
+        </div>
+        <a href="{{ url_for('main.cars') }}"><button id="btn" style="display: none;">Ir para lista de carros</button></a>
     </div>
 
-    <div class="cars-section">
-        <h2>Lista de carros</h2>
-        <div class="car-list">
-        {% for car in cars %}
-            <div class="car-card">
-                <img src="" alt="Carro" width="100px">
-                <h3>{{ car.name }}</h3>
-                <p class="price">R$ {{ car.preco }}/dia</p>
-                {% if current_user.is_autheticated %}
-                    <a href="" class="rent-btn">Alugar ></a>
-                {% else %}
-                    <a href="{{ url_for('auth.register') }}" class="rent-btn">Alugar ></a>
-                {% endif %}
-            </div>
-        {% endfor %}
-        </div>
-    </div>
-    </div>
+<script>
+    const localRet = document.getElementById('LocalRet');
+    const dataRet = document.getElementById('DateRet');
+    const horaRet = document.getElementById('hourRet');
+    const localDev = document.getElementById('localDev');
+    const dataDev = document.getElementById('dataDev');
+    const horaDev = document.getElementById('hourDev')
+    const btn = document.getElementById('btn')
+    const devolucaoDiv = document.getElementById('devolucao');
 
-    {% for vehicle in vehicles %}
-        <div>
-            <p>{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
-            <div>
-                <p>{{ vehicle.category.name }}</p>
-                <li>{{ vehicle.engine.fuel }}</li>
-                {% for feature in vehicle.features %}
-                    <li>{{ feature.name }}</li>
-                {% endfor %}
-            </div>
-        </div> <br>
-    {% endfor %}
+    function verificarCampos() {
+        if (localRet.value.trim() !== "" &&
+            dataRet.value !== "" &&
+            horaRet.value !== "") {
+
+            devolucaoDiv.style.display = "flex"; // mostra div
+        } else {
+            devolucaoDiv.style.display = "none"; // esconde se faltar algo
+        }
+    }
+    function verificarCamposDev(){
+        if (localDev.value.trim() !== "" && dataDev.value !== "" && horaDev.value !== ""){
+                btn.style.display = "block";
+            } else{
+                btn.style.display = "none";
+            }
+    }
+    
+    localRet.addEventListener("input", verificarCampos);
+    dataRet.addEventListener("change", verificarCampos);
+    horaRet.addEventListener("change", verificarCampos);
+    localDev.addEventListener("input", verificarCamposDev);
+    dataDev.addEventListener("change", verificarCamposDev);
+    horaDev.addEventListener("change", verificarCamposDev);
+</script>
 
 
 {% endblock %}
