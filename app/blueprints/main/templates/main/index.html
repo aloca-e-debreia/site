@@ -54,7 +54,11 @@
             <label>Hora da devolução</label>
             <input type="time" id="hourDev">
         </div>
-        <a href="{{ url_for('main.cars') }}"><button id="btn" style="display: none;">Ir para lista de carros</button></a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.cars') }}"><button id="btn" style="display: none;">Ir para lista de carros</button></a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}"><button id="btn" style="display: none;">Ir para lista de carros</button></a>
+        {% endif %}
     </div>
 
 <script>

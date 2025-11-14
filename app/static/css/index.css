@@ -108,7 +108,7 @@ body {
 }
 .Retirada h3 {
   margin: 0;
-  color: white;
+  color: black;
   font-size: 18px;
   font-weight: 600;
 }
@@ -124,7 +124,7 @@ body {
 .input-group label {
   font-size: 13px;
   margin-bottom: 6px;
-  color: white;
+  color: black;
 }
 
 .input-group input,
@@ -150,17 +150,14 @@ body {
 }
 
 #devolucao {
-  display: none; /* aparece quando o JS mostrar */
-  
-  background: #f77f00; /* MESMA COR da retirada */
+  display: none;   
+  background: #f77f00;
   padding: 20px;
   margin-top: 20px;
   border-radius: 8px;
   width: 100%;
   flex-wrap: wrap;
   gap: 15px;
-
-  /* deixar igual à search-box */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -168,27 +165,24 @@ body {
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Título igual ao da retirada */
 #devolucao h3 {
   width: 100%;
   margin: 0 0 10px 0;
-  color: white;
+  color: black;
   font-size: 18px;
   font-weight: 600;
 }
 
-/* Inputs iguais aos da retirada */
 #devolucao .input-group {
   display: flex;
-  flex-direction: column;
-  color: #fff;
+  color: black;
   min-width: 220px;
 }
 
 #devolucao .input-group label {
   font-size: 14px;
   margin-bottom: 4px;
-  color: white;
+  color: black;
 }
 
 #devolucao .input-group input {

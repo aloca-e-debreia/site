@@ -36,10 +36,6 @@
     flex: 1;
 }
 
-.box.active{
-    background-color: #fa7921;
-    color: white;
-}
 
 .ContUser{
     background-color: #ff974f;

@@ -28,7 +28,7 @@ header{
 }
 
 main {
-  flex: 1; /* faz o conteúdo ocupar o espaço restante */
+  flex: 1;
 }
 
 footer {
@@ -36,7 +36,26 @@ footer {
   color: white;
   text-align: center;
   padding: 15px;
-  margin-top: auto; /* empurra o footer pro fim */
+  margin-top: auto; 
+  position: relative;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+
+main {
+    flex: 1; 
+}
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+  background-color: #fa7921;
+    margin-top: auto;
 }
 
 main{
