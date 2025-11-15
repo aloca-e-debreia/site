@@ -3,40 +3,34 @@ extras:
     name: "Motorista adicional"
     description: "Permite cadastrar um segundo condutor autorizado."
     daily_price: 29.90
-    category: "Pessoa"
     selectable_quantity: false
 
   - id: 2
     name: "Assento infantil"
     description: "Cadeirinha apropriada para crianças entre 1 e 4 anos."
     daily_price: 19.90
-    category: "Equipamento"
     selectable_quantity: true
 
   - id: 3
     name: "Assento bebê (0 a 1 ano)"
     description: "Bebê-conforto para recém-nascidos até 12 meses."
     daily_price: 19.90
-    category: "Equipamento"
     selectable_quantity: true
 
   - id: 4
     name: "Boosters (4 a 7 anos)"
     description: "Assento de elevação para crianças maiores."
     daily_price: 14.90
-    category: "Equipamento"
     selectable_quantity: true
 
   - id: 5
     name: "GPS / Sistema de Navegação"
     description: "Equipamento portátil de navegação."
     daily_price: 15.00
-    category: "Equipamento"
     selectable_quantity: false
 
   - id: 6
     name: "Wi-Fi portátil"
     description: "Roteador móvel com internet ilimitada."
     daily_price: 24.90
-    category: "Conectividade"
     selectable_quantity: false

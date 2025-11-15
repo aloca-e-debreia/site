@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pickupTime.value !== "") {
 
             devolucaoDiv.style.display = "flex"; // mostra div
+            dropoffAddress.value = pickupAddress.value
         } else {
             devolucaoDiv.style.display = "none"; // esconde se faltar algo
         }

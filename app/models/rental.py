@@ -33,24 +33,35 @@ class Extra(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text, nullable=False)
     daily_price = db.Column(db.Float, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    available = db.Column(db.Boolean, nullable=False)
+    selectable_quantity = db.Column(db.Boolean, nullable=False)
 
-    rentals = db.relationship("Rental", secondary='rental_extra', back_populates='extras')
+    rentals = db.relationship("RentalExtra", back_populates="extra")
 
     def __repr__(self):
-        return f"Extra<name='{self.name}', description='{self.description}', daily_price='{self.daily_price}', quantity='{self.quantity}', available='{self.available}'>"
+        return f"Extra<name='{self.name}', description='{self.description}', daily_price='{self.daily_price}', quantity='{self.selectable_quantity}'>"
 
-rental_extra = db.Table(
-    "rental_extra",
-    db.Column("rental_id", db.Integer, db.ForeignKey('rental.id'), primary_key=True),
-    db.Column("extra_id", db.Integer, db.ForeignKey('extra.id'), primary_key=True)
-)
+class RentalExtra(db.Model):
+    __tablename__ = "rental_extra"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    rental_id = db.Column(db.Integer, db.ForeignKey('rental.id'))
+    extra_id = db.Column(db.Integer, db.ForeignKey('extra.id'))
+
+    quantity = db.Column(db.Integer, default=1)
+
+    rental = db.relationship("Rental", back_populates="extras")
+    extra = db.relationship("Extra", back_populates="rentals")
+
+    def calculate_price(self):
+        return self.extra.daily_price * self.quantity
+    
 
 class Rental(db.Model):
     __tablename__ = 'rental'
 
     id = db.Column(db.Integer, primary_key=True)
+    fee = db.Column(db.Float(10, 2), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
@@ -61,7 +72,13 @@ class Rental(db.Model):
     pickup = db.relationship("Pickup", backref='rental')
     dropoff = db.relationship("Dropoff", backref='rental')
 
-    extras = db.relationship("Extra", secondary='rental_extra', back_populates='rentals')
+    extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}', pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}'>"
+    
+    def calculate_price(self):
+        days = self.dropoff.date - self.pickup.date
+        extras_price = self.extras.calculate_price()
+        subtotal = days * (self.vehicle.daily_price + extras_price)
+        return subtotal + self.fee*subtotal

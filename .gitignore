@@ -2,4 +2,11 @@
 *.venv/
 *__pycache__/
 *.env
-*instance/
+
+instance/
+venv/
+env/
+vscode/
+
+env
+venv

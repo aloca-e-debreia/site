@@ -51,7 +51,7 @@ def seed_vehicles(app):
                     plate = faker.license_plate(),
                     year = randint(2000, 2025),
                     mileage = uniform(0, 1000),
-                    rental_price = uniform(0, 600)
+                    daily_price = uniform(0, 600)
                 )
                 db.session.add(vehicle)
                 print("Create vehicle:", repr(vehicle))

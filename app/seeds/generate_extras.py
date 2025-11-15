@@ -12,7 +12,7 @@ def seed_extras(app):
     @app.cli.command("seed_extras")
     def seed():
         extrasObjList = load_yaml("extras.yaml")
-        for extraObj in extrasObjList:
+        for extraObj in extrasObjList['extras']:
             extraInst = Extra(**extraObj)
             if not Extra.query.get(extraObj['id']):
                 db.session.add(extraInst)
