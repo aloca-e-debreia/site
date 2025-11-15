@@ -4,6 +4,7 @@
 
 {% block content %} 
 <div class="AllUser">
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
     <div class="user">
         <div class="boxes">
             <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
@@ -11,7 +12,7 @@
             <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
         </div>
         <div class="AllCont">
-        <div class="ContUser">        
+        <div class="ContUser">
         {% if UserData_chosen == "1" %}
             <div class="Cont" onclick="toggleContent(this)">
                 <div class="icon"><img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt="Person" style="width:70px ;"></div>

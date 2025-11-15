@@ -1,7 +1,7 @@
 from flask import redirect, request, url_for, render_template, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from app.blueprints.auth import auth_bp
-from app.models.user import User
+from app.models import User
 from app import bcrypt
 
 @auth_bp.route('/login', methods=['GET', 'POST'])

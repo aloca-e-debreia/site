@@ -1,7 +1,7 @@
 from flask import request, redirect, url_for, render_template, jsonify, flash
 from flask_login import login_user, login_required, current_user
 from app.blueprints.auth import auth_bp
-from app.models.user import User
+from app.models import User
 from app import db, bcrypt, user_datastore
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
