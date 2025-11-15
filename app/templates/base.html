@@ -7,6 +7,7 @@
         <title>Aloca e Debreia | {% block title %} {% endblock %}</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 
@@ -70,7 +71,11 @@
     </main>
     <div class="asd" style="display: flex; margin-top: auto; flex-direction: column; " >
     <footer>
-        <p>© 2025 Click & Drive — Todos os direitos reservados.</p>
+        <p> &copy; 2025 Click & Drive — Todos os direitos reservados.</p> 
+        <div class="right-links">
+        <p><a href="">Contato</a></p>
+        <p><a href="">Quem somos?</a></p>
+    </div>
     </footer>
     </div>
 </body>

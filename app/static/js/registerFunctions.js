@@ -106,7 +106,7 @@ export function isValidField(id, validFields, validateMessage) {
 export function isFieldBlank(id, validFields) {
     const fieldValue = document.getElementById(id).value.trim()
     const errorField = document.getElementById(id+'-error')
-    if (blankField(fieldValue, errorField, `Por favor, digite seu ${id}`)) {
+    if (blankField(fieldValue, errorField, `Por favor, digite seu/sua ${id}`)) {
         validFields[id] = false
         return true
     }

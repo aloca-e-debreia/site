@@ -35,10 +35,13 @@ footer {
   background-color: #fa7921;
   color: white;
   text-align: center;
-  padding: 15px;
+  padding: 15px 0;
   margin-top: auto; 
   position: relative;
+  width: 100%;
+
 }
+
 html, body {
     height: 100%;
     margin: 0;
@@ -50,12 +53,16 @@ main {
     flex: 1; 
 }
 
-footer {
-    text-align: center;
-    padding: 15px 0;
-    width: 100%;
-  background-color: #fa7921;
-    margin-top: auto;
+footer .right-links {
+  display: flex;
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  text-align: right;
+  gap: 18px;
+  color: black; 
+  font-size: 18px;
+  cursor: pointer;
 }
 
 main{
