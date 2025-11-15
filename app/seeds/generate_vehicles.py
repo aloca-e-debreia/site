@@ -1,4 +1,5 @@
 import yaml
+import random
 from app import db, faker
 from app.models.vehicle import *
 
@@ -49,10 +50,10 @@ def seed_vehicles(app):
                         version_id = choice(versions),
                         transmission_id = choice(transmissions),
                         engine_id = choice(engines),
-                        features = [choice(features) for _ in range (5)],
+                        features = list(set(choice(features) for _ in range(3))),
 
                         plate = faker.license_plate(),
-                        year = faker.year(min=2000, max=2025),
+                        year = random.randint(2000, 2025),
                         mileage = uniform(0, 1000),
                         rental_price = uniform(0, 600)
                     )

@@ -12,8 +12,7 @@ def load_user(user_id):
 
 @main_bp.route('/')
 def index():
-    vehicles = Vehicle.query.all()
-    return render_template('main/index.html', current_user=current_user, vehicles=vehicles)
+    return render_template('main/index.html', current_user=current_user)
 
 @main_bp.route('/dashboard')
 @login_required
@@ -62,5 +61,9 @@ def UserData(UserData_chosen):
 
 @main_bp.route('/cars')
 def cars():
-    #precisa colocar os veiculos aqui
-    return render_template('main/cars.html')
+    vehicles = Vehicle.query.all()
+    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
+
+@main_bp.route('/pay')
+def pay():
+    return render_template('main/pay.html')

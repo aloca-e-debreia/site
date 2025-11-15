@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %} 
+<div class="container">
+
+    <div class="car-info">
+        <div class="car-left">
+            <img src="carro.png" class="car-img">
+        </div>
+
+        <div class="car-middle">
+            <h2>Carro 1</h2>
+
+            <div class="icons">
+                <span>4 🚗</span>
+                <span>Manual ⚙️</span>
+                <span>Sem ar-condicionado 🧊</span>
+            </div>
+
+            <p><strong>Adicionais selecionados:</strong></p>
+            <ul>
+                <li>XXX</li>
+                <li>YYY</li>
+                <li>ZZZ</li>
+            </ul>
+        </div>
+
+        <div class="car-summary">
+            <h3>Resumo</h3>
+            <div class="summary-line">
+                <span>Valor do veículo</span><span>R$ XXX</span>
+            </div>
+            <div class="summary-line">
+                <span>Adicionais</span><span>R$ YYY</span>
+            </div>
+            <div class="summary-line">
+                <span>Taxas da locadora</span><span>R$ AAA</span>
+            </div>
+            <div class="summary-line total">
+                <span>Total</span><span>R$ BBB</span>
+            </div>
+
+            <button class="resume-btn">Continuar</button>
+        </div>
+    </div>
+
+    <div class="extras-box">
+        <h2>Adicionais</h2>
+
+        <div class="extra-item">
+            <div class="extra-left">
+                <h3>Lavagem antecipada</h3>
+                <p>Nem se preocupe em lavar o carro na volta.</p>
+            </div>
+            <div class="extra-right">
+                <span class="price">R$ 49,99</span>
+                <button class="add-btn">Adicionar</button>
+            </div>
+        </div>
+
+        <div class="extra-item">
+            <div class="extra-left">
+                <h3>Motorista adicional</h3>
+                <p>Tenha um motorista extra para descansar.</p>
+            </div>
+            <div class="extra-right">
+                <span class="price">R$ 19,99/dia</span>
+
+                <div class="counter">
+                    <button>-</button>
+                    <span>0</span>
+                    <button>+</button>
+                </div>
+
+                <button class="add-btn">Adicionar</button>
+            </div>
+        </div>
+
+        <div class="extra-item">
+            <div class="extra-left">
+                <h3>Cadeira de bebê</h3>
+                <p>Ideal para crianças de 1 a 4 anos.</p>
+            </div>
+            <div class="extra-right">
+                <span class="price">R$ 31,99/bebê</span>
+
+                <div class="counter">
+                    <button>-</button>
+                    <span>0</span>
+                    <button>+</button>
+                </div>
+
+                <button class="add-btn">Adicionar</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
