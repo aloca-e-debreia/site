@@ -25,6 +25,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
+    mail.init_app(app)
 
     from app.models.user import User, Role
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
