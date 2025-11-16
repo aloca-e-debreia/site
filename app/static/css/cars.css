@@ -52,18 +52,59 @@
     background-color: #0d3133;
 }
 
-/* --- Responsividade --- */
 
-/* Tela média: 3 por linha */
 @media (max-width: 1100px) {
     .carros {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* Celular: 1 por linha */
 @media (max-width: 700px) {
     .carros {
         grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+#filters input {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 220px;
+    outline: none;
+    transition: 0.2s;
+}
+
+#filters input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}
+
+#filters label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.filterBox {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+@media (max-width: 600px) {
+    #filters {
+        flex-direction: column;
+    }
+
+    #filters input {
+        width: 100%;
     }
 }

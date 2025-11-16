@@ -3,11 +3,44 @@
 {% block title %} cars {% endblock %}
 
 {% block content %}
+    <div id="filters">
+    
+    <div class="filterBox">
+        <label>Filtrar por nome:</label>
+        <input type="text" placeholder="filtrar" id="filter">
+    </div>
 
+    <div class="filterBox">
+        <label>Categoria:</label>
+        <input list="categories" id="filterCategory" placeholder="Escolha a categoria">
+        <datalist id="categories">
+            {% set seen = [] %}
+            {% for vehicle in vehicles %}
+                {% if vehicle.category.name not in seen %}
+                    <option value="{{ vehicle.category.name }}">
+                    {% set _ = seen.append(vehicle.category.name) %}
+                {% endif %}
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="filterBox">
+        <label>Combustível:</label>
+        <input list="fuels" id="filterFuel" placeholder="Escolha o combustível">
+        <datalist id="fuels">
+        {% set seenFuel = [] %}
+        {% for vehicle in vehicles %}
+            {% if vehicle.engine.fuel not in seenFuel %}
+                <option value="{{ vehicle.engine.fuel }}">
+                {% set _ = seenFuel.append(vehicle.engine.fuel) %}
+            {% endif %}
+        {% endfor %}
+</datalist>
+    </div>
     <div class="carros">
         {% for vehicle in vehicles %}
             <div class="carro">
-                <p style="font-weight: bold;">{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
+                <p style="font-weight: bold;" class="vehicleName">{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
                 <div class="CarroBox">
                     <p id="category">{{ vehicle.category.name }}</p>
                     <li>{{ vehicle.engine.fuel }}</li>
@@ -31,4 +64,47 @@
             </div> <br>
         {% endfor %}
     </div>    
+    <script>
+    const input = document.getElementById("filter");
+    const carros = document.querySelectorAll(".carro");
+    const filterCategory = document.getElementById("filterCategory");
+    const filterFuel = document.getElementById("filterFuel");
+
+    input.addEventListener("input", function () {
+        const texto = input.value.toLowerCase();
+
+        carros.forEach(carro => {
+            const nome = carro.querySelector(".vehicleName").innerText.toLowerCase();
+
+            if (nome.includes(texto)) {
+                carro.style.display = "block";
+            } else {
+                carro.style.display = "none";
+            }
+        });
+    });
+    
+
+    function filtrar() {
+        const categoria = filterCategory.value.toLowerCase();
+        const fuel = filterFuel.value.toLowerCase();
+
+        carros.forEach(carro => {
+            const carroCategoria = carro.querySelector("#category").innerText.toLowerCase();
+            const carroFuel = carro.querySelector("li").innerText.toLowerCase(); // Primeiro <li> é o fuel
+
+            const matchCategoria = categoria === "" || carroCategoria.includes(categoria);
+            const matchFuel = fuel === "" || carroFuel.includes(fuel);
+
+            if (matchCategoria && matchFuel) {
+                carro.style.display = "block";
+            } else {
+                carro.style.display = "none";
+            }
+        });
+    }
+
+    filterCategory.addEventListener("input", filtrar);
+    filterFuel.addEventListener("input", filtrar);
+    </script>
 {% endblock %}
