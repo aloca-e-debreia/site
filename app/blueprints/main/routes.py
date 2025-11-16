@@ -64,3 +64,8 @@ def UserData(UserData_chosen):
 def cars():
     #precisa colocar os veiculos aqui
     return render_template('main/cars.html')
+
+@main_bp.route('/nos')
+def nos():
+    return render_template('main/nos.html')
+

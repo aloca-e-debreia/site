@@ -1,0 +1,53 @@
+.dev-container {
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.dev-box {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.card {
+    width: 230px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px #00000023;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.card:hover{
+    transform: scale(1.05);
+}
+
+
+.dev-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid black;
+}
+
+.dev-info {
+    display: none;
+    margin-top: 10px;
+    font-size: 18px;
+    opacity: 0;
+}
+
+.card.open .dev-info{
+    display: block;
+    opacity: 1;
+}
+
+
