@@ -1,6 +1,8 @@
 import uuid
 from app import db
 from flask_security.models import fsqla_v3
+from sqlalchemy.ext.hybrid import hybrid_property
+from ..utils.crypto import encrypt_data, decrypt_data
 
 role_user = db.Table(
     'role_user',
@@ -20,7 +22,18 @@ class User(db.Model, fsqla_v3.FsUserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     age = db.Column(db.Integer, nullable=True) #change to birhtdate
-    cpf = db.Column(db.String(11), unique=True, nullable=True)
+
+    _cpf_encrypted = db.Column(db.String(255), unique=True, nullable=True)
+
+    @hybrid_property
+    def cpf(self):
+        return decrypt_data(self._cpf_encrypted) 
+
+    @cpf.setter
+    def cpf(self, plain_cpf):
+        self._cpf_encrypted = encrypt_data(plain_cpf) 
+
+
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
@@ -30,8 +43,7 @@ class User(db.Model, fsqla_v3.FsUserMixin):
     roles = db.relationship('Role', secondary=role_user, backref=db.backref('users', lazy='dynamic'))
 
     def __repr__(self):
-        return f"<User(name='{self.name}, age='{self.age}', cpf='{self.cpf}', email='{self.email}', senha='{self.password}')>"
-    
+        return f"<User(name='{self.name}, age='{self.age}', cpf='{self.cpf}', email='{self.email}', senha='{self.password}')>"    
 def select_users_with_role(role):
     user_role = Role.query.filter_by(name=role).first()
     if user_role:
