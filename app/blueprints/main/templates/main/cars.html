@@ -2,17 +2,92 @@
 
 {% block title %} cars {% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <script type="module" src="{{ url_for('static', filename='js/filterPrice.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/filter.js') }}"></script>
+{% endblock %}
+
 {% block content %}
-    {% for vehicle in vehicles %}
-        <div>
-            <p>{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
-            <div>
-                <p>{{ vehicle.category.name }}</p>
-                <li>{{ vehicle.engine.fuel }}</li>
-                {% for feature in vehicle.features %}
-                    <li>{{ feature.name }}</li>
-                {% endfor %}
-            </div>
-        </div> <br>
-    {% endfor %}
+    <div id="filters">
+    
+    <div class="filterBox">
+        <label>Filtrar por nome:</label>
+        <input type="text" placeholder="Digite o nome do carro... " id="filter">
+    </div>
+
+    <div class="filterBox">
+        <label>Categoria:</label>
+        <input list="categories" id="filterCategory" placeholder="Escolha a categoria">
+        <datalist id="categories">
+            {% set seen = [] %}
+            {% for vehicle in vehicles %}
+                {% if vehicle.category.name not in seen %}
+                    <option value="{{ vehicle.category.name }}">
+                    {% set _ = seen.append(vehicle.category.name) %}
+                {% endif %}
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="filterBox">
+        <label>Combustível:</label>
+        <input list="fuels" id="filterFuel" placeholder="Escolha o combustível">
+        <datalist id="fuels">
+        {% set seenFuel = [] %}
+        {% for vehicle in vehicles %}
+            {% if vehicle.engine.fuel not in seenFuel %}
+                <option value="{{ vehicle.engine.fuel }}">
+                {% set _ = seenFuel.append(vehicle.engine.fuel) %}
+            {% endif %}
+        {% endfor %}
+        </datalist>
+    </div>
+    <div class="filterBox">
+        <label>Ordenar por preço:</label>
+        <input list="orderPrices" id="filterPrice" placeholder="Escolha a ordenação">
+        <datalist id="orderPrices">
+            <option value="Mais barato">
+            <option value="Mais caro">
+            <option value="Menor → Maior">
+            <option value="Maior → Menor">
+        </datalist>
+    </div>    
+    <div>
+    <div class="carros">
+        
+        {% for vehicle in vehicles %}
+            <div class="carro">
+                <p style="font-weight: bold;" class="vehicleName">{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
+                <div style="display: flex; justify-content: center;">
+                    <img src="https://th.bing.com/th/id/R.a60669a6fd01778b07ea76a8113eab93?rik=Blig3jlhvnJV%2fQ&pid=ImgRaw&r=0" alt="Carro" width="100px">
+                    <h2>{{ vehicle.rental_price }}/Dia</h2>
+                </div>
+                <div class="CarroBox">
+                    <li id="category">{{ vehicle.category.name }}</li>
+                    <li>{{ vehicle.engine.fuel }}</li>
+                    {% for feature in vehicle.features %}
+                        <li>{{ feature.name }}</li>
+                    {% endfor %}
+                    {% if current_user.is_authenticated %}
+                </div>
+                <div class="btncars">
+                    <a href="{{ url_for('main.pay') }}" style="text-decoration: none; color: black;">
+                        <button id="btnCars">Alugar ></button>
+                    </a>
+                </div>
+                {% else %}
+                <div class="btncars">
+                    <a href="{{ url_for('auth.login') }}" style="text-decoration: none; color: black;">
+                        <button id="btnCars">Alugar ></button>
+                    </a>
+                </div>
+                {% endif %}
+            </div> <br>
+        {% endfor %}
+        <p id="SemResultados" style="display:none; text-align:center; font-size:20px; font-weight:bold;">
+            Não tem nenhum carro com esse filtro.
+        </p>
+    </div>
+    </div>    
 {% endblock %}

@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/cars.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/pay.css') }}">
         <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
         <script src="{{ url_for('static', filename='js/buttonLogin.js') }}"></script>
         <script src="{{ url_for('static', filename='js/VerifyCamps.js') }}"></script>
@@ -29,7 +30,7 @@
             <div class="elementosHeader">
                 <ul>
                     <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
-                    <li><i class="ri-car-line"></i> LISTA DE CARROS</li>
+                    <li><i class="ri-car-line"></i> <a href="{{ url_for('main.cars') }}">LISTA DE CARROS</a></li>
                    <li><i class="ri-question-line"></i> AJUDA</li>
                     <div style="display: flex;">
                         <img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt=""  width="35px" height="35px">    

@@ -81,4 +81,12 @@ def UserData(UserData_chosen):
 @login_required
 def cars():
     vehicles = Vehicle.query.all()
-    return render_template('main/cars.html', vehicles=vehicles)
+    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
+
+@main_bp.route('/pay')
+def pay():
+    return render_template('main/pay.html')
+
+@main_bp.route('/confirmation')
+def confirmation():
+    return render_template('main/confirmation.html')

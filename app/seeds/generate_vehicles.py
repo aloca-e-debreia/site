@@ -1,4 +1,5 @@
 import yaml
+import random
 from app import db, faker
 from app.models import *
 

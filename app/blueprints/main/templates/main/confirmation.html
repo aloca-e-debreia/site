@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %} confirmação {% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+{% endblock %}
+{% block content %}
+<div class="main-wrapper">
+
+    <h2 class="titulo">Últimos detalhes</h2>
+
+    <div class="content-grid">
+        
+        <div class="card-box">
+            <h3>Confirmação da data</h3>
+
+            <div class="dupla">
+                <div>
+                    <p class="subtitulo">Retirada</p>
+                    <p>Local_retirada</p>
+                    <p>Data</p>
+                    <p>Horário</p>
+                </div>
+
+                <div>
+                    <p class="subtitulo">Devolução</p>
+                    <p>Local_devolução</p>
+                    <p>Data</p>
+                    <p>Horário</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <h3>Resumo do valor</h3>
+
+            <div class="linha"><span>Valor do veículo</span><span>R$ XXX</span></div>
+            <div class="linha"><span>Adicionais</span><span>R$ YYY</span></div>
+            <div class="linha"><span>Taxas da locadora</span><span>R$ AAA</span></div>
+
+            <hr>
+
+            <div class="linha total"><span>Total</span><span>R$ BBB</span></div>
+
+            <button class="btn-continue">Continuar</button>
+        </div>
+    </div>
+
+    <div class="card-box payment-section">
+        <h3>Confirmação do pagamento</h3>
+
+        <p class="subtitulo">Opções de pagamento</p>
+
+        <div class="pag-opcoes">
+            <button class="payment-option">Cartão de crédito</button>
+            <button class="payment-option">PIX</button>
+            <button class="payment-option">Boleto</button>
+        </div>
+
+        <button class="btn-confirm">Confirmar reserva</button>
+    </div>
+
+</div>
+
+{% endblock %}
