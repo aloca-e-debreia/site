@@ -67,3 +67,7 @@ def cars():
 @main_bp.route('/pay')
 def pay():
     return render_template('main/pay.html')
+
+@main_bp.route('/confirmation')
+def confirmation():
+    return render_template('main/confirmation.html')

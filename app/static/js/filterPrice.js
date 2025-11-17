@@ -1,10 +1,8 @@
 const filterPrice = document.getElementById("filterPrice");
 
-// Função que ordena
 function ordenar() {
     const criterio = filterPrice.value.toLowerCase();
 
-    // Converter NodeList em array
     const carrosArray = Array.from(carros);
 
     carrosArray.sort((a, b) => {
@@ -12,16 +10,15 @@ function ordenar() {
         const precoB = parseFloat(b.querySelector("h2").innerText.replace("/Dia", ""));
 
         if (criterio === "mais barato" || criterio === "menor → maior") {
-            return precoA - precoB; // Crescente
+            return precoA - precoB; 
         }
         if (criterio === "mais caro" || criterio === "maior → menor") {
-            return precoB - precoA; // Decrescente
+            return precoB - precoA; 
         }
     });
 
-    // Recolocar os carros na ordem dentro do container
     const container = document.querySelector(".carros");
-    container.innerHTML = ""; // limpar
+    container.innerHTML = "";
 
     carrosArray.forEach(carro => container.appendChild(carro));
 }

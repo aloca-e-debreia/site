@@ -15,19 +15,27 @@
     padding: 20px;
 } 
 
+.CarroBox{
+    display: flex;
+    justify-content: center;
+    font-size: 80%;
+}
+
 .btncars{ 
     display: flex; 
-    justify-content: center; } 
+    justify-content: center; 
+    width: 100%;
+} 
 #btnCars{ 
     color: white; 
     background-color: #114043;
-     border-radius: 7px; 
-     cursor: pointer; }
+    border-radius: 7px; 
+    cursor: pointer;   
+}
 
 .carro li {
     list-style: none;
     margin-left: 0;
-    padding-left: 0;
 }
 
 .btncars {
@@ -67,6 +75,8 @@
 
 #filters {
     display: flex;
+    justify-content: center;
+    width: 100%;
     flex-wrap: wrap;
     gap: 15px;
     margin-bottom: 25px;
@@ -108,3 +118,4 @@
         width: 100%;
     }
 }
+
