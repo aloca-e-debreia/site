@@ -56,8 +56,10 @@
             <label>Hora da devolução</label>
             <input type="time" name="dropoff-time" id="dropoff-time">
         </div>
+        <a href="{{ url_for('main.cars') }}">
+            <button id="btn" style="display: none;" type="submit">Ir para lista de carros</button>
+        </a>
     </div>
-        <button id="btn" style="display: none;" type="submit">Ir para lista de carros</button>
     </form>
 
 {% endblock %}

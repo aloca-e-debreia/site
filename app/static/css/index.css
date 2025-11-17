@@ -25,6 +25,21 @@ body {
     display: block;
     color: #393939;
 }
+#btn{
+  color: white;
+  background-color: #114043;
+  border-color: #114043;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  padding: 15px;
+  border: none;
+}
+
+#btn:hover{
+  background-color: #124649;
+}
 
 .error-message {
     font-size: 14px;
