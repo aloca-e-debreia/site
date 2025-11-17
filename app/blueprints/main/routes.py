@@ -1,10 +1,10 @@
-from flask import render_template, request, jsonify, redirect, url_for
+from flask import render_template, request, jsonify, redirect, url_for, make_response
 from flask_login import login_required, current_user
 from flask_security import roles_accepted
+from datetime import date, time
 from app.blueprints.main import main_bp
 from app.models import User, select_users_with_role, Vehicle, Feature, Address, Pickup, Dropoff, Extra, Rental, RentalExtra
 from app import login_manager, user_datastore, db
-from datetime import date, time
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -35,7 +35,11 @@ def index():
         
         db.session.add_all([pickup, dropoff])
         db.session.commit()
-        return redirect(url_for('main.cars', pickup_id=pickup.id, dropoff_id=dropoff.id))
+
+        resp = make_response(redirect(url_for('main.cars')))
+        resp.set_cookie('pickup_id', str(pickup.id), max_age=60*60*24)
+        resp.set_cookie('dropoff_id', str(dropoff.id), max_age=60*60*24)
+        return resp
 
     return render_template('main/index.html', current_user=current_user, addresses=addresses)
 
@@ -43,35 +47,85 @@ def index():
 @main_bp.route('/cars', methods=['GET', 'POST'])
 @login_required
 def cars():
-    pickup_id = request.args.get('pickup_id')
-    dropoff_id = request.args.get('dropoff_id')
+    pickup_id = request.cookies.get('pickup_id')
+    dropoff_id = request.cookies.get('dropoff_id')
+
+    if not pickup_id or not dropoff_id:
+        return redirect(url_for('main.index'))
+    
+    if request.method == 'POST':
+        vehicle_id = request.form['vehicle-to-rent']
+
+        rental = Rental(
+            pickup_id=pickup_id,
+            dropoff_id=dropoff_id,
+            user_id=current_user.id,
+            vehicle_id=vehicle_id,
+            fee=0.12
+        )
+
+        db.session.add(rental)
+        db.session.commit()
+
+        resp = make_response(redirect(url_for('main.pay')))
+        resp.set_cookie('vehicle_id', str(vehicle_id), max_age=60*60*24)
+        resp.set_cookie('rental_id', str(rental.id), max_age=60*60*24)
+        return resp
+
     vehicles = Vehicle.query.all()
     return render_template('main/cars.html', current_user=current_user, pickup_id=int(pickup_id), dropoff_id=int(dropoff_id), vehicles=vehicles)
 
 @main_bp.route('/pay', methods=['GET', 'POST'])
 def pay():
-    pickup = Pickup.query.get(int(request.args.get('pickup_id')))
-    dropoff = Dropoff.query.get(int(request.args.get('dropoff_id')))
-    vehicle = Vehicle.query.get(int(request.args.get('vehicle_id')))
+    pickup_id = request.cookies.get('pickup_id')
+    dropoff_id = request.cookies.get('dropoff_id')
+    vehicle_id = request.cookies.get('vehicle_id')
+    rental_id = request.cookies.get('rental_id')
+
+    if not pickup_id or not dropoff_id:
+        return redirect(url_for('main.index'))
+    
+    if not vehicle_id or not rental_id:
+        return redirect(url_for('main.cars'))
+
     extras = Extra.query.all()
+
+    pickup = Pickup.query.get(int(pickup_id))
+    dropoff = Dropoff.query.get(int(dropoff_id))
+    vehicle = Vehicle.query.get(int(vehicle_id))
+    rental = Rental.query.get(int(rental_id))
 
     if request.method == 'POST':
         extra = Extra.query.get(int(request.form['extra_id']))
         quantity = request.form['quantity']
 
-        rental_extra = RentalExtra(extra=extra, quantity=quantity)
+        rental_extra = RentalExtra(extra=extra, quantity=int(quantity))
 
-        vehicle.extras.append(rental_extra)
+        rental.extras.append(rental_extra)
+
+        db.session.commit()
+
+        print(rental.extras)
 
     return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, extras=extras)
 
 @main_bp.route('/confirmation')
 def confirmation():
     
-    pickup = Pickup.query.get(int(request.args.get('pickup_id')))
-    dropoff = Pickup.query.get(int(request.args.get('dropoff_id')))
-    vehicle = Vehicle.query.get(int(request.args.get('vehicle_id')))
-    # rental = Rental.query.get(request.args.get('rental_id'))
+    pickup_id = request.cookies.get('pickup_id')
+    dropoff_id = request.cookies.get('dropoff_id')
+    vehicle_id = request.cookies.get('vehicle_id')
+    # rental = request.cookies.get('vehicle_id')
+
+    if not pickup_id or not dropoff_id:
+        return redirect(url_for('main.index'))
+    
+    if not vehicle_id:
+        return redirect(url_for('main.cars'))
+
+    pickup = Pickup.query.get(pickup_id)
+    dropoff = Pickup.query.get(dropoff_id)
+    vehicle = Vehicle.query.get(vehicle_id)
 
     return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle) #rental=rental)
 
