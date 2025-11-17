@@ -15,6 +15,7 @@ def create_roles():
 def create_app():
     from flask import Flask
     from flask_security import SQLAlchemyUserDatastore
+    from app.blueprints.main.mailtest import register_app_email
 
     global user_datastore
 
@@ -25,6 +26,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
+    mail.init_app(app)
 
     from app.models import User, Role
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -35,10 +37,12 @@ def create_app():
     from app.blueprints.main.errors import register_errors
 
     register_errors(app)
+    register_app_email(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(main_bp)
-
+    app.register_blueprint(main_bp, url_prefix='/')
     from app.seeds import seed_init
     seed_init(app)
+
+
 
     return app
