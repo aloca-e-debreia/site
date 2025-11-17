@@ -4,6 +4,7 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+    <script src="{{ url_for('static', filename='js/btnpayment.js') }}"></script>
 {% endblock %}
 {% block content %}
 <div class="main-wrapper">
@@ -53,7 +54,7 @@
         <p class="subtitulo">Opções de pagamento</p>
 
         <div class="pag-opcoes">
-            <button class="payment-option">Cartão de crédito</button>
+            <button class="payment-option" id="btnpay">Cartão de crédito</button>
             <button class="payment-option">PIX</button>
             <button class="payment-option">Boleto</button>
         </div>

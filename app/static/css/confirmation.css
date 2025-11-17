@@ -59,7 +59,7 @@
 }
 
 .btn-continue:hover{
-    background-color: gray;
+    background-color: rgb(200, 200, 200);
 }
 
 .payment-section {
@@ -86,6 +86,10 @@
 
 .payment-option:hover {
     background: #f5f5f5;
+}
+
+.payment-option.active{
+    border-color: blue;
 }
 
 .btn-confirm {

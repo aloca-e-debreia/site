@@ -19,9 +19,8 @@ function ordenar() {
         }
     });
 
-    // Recolocar os carros na ordem dentro do container
     const container = document.querySelector(".carros");
-    container.innerHTML = ""; // limpar
+    container.innerHTML = "";
 
     carrosArray.forEach(carro => container.appendChild(carro));
 }

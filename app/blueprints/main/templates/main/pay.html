@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/pay.js')}}"></script>
+{% endblock %}
+
 {% block content %} 
 <div class="container">
 
@@ -69,9 +74,9 @@
                 <span class="price">R$ 19,99/dia</span>
 
                 <div class="counter">
-                    <button>-</button>
-                    <span>0</span>
-                    <button>+</button>
+                    <button onclick="rmvmotorista()">-</button>
+                    <span id="add-motorista">0</span>
+                    <button onclick="addmotorista()">+</button>
                 </div>
 
                 <button class="add-btn">Adicionar</button>
@@ -87,9 +92,9 @@
                 <span class="price">R$ 31,99/bebê</span>
 
                 <div class="counter">
-                    <button>-</button>
-                    <span>0</span>
-                    <button>+</button>
+                    <button onclick="rmvbaby()">-</button>
+                    <span id="add-baby">0</span>
+                    <button onclick="addbaby()">+</button>
                 </div>
 
                 <button class="add-btn">Adicionar</button>
