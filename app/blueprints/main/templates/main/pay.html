@@ -9,12 +9,14 @@
         </div>
 
         <div class="car-middle">
-            <h2>Carro 1</h2>
+            <h2>{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</h2>
 
             <div class="icons">
                 <span>4 🚗</span>
-                <span>Manual ⚙️</span>
-                <span>Sem ar-condicionado 🧊</span>
+                <span>{{ vehicle.transmission.name }} ⚙️</span>
+                {% for feature in vehicle.features %}
+                    <span>{{ feature.name }}</span>
+                {% endfor %}
             </div>
 
             <p><strong>Adicionais selecionados:</strong></p>
@@ -28,13 +30,13 @@
         <div class="car-summary">
             <h3>Resumo</h3>
             <div class="summary-line">
-                <span>Valor do veículo</span><span>R$ XXX</span>
+                <span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span>
             </div>
             <div class="summary-line">
                 <span>Adicionais</span><span>R$ YYY</span>
             </div>
             <div class="summary-line">
-                <span>Taxas da locadora</span><span>R$ AAA</span>
+                <span>Taxas da locadora</span><span>12% = R$ AAA</span>
             </div>
             <div class="summary-line total">
                 <span>Total</span><span>R$ BBB</span>

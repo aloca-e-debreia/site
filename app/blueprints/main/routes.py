@@ -28,9 +28,40 @@ def index():
         )
         
         db.session.add_all([pickup, dropoff])
-        return redirect(url_for('main.cars'))
+        db.session.commit()
+        return redirect(url_for('main.cars', pickup_id=pickup.id, dropoff_id=dropoff.id))
 
     return render_template('main/index.html', current_user=current_user, addresses=addresses)
+
+
+@main_bp.route('/cars', methods=['GET', 'POST'])
+@login_required
+def cars():
+    pickup_id = request.args.get('pickup_id')
+    dropoff_id = request.args.get('dropoff_id')
+    vehicles = Vehicle.query.all()
+    if request.method == 'POST':
+        vehicle_id = request.form['vehicle-to-rent']
+        return redirect(url_for('main.pay', pickup_id=pickup_id, dropoff_id=dropoff_id, vehicle_id=vehicle_id))
+    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
+
+@main_bp.route('/pay')
+def pay():
+    pickup_id = request.args.get('pickup_id')
+    dropoff_id = request.args.get('dropoff_id')
+    vehicle = Vehicle.query.get(request.args.get('vehicle_id'))
+    return render_template('main/pay.html', pickup=pickup_id, dropoff=dropoff_id, vehicle=vehicle)
+
+@main_bp.route('/confirmation')
+def confirmation():
+    return render_template('main/confirmation.html')
+
+
+
+
+
+
+
 
 @main_bp.route('/dashboard')
 @login_required
@@ -76,17 +107,3 @@ def user():
 @main_bp.route('/user/<UserData_chosen>')
 def UserData(UserData_chosen):
     return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen)
-
-@main_bp.route('/cars')
-@login_required
-def cars():
-    vehicles = Vehicle.query.all()
-    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
-
-@main_bp.route('/pay')
-def pay():
-    return render_template('main/pay.html')
-
-@main_bp.route('/confirmation')
-def confirmation():
-    return render_template('main/confirmation.html')
