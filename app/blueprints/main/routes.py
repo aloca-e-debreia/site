@@ -2,10 +2,7 @@ from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from flask_security import roles_accepted
 from app.blueprints.main import main_bp
-from app.models import User, select_users_with_role
-from app.models import Vehicle, Feature
-from app.models import Pickup, Dropoff
-from app.models import Address
+from app.models import User, select_users_with_role, Vehicle, Feature, Address, Pickup, Dropoff
 from app import login_manager, user_datastore, db
 
 @login_manager.user_loader
@@ -17,26 +14,20 @@ def index():
     addresses = Address.query.all()
 
     if request.method == 'POST':
-        pickup_address_id = request.form['pickup-address-id']
-        pickup_date = request.form['pickup-date']
-        pickup_time = request.form['pickup-time']
-
-        dropoff_address_id = request.form['dropoff-address-id']
-        dropoff_date = request.form['dropoff-date']
-        dropoff_time = request.form['dropoff-time']
 
         pickup = Pickup(
-            address_id=pickup_address_id,
-            date=pickup_date,
-            time=pickup_time
+            address_id=request.form['pickup-address-id'],
+            date=request.form['pickup-date'],
+            time=request.form['pickup-time']
         )
 
         dropoff = Dropoff(
-            address_id=dropoff_address_id,
-            date=dropoff_date,
-            time=dropoff_time
+            address_id=request.form['dropoff-address-id'],
+            date=request.form['dropoff-date'],
+            time=request.form['dropoff-time'],
         )
-        print(pickup, dropoff)
+        
+        db.session.add_all([pickup, dropoff])
         return redirect(url_for('main.cars'))
 
     return render_template('main/index.html', current_user=current_user, addresses=addresses)
