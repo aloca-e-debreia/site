@@ -1,11 +1,11 @@
 brands:
   - id: 1
-    name: Toyota
+    name: "Toyota"
   - id: 2
-    name: Honda
+    name: "Honda"
   - id: 3
-    name: Ford
+    name: "Ford"
   - id: 4
-    name: Chevrolet
+    name: "Chevrolet"
   - id: 5
-    name: Volkswagen
+    name: "Volkswagen"

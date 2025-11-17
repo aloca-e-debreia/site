@@ -1,18 +1,36 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from flask_security import roles_accepted
 from app.blueprints.main import main_bp
-from app.models.user import User, select_users_with_role
-from app.models.vehicle import Vehicle, Feature
+from app.models import User, select_users_with_role, Vehicle, Feature, Address, Pickup, Dropoff
 from app import login_manager, user_datastore, db
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@main_bp.route('/')
+@main_bp.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('main/index.html', current_user=current_user)
+    addresses = Address.query.all()
+
+    if request.method == 'POST':
+
+        pickup = Pickup(
+            address_id=request.form['pickup-address-id'],
+            date=request.form['pickup-date'],
+            time=request.form['pickup-time']
+        )
+
+        dropoff = Dropoff(
+            address_id=request.form['dropoff-address-id'],
+            date=request.form['dropoff-date'],
+            time=request.form['dropoff-time'],
+        )
+        
+        db.session.add_all([pickup, dropoff])
+        return redirect(url_for('main.cars'))
+
+    return render_template('main/index.html', current_user=current_user, addresses=addresses)
 
 @main_bp.route('/dashboard')
 @login_required
@@ -60,6 +78,7 @@ def UserData(UserData_chosen):
     return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen)
 
 @main_bp.route('/cars')
+@login_required
 def cars():
     vehicles = Vehicle.query.all()
     return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)

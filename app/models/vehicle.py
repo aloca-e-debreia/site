@@ -104,11 +104,11 @@ class Vehicle(db.Model):
     year = db.Column(db.Integer, nullable=False)
     mileage = db.Column(db.Numeric(10, 2), nullable=False)
     status = db.Column(db.Boolean(), default=True, nullable=False)
-    rental_price = db.Column(db.Numeric(10, 2), nullable=False)
+    daily_price = db.Column(db.Numeric(10, 2), nullable=False)
 
     def __repr__(self):
         return f"<Vehicle(category_id={self.category_id},\
             model_id={self.model_id}, version_id={self.version_id},\
             transmission_id={self.transmission_id}, engine_id={self.engine_id}, \
             plate='{self.plate}', year='{self.year}', \
-            mileage='{self.mileage}', rental_price='{self.rental_price}'>"
+            mileage='{self.mileage}', rental_price='{self.daily_price}'>"

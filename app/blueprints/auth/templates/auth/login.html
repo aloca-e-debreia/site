@@ -15,6 +15,7 @@
 
     <div class="ContLogin"; style="display: flex; align-items: center; justify-content: center;">
         <form method="POST" action="{{ url_for('auth.login') }}" id="login">
+            <input type="hidden" name="next" value="{{ next }}">
             <div class="input-group">
                 <label>Email</label><br>
                 <input type="text" name="email" class="input" id="email" required placeholder="Digite seu e-mail"><br><br>

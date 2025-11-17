@@ -26,7 +26,7 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
-    from app.models.user import User, Role
+    from app.models import User, Role
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore, register_blueprint=False)
 
