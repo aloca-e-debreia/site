@@ -26,22 +26,21 @@
         
         <div class="input-group">
             <label>Data da retirada</label>
-            <input type="date" min="2025-11-18" max="2027-01-01" name="pickup-date" id="pickup-date">
+            <input type="date" min="2000-11-18" max="2027-01-01" name="pickup-date" id="pickup-date">
         </div>
         <div class="input-group">
             <label>Hora da retirada</label>
-            <input type="time" name="pickup-time" id="pickup-time">
+            <input type="time" min="1000-11-18" name="pickup-time" id="pickup-time">
         </div>
     </div>
     <div id="devolucao" class="hidden" style="display: none;">
         <h3>Dados da devolução</h3>
-
         <div class="input-group">
             <label>Local da devolução</label>
             <input list="dropoff-addresses" class="addresses" autocomplete="off" data-type="dropoff" type="text" placeholder="Onde você irá retirar?" name="dropoff-address" id="dropoff-address">
             <datalist id="dropoff-addresses">
                 {% for address in addresses %}
-                    <option data-id="{{ address.id }}" value="{{ address.street }}, {{ address.number}} - {{address.state }}, {{ address.district }}">
+                    <option data-id="{{ address.id }}" value="{{ address.name() }}">
                 {% endfor %}
             </datalist>
             <input type="hidden" name="dropoff-address-id" id="dropoff-address-id">
@@ -59,5 +58,5 @@
     </div>
         <button id="btn" style="display: none;" type="submit">Ir para lista de carros</button>
     </form>
-
+    <div class="embed-map-fixed"><div class="embed-map-container"><iframe class="embed-map-frame" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=600&height=400&hl=en&q=minas%20gerais&t=&z=14&ie=UTF8&iwloc=B&output=embed"></iframe><a href="https://sprunkiretake.net" style="font-size:2px!important;color:gray!important;position:absolute;bottom:0;left:0;z-index:1;max-height:1px;overflow:hidden">sprunki retake</a></div><style>.embed-map-fixed{position:relative;text-align:right;width:600px;height:400px;}.embed-map-container{overflow:hidden;background:none!important;width:600px;height:400px;}.embed-map-frame{width:600px!important;height:400px!important;}</style></div>
 {% endblock %}

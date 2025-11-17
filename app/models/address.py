@@ -15,6 +15,9 @@ class Address(db.Model):
     def __repr__(self):
         return f"<Address(state='{self.state}', city='{self.city}', district='{self.district}', street='{self.street}', number='{self.number}', complement='{self.complement}', postal_code='{self.postal_code}')>"
     
+    def name(self):
+        return f"{self.street }, {self.number} - {self.state }, {self.district}"
+    
 class Branch(db.Model):
     __tablename__ = 'branch'
     id = db.Column(db.Integer, primary_key=True)

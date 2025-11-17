@@ -112,3 +112,6 @@ class Vehicle(db.Model):
             transmission_id={self.transmission_id}, engine_id={self.engine_id}, \
             plate='{self.plate}', year='{self.year}', \
             mileage='{self.mileage}', rental_price='{self.daily_price}'>"
+    
+    def name(self):
+        return f"{self.model.brand.name} {self.model.name} {self.engine.displacement} {self.version.name} {self.year}"

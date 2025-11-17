@@ -2,8 +2,9 @@ from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from flask_security import roles_accepted
 from app.blueprints.main import main_bp
-from app.models import User, select_users_with_role, Vehicle, Feature, Address, Pickup, Dropoff
+from app.models import User, select_users_with_role, Vehicle, Feature, Address, Pickup, Dropoff, Extra, Rental, RentalExtra
 from app import login_manager, user_datastore, db
+from datetime import date, time
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -14,17 +15,22 @@ def index():
     addresses = Address.query.all()
 
     if request.method == 'POST':
+        pickup_year, pickup_month, pickup_day = list(map(int, request.form['pickup-date'].split('-')))
+        dropoff_year, dropoff_month, dropoff_day = list(map(int, request.form['dropoff-date'].split('-')))
+
+        pickup_hour, pickup_min = list(map(int, request.form['pickup-time'].split(':')))
+        dropoff_hour, dropoff_min = list(map(int, request.form['dropoff-time'].split(':')))
 
         pickup = Pickup(
             address_id=request.form['pickup-address-id'],
-            date=request.form['pickup-date'],
-            time=request.form['pickup-time']
+            date=date(pickup_year, pickup_month, pickup_day),
+            time=time(pickup_hour, pickup_min)
         )
 
         dropoff = Dropoff(
             address_id=request.form['dropoff-address-id'],
-            date=request.form['dropoff-date'],
-            time=request.form['dropoff-time'],
+            date=date(dropoff_year, dropoff_month, dropoff_day),
+            time=time(dropoff_hour, dropoff_min)
         )
         
         db.session.add_all([pickup, dropoff])
@@ -40,21 +46,34 @@ def cars():
     pickup_id = request.args.get('pickup_id')
     dropoff_id = request.args.get('dropoff_id')
     vehicles = Vehicle.query.all()
-    if request.method == 'POST':
-        vehicle_id = request.form['vehicle-to-rent']
-        return redirect(url_for('main.pay', pickup_id=pickup_id, dropoff_id=dropoff_id, vehicle_id=vehicle_id))
-    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
+    return render_template('main/cars.html', current_user=current_user, pickup_id=int(pickup_id), dropoff_id=int(dropoff_id), vehicles=vehicles)
 
-@main_bp.route('/pay')
+@main_bp.route('/pay', methods=['GET', 'POST'])
 def pay():
-    pickup_id = request.args.get('pickup_id')
-    dropoff_id = request.args.get('dropoff_id')
-    vehicle = Vehicle.query.get(request.args.get('vehicle_id'))
-    return render_template('main/pay.html', pickup=pickup_id, dropoff=dropoff_id, vehicle=vehicle)
+    pickup = Pickup.query.get(int(request.args.get('pickup_id')))
+    dropoff = Dropoff.query.get(int(request.args.get('dropoff_id')))
+    vehicle = Vehicle.query.get(int(request.args.get('vehicle_id')))
+    extras = Extra.query.all()
+
+    if request.method == 'POST':
+        extra = Extra.query.get(int(request.form['extra_id']))
+        quantity = request.form['quantity']
+
+        rental_extra = RentalExtra(extra=extra, quantity=quantity)
+
+        vehicle.extras.append(rental_extra)
+
+    return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, extras=extras)
 
 @main_bp.route('/confirmation')
 def confirmation():
-    return render_template('main/confirmation.html')
+    
+    pickup = Pickup.query.get(int(request.args.get('pickup_id')))
+    dropoff = Pickup.query.get(int(request.args.get('dropoff_id')))
+    vehicle = Vehicle.query.get(int(request.args.get('vehicle_id')))
+    # rental = Rental.query.get(request.args.get('rental_id'))
+
+    return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle) #rental=rental)
 
 
 

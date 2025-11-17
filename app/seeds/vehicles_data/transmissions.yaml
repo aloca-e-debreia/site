@@ -2,10 +2,10 @@ transmissions:
   - id: 1
     name: Manual
   - id: 2
-    name: Automatic
+    name: Automático
   - id: 3
     name: CVT
   - id: 4
-    name: Semi-Automatic
+    name: Semi-Automático
   - id: 5
-    name: Electric
+    name: Elétrico

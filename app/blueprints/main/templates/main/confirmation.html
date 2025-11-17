@@ -18,16 +18,16 @@
             <div class="dupla">
                 <div>
                     <p class="subtitulo">Retirada</p>
-                    <p>Local_retirada</p>
-                    <p>Data</p>
-                    <p>Horário</p>
+                    <p>{{ pickup.address.name() }}</p>
+                    <p>{{ pickup.date }}</p>
+                    <p>{{ pickup.time }}</p>
                 </div>
 
                 <div>
                     <p class="subtitulo">Devolução</p>
-                    <p>Local_devolução</p>
-                    <p>Data</p>
-                    <p>Horário</p>
+                    <p>{{ dropoff.address.name() }}</p>
+                    <p>{{ dropoff.date }}</p>
+                    <p>{{ dropoff.time }}</p>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
         <div class="card-box">
             <h3>Resumo do valor</h3>
 
-            <div class="linha"><span>Valor do veículo</span><span>R$ XXX</span></div>
-            <div class="linha"><span>Adicionais</span><span>R$ YYY</span></div>
+            <div class="linha"><span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span></div>
+            <div class="linha"><span>Adicionais</span><span>R$ aaaa</span></div>
             <div class="linha"><span>Taxas da locadora</span><span>R$ AAA</span></div>
 
             <hr>
