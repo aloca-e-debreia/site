@@ -15,13 +15,15 @@
 }
 
 .card {
-    width: 230px;
+    width: 280px;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 8px #00000023;
     margin-bottom: 30px;
     cursor: pointer;
+    margin-right: 20px;
+    align-self: flex-start;
 }
 
 .card:hover{
@@ -30,24 +32,25 @@
 
 
 .dev-photo {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 10px;
-    border: 3px solid black;
+    border: 2px solid rgb(0, 0, 0);
 }
 
 .dev-info {
-    display: none;
-    margin-top: 10px;
-    font-size: 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1.5s ease, opacity 0.8s ease;
     opacity: 0;
 }
 
-.card.open .dev-info{
-    display: block;
+.card.open .dev-info {
+    max-height: 1600px; 
     opacity: 1;
 }
+
 
 
