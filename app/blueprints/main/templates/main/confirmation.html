@@ -36,12 +36,12 @@
             <h3>Resumo do valor</h3>
 
             <div class="linha"><span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span></div>
-            <div class="linha"><span>Adicionais</span><span>R$ aaaa</span></div>
-            <div class="linha"><span>Taxas da locadora</span><span>R$ AAA</span></div>
+            <div class="linha"><span>Adicionais</span><span>R$ {{ rental.extras_daily_price() }}</span></div>
+            <div class="linha"><span>Taxas da locadora</span><span>12% = R$ {{ rental.subtotal() }}</span></div>
 
             <hr>
 
-            <div class="linha total"><span>Total</span><span>R$ BBB</span></div>
+            <div class="linha total"><span>Total</span><span>R$ {{ rental.total() }}</span></div>
 
             <button class="btn-continue">Continuar</button>
         </div>

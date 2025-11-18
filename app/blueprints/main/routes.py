@@ -61,7 +61,7 @@ def cars():
             dropoff_id=dropoff_id,
             user_id=current_user.id,
             vehicle_id=vehicle_id,
-            fee=0.12
+            fee_decimal=0.12
         )
 
         db.session.add(rental)
@@ -99,15 +99,18 @@ def pay():
         extra = Extra.query.get(int(request.form['extra_id']))
         quantity = request.form['quantity']
 
-        rental_extra = RentalExtra(extra=extra, quantity=int(quantity))
+        assoc = RentalExtra.query.filter_by(rental_id=rental_id, extra_id=extra.id).first()
 
-        rental.extras.append(rental_extra)
+        if not assoc: #if the location doesn't have the extra
+            rental_extra = RentalExtra(rental=rental, extra=extra, quantity=int(quantity))
+            db.session.add(rental_extra)
+            rental.rental_extras.append(rental_extra)
+        else:
+            assoc.quantity = quantity
 
         db.session.commit()
 
-        print(rental.extras)
-
-    return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, extras=extras)
+    return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras, extras=extras)
 
 @main_bp.route('/confirmation')
 def confirmation():
@@ -115,19 +118,20 @@ def confirmation():
     pickup_id = request.cookies.get('pickup_id')
     dropoff_id = request.cookies.get('dropoff_id')
     vehicle_id = request.cookies.get('vehicle_id')
-    # rental = request.cookies.get('vehicle_id')
+    rental_id = request.cookies.get('rental_id')
 
     if not pickup_id or not dropoff_id:
         return redirect(url_for('main.index'))
     
-    if not vehicle_id:
+    if not vehicle_id or not rental_id:
         return redirect(url_for('main.cars'))
 
     pickup = Pickup.query.get(pickup_id)
     dropoff = Pickup.query.get(dropoff_id)
     vehicle = Vehicle.query.get(vehicle_id)
+    rental = Rental.query.get(rental_id)
 
-    return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle) #rental=rental)
+    return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental)
 
 
 

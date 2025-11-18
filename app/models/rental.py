@@ -1,4 +1,5 @@
 from app import db
+from datetime import date
 
 class Pickup(db.Model):
     __tablename__ = 'pickup'
@@ -50,7 +51,7 @@ class RentalExtra(db.Model):
 
     quantity = db.Column(db.Integer, default=1)
 
-    rental = db.relationship("Rental", back_populates="extras")
+    rental = db.relationship("Rental", back_populates="rental_extras")
     extra = db.relationship("Extra", back_populates="rentals")
 
     def calculate_price(self):
@@ -61,7 +62,7 @@ class Rental(db.Model):
     __tablename__ = 'rental'
 
     id = db.Column(db.Integer, primary_key=True)
-    fee = db.Column(db.Float(10, 2), nullable=False)
+    fee_decimal = db.Column(db.Numeric(10, 2), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
@@ -72,13 +73,17 @@ class Rental(db.Model):
     pickup = db.relationship("Pickup", backref='rental')
     dropoff = db.relationship("Dropoff", backref='rental')
 
-    extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
+    rental_extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}', pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}'>"
     
-    def calculate_price(self):
-        days = self.dropoff.date - self.pickup.date
-        extras_price = self.extras.calculate_price()
-        subtotal = days * (self.vehicle.daily_price + extras_price)
-        return subtotal + self.fee*subtotal
+    def extras_daily_price(self):
+        return sum(extra.calculate_price() for extra in self.rental_extras)
+
+    def subtotal(self):
+        days = (self.dropoff.date - self.pickup.date).days
+        return days * (self.vehicle.daily_price + self.extras_daily_price())
+
+    def total(self):
+        return  f"{self.subtotal() * (1 + self.fee_decimal):.2f}"

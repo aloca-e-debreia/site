@@ -21,8 +21,12 @@
 
             <p><strong>Adicionais selecionados:</strong></p>
             <ul>
-                {% for extra in vehicle.extras %}
-                    <li>{{ extra.name }}</li>
+                {% for rental_extra in rental_extras %}
+                    {% if rental_extra.extra.selectable_quantity %}
+                        <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
+                    {% else %}
+                        <li>{{ rental_extra.extra.name }}</li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -33,13 +37,13 @@
                 <span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span>
             </div>
             <div class="summary-line">
-                <span>Adicionais</span><span>R$ YYY</span>
+                <span>Adicionais</span><span>R$ {{ rental.extras_daily_price() }}</span>
             </div>
             <div class="summary-line">
-                <span>Taxas da locadora</span><span>12% = R$ AAA</span>
+                <span>Taxas da locadora</span><span>12% = R$ {{ rental.subtotal()}}</span>
             </div>
             <div class="summary-line total">
-                <span>Total</span><span>R$ BBB</span>
+                <span>Total</span><span>R$ {{ rental.total() }}</span>
             </div>
 
             <a href="{{ url_for('main.confirmation', pickup_id=pickup.id, dropoff_id=dropoff.id, vehicle_id=vehicle.id) }}">
