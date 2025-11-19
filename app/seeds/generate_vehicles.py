@@ -52,7 +52,9 @@ def seed_vehicles(app):
                     plate = faker.license_plate(),
                     year = randint(2000, 2025),
                     mileage = uniform(0, 1000),
-                    daily_price = uniform(200, 1200)
+                    daily_price = uniform(200, 1200),
+                    img_public_id = f"ClickAndDrive/{model.brand.name}-{model.name}",
+                    n_people = randint(1, 5)
                 )
                 db.session.add(vehicle)
                 print("Create vehicle:", repr(vehicle))

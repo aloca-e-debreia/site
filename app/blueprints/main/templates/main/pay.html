@@ -5,14 +5,14 @@
 
     <div class="car-info">
         <div class="car-left">
-            <img src="carro.png" class="car-img">
+            <img src="{{ vehicle.get_img_url() }}" class="car-img">
         </div>
 
         <div class="car-middle">
             <h2>{{ vehicle.name() }}</h2>
 
             <div class="icons">
-                <span>4 🚗</span>
+                <span>{{ vehicle.n_people }} Pessoas 🚗</span>
                 <span>{{ vehicle.transmission.name }} ⚙️</span>
                 {% for feature in vehicle.features %}
                     <span>{{ feature.name }}</span>

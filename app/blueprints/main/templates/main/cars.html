@@ -60,7 +60,7 @@
             <div class="carro">
                 <p style="font-weight: bold;" class="vehicleName">{{ vehicle.name() }}</p>
                 <div style="display: flex; justify-content: center;">
-                    <img src="https://th.bing.com/th/id/R.a60669a6fd01778b07ea76a8113eab93?rik=Blig3jlhvnJV%2fQ&pid=ImgRaw&r=0" alt="Carro" width="100px">
+                    <img src="{{ vehicle.get_img_url() }}" alt="Carro" width="100px">
                     <h2>R$ {{ vehicle.daily_price }}/Dia</h2>
                 </div>
                 <div class="CarroBox">

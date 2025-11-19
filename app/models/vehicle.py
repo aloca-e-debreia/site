@@ -105,13 +105,24 @@ class Vehicle(db.Model):
     mileage = db.Column(db.Numeric(10, 2), nullable=False)
     status = db.Column(db.Boolean(), default=True, nullable=False)
     daily_price = db.Column(db.Numeric(10, 2), nullable=False)
+    img_public_id = db.Column(db.String(200), nullable=False)
+    n_people = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"<Vehicle(category_id={self.category_id},\
             model_id={self.model_id}, version_id={self.version_id},\
             transmission_id={self.transmission_id}, engine_id={self.engine_id}, \
             plate='{self.plate}', year='{self.year}', \
-            mileage='{self.mileage}', rental_price='{self.daily_price}'>"
+            mileage='{self.mileage}', daily_price='{self.daily_price}'>,\
+            img_public_id={self.img_public_id}"
     
     def name(self):
         return f"{self.model.brand.name} {self.model.name} {self.engine.displacement} {self.version.name} {self.year}"
+    
+    from cloudinary import CloudinaryImage
+
+    def get_img_url(self):
+        from app.cloudinary_setup import cloudinary_config
+        cloudinary_config()
+        from cloudinary import CloudinaryImage
+        return CloudinaryImage(self.img_public_id).build_url()
