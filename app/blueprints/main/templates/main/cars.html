@@ -21,7 +21,7 @@
         <input list="categories" id="filterCategory" placeholder="Escolha a categoria">
         <datalist id="categories">
             {% set seen = [] %}
-            {% for vehicle in vehicles %}
+            {% for vehicle in vehicles.items %}
                 {% if vehicle.category.name not in seen %}
                     <option value="{{ vehicle.category.name }}">
                     {% set _ = seen.append(vehicle.category.name) %}
@@ -52,42 +52,62 @@
             <option value="Menor → Maior">
             <option value="Maior → Menor">
         </datalist>
-    </div>    
-    <div>
-    <div class="carros">
-        
-        {% for vehicle in vehicles %}
-            <div class="carro">
-                <p style="font-weight: bold;" class="vehicleName">{{ vehicle.model.brand.name }} {{ vehicle.model.name }} {{ vehicle.engine.displacement }} {{ vehicle.version.name }} {{ vehicle.year }}</p>
-                <div style="display: flex; justify-content: center;">
-                    <img src="https://th.bing.com/th/id/R.a60669a6fd01778b07ea76a8113eab93?rik=Blig3jlhvnJV%2fQ&pid=ImgRaw&r=0" alt="Carro" width="100px">
-                    <h2>{{ vehicle.rental_price }}/Dia</h2>
-                </div>
-                <div class="CarroBox">
-                    <li id="category">{{ vehicle.category.name }}</li>
-                    <li>{{ vehicle.engine.fuel }}</li>
-                    {% for feature in vehicle.features %}
-                        <li>{{ feature.name }}</li>
-                    {% endfor %}
-                    {% if current_user.is_authenticated %}
-                </div>
-                <div class="btncars">
-                    <a href="{{ url_for('main.pay') }}" style="text-decoration: none; color: black;">
-                        <button id="btnCars">Alugar ></button>
-                    </a>
-                </div>
-                {% else %}
-                <div class="btncars">
-                    <a href="{{ url_for('auth.login') }}" style="text-decoration: none; color: black;">
-                        <button id="btnCars">Alugar ></button>
-                    </a>
-                </div>
-                {% endif %}
-            </div> <br>
-        {% endfor %}
-        <p id="SemResultados" style="display:none; text-align:center; font-size:20px; font-weight:bold;">
-            Não tem nenhum carro com esse filtro.
-        </p>
     </div>
-    </div>    
+    </div>
+    <div class="carros-grid">
+
+    {% for vehicle in vehicles %}
+    <div class="carro-card">
+
+        <h3 class="vehicle-title">
+            {{ vehicle.model.brand.name }}
+            {{ vehicle.model.name }}
+            {{ vehicle.engine.displacement }}
+            {{ vehicle.version.name }}
+            {{ vehicle.year }}
+        </h3>
+
+        <div class="carro-imagem-preco">
+            <img src="https://th.bing.com/th/id/R.a60669a6fd01778b07ea76a8113eab93?rik=Blig3jlhvnJV%2fQ&pid=ImgRaw&r=0" alt="Carro">
+            <span class="preco">{{ vehicle.daily_price }} / dia</span>
+        </div>
+
+        <ul class="carro-info">
+            <li><strong>Categoria:</strong> {{ vehicle.category.name }}</li>
+            <li><strong>Combustível:</strong> {{ vehicle.engine.fuel }}</li>
+
+            {% for feature in vehicle.features %}
+                <li>{{ feature.name }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.pay') }}" class="btn-alugar">Alugar</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn-alugar">Alugar</a>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<div class="pagination" style="text-align:center; margin:30px 0;">
+    {% if vehicles.has_prev %}
+        <a href="{{ url_for('main.cars', page=vehicles.prev_num) }}">← Anterior</a>
+    {% endif %}
+
+    <span style="margin: 0 15px;">
+        Página {{ vehicles.page }} de {{ vehicles.pages }}
+    </span>
+
+    {% if vehicles.has_next %}
+        <a href="{{ url_for('main.cars', page=vehicles.next_num) }}">Próxima →</a>
+    {% endif %}
+</div>
+
+    <p id="SemResultados" style="display:none; text-align:center; font-size:20px; font-weight:bold;">
+        Não tem nenhum carro com esse filtro.
+    </p>
+   
 {% endblock %}

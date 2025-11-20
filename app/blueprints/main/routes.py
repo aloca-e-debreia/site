@@ -80,7 +80,8 @@ def UserData(UserData_chosen):
 @main_bp.route('/cars')
 @login_required
 def cars():
-    vehicles = Vehicle.query.all()
+    page = request.args.get('page',1,type=int)
+    vehicles = Vehicle.query.paginate(page=page,per_page=12)
     return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
 
 @main_bp.route('/pay')

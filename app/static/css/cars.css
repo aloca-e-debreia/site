@@ -1,64 +1,78 @@
-.carros { 
-    display: flex; 
-    justify-content: center;
-    flex-wrap: wrap;
-    background-color: #fa7921; 
-    border-radius: 15px; 
-    padding: 15px;
-    margin: 20px;
-} 
-.carros > div {
-    background-color: #f4f6fc;
-    border-radius: 20px; 
-    width: calc(25% - 10px); 
-    margin: 5px; 
-    list-style: none; 
+.carros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
     padding: 20px;
-} 
+}
 
-.CarroBox{
+.carro-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    padding: 20px;
+    transition: 0.2s ease-in-out;
     display: flex;
-    justify-content: center;
-    font-size: 80%;
+    flex-direction: column;
 }
 
-.btncars{ 
-    display: flex; 
-    justify-content: center; 
-    width: 100%;
-} 
-#btnCars{ 
-    color: white; 
-    background-color: #114043;
-    border-radius: 7px; 
-    cursor: pointer;   
+.carro-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.18);
 }
 
-.carro li {
+.vehicle-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.carro-imagem-preco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.carro-imagem-preco img {
+    width: 140px;
+    border-radius: 10px;
+}
+
+.preco {
+    font-size: 20px;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.carro-info {
     list-style: none;
-    margin-left: 0;
+    margin: 15px 0;
+    padding: 0;
+    font-size: 14px;
 }
 
-.btncars {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+.carro-info li {
+    margin-bottom: 6px;
+    color: #555;
 }
 
-#btnCars {
-    background-color: #114043;
+.btn-alugar {
+    display: block;
+    text-align: center;
+    background: #114043;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: bold;
     color: white;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.25s;
+    text-decoration: none;
+    transition: 0.2s;
+    margin-top: auto;
 }
 
-#btnCars:hover {
-    background-color: #0d3133;
+.btn-alugar:hover {
+    background: #0e3336;
 }
 
 
