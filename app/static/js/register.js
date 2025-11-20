@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let validFields = {
             'email' : false,
             'password' : false,
-            'CPF' : false
+            'CPF' : false,
+            'data': false
         }
 
         blankSpaces = 0

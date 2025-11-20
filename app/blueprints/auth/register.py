@@ -33,15 +33,15 @@ def register():
 @login_required
 def register_update():
     if request.method == 'POST':
-        name = request.form['name'].lower().capitalize()
-        age = int(request.form['age'])
+        name = request.form['nome'].lower().capitalize()
+        birthdate = (request.form['data'])
         cpf = request.form['CPF']
         email = request.form['email'].lower()
 
         user = User.query.get(current_user.id)
         if user:
-            user.name = name
-            user.age = age
+            user.nome = name
+            user.birthdate = birthdate
             user.cpf = cpf
             user.email = email
 
