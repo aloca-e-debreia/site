@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %} confirmação {% endblock %}
-{% block head %}
-    {{ super() }}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+{% endblock %}
+
+{% block extra_js %}
     <script src="{{ url_for('static', filename='js/btnpayment.js') }}"></script>
 {% endblock %}
+
 {% block content %}
 <div class="main-wrapper">
 

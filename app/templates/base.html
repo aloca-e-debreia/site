@@ -5,10 +5,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Aloca e Debreia | {% block title %} {% endblock %}</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
         <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+        {% block extra_css %} {% endblock %}
         <script src="{{ url_for('static', filename='js/buttonLogin.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/VerifyCamps.js') }}"></script>
+        {% block extra_js %} {% endblock %}
 
     {% endblock %}
 </head>

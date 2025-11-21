@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
-{% block head %}
-    {{ super() }}
-    <script type="module" src="{{ url_for('static', filename='js/validateLocation.js') }}"></script>
+{% block title %} Home page {% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
-{% block title %} Home page {% endblock %}
+{% block extra_js %}
+    <script type="module" src="{{ url_for('static', filename='js/validateLocation.js') }}"></script>
+{% endblock %}
 
 {% block content %}
     <form action="{{ url_for('main.index') }}" method="post">

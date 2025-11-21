@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, url_for, make_response
 from flask_login import login_required, current_user
 from datetime import date, time
 from app.blueprints.main import main_bp
-from app.models import User, Branch, Address, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
-from app import login_manager, db
+from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
+from app import db
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():

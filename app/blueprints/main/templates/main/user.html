@@ -2,8 +2,7 @@
 
 {% block title %} {{ current_user.name }} {% endblock %}
 
-{% block head %}
-    {{ super() }}
+{% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
 {% endblock %}
 

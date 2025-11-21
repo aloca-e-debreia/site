@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% block head %}
-    {{ super() }}
+{% block extra_js %}
     <script type="module" src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}
 
