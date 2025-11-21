@@ -4,4 +4,26 @@
 
 {% block content %}
 
+<form>
+<div id="Contcontato">
+    <h2 id="contato-title">Entre em contato</h2>
+    <input type="text" id="contato-nome" name="contato-nome" placeholder="Seu nome completo" required>
+
+    <div id="inputs-secondary">
+        <input type="email" id="contato-email" name="email" placeholder="E-mail" required>
+        <input list="Assunto" id="assunto" name="assunto" placeholder="Assunto" required>
+        <datalist id="Assunto">
+            <option value="Assunto1">
+            <option value="Assunto2">
+            <option value="Assunto3">
+        </datalist>
+    </div>
+
+    <label id="label-box-message">Mensagem</label>
+    <textarea id="box-message" name="box-message" placeholder="Informe seu problema..." required></textarea>
+
+    <button type="submit" id="contato-btn" class="btn">Enviar</button>
+</div>
+</form>
+
 {% endblock %}

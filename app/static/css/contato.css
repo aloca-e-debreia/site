@@ -1,0 +1,63 @@
+#Contcontato {
+    width: 60%;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    margin-left: 20%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #fafafa;
+    box-shadow: 0 4px 8px #00000023;
+
+}
+
+#contato-title {
+    font-size: 28px;
+    margin: 0;
+    text-align: left; 
+    font-family: Overpass;
+}
+
+#contato-nome {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid black;
+    border-radius: 50px;
+    outline: none;
+}
+
+#inputs-secondary {
+    display: flex;
+    gap: 25px;
+}
+
+#inputs-secondary input {
+    outline: none;
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+#label-box-message{
+    font-family: Overpass;
+}
+
+#box-message {
+    width: 100%;
+    height: 170px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+}
+
+#contato-btn{
+    width: 50%;
+    margin-left: 25%;
+}
+

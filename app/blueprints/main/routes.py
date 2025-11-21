@@ -69,3 +69,8 @@ def cars():
 def nos():
     return render_template('main/nos.html')
 
+@main_bp.route('/contato')
+def contato():
+    return render_template('main/contato.html')
+
+

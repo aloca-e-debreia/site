@@ -118,7 +118,7 @@ export function isValidField(id, validFields, validateMessage) {
             validFields['CPF'] = isValidCPF(fieldValue, errorField, validateMessage['CPF'])
             break
         case 'data':
-            validFields['data'] = isValidAge(fieldValue, errorField, validateMessage['data'])
+            validFields['data'] = isValidBirthDate(fieldValue, errorField, validateMessage['data'])
             break
         case 'email':
             validFields['email'] = isValidEmail(fieldValue, errorField, validateMessage['email'])
