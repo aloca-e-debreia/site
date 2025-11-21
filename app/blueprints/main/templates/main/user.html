@@ -2,6 +2,11 @@
 
 {% block title %} {{ current_user.name }} {% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
 {% block content %} 
 <div class="AllUser">
     <a href="{{ url_for('auth.logout') }}">Logout</a>

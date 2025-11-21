@@ -2,6 +2,22 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
+}
+
+.carros { 
+    display: flex; 
+    flex-wrap: wrap;
+    background-color: #fa7921; 
+    border-radius: 15px; 
+    padding: 10px;
+    margin: 20px;
+} 
+.carros > div {
+    background-color: #f4f6fc;
+    border-radius: 20px; 
+    width: calc(25% - 10px); 
+    margin: 5px; 
+    list-style: none; 
     padding: 20px;
 }
 

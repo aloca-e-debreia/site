@@ -1,26 +1,13 @@
+import { configureDatalists } from "./datalistsConfig.js"
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    document.querySelectorAll(".addresses").forEach((addressInput) => {
-        addressInput.addEventListener("input", () => {
-            const inputValue = addressInput.value;
-            const datalist = document.getElementById(addressInput.dataset.type+"-addresses");
-            const options = datalist.options;
-            const hiddenInput = document.getElementById(addressInput.dataset.type+'-address-id')
+    configureDatalists("branches", false)
 
-            for (let option of options) {
-                if (option.value === inputValue) {
-                    hiddenInput.value = option.dataset.id;
-                    return;
-                }
-            }
-            hiddenInput.value = ""
-        });
-    })
-
-    const pickupAddress = document.getElementById('pickup-address');
+    const pickupAddress = document.getElementById('pickup-branch');
     const pickupDate = document.getElementById('pickup-date');
     const pickupTime = document.getElementById('pickup-time');
-    const dropoffAddress = document.getElementById('dropoff-address');
+    const dropoffAddress = document.getElementById('dropoff-branch');
     const dropoffDate = document.getElementById('dropoff-date');
     const dropoffTime = document.getElementById('dropoff-time')
     const btn = document.getElementById('btn')
@@ -32,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pickupTime.value !== "") {
 
             devolucaoDiv.style.display = "flex"; // mostra div
-            dropoffAddress.value = pickupAddress.value
+            if (dropoffAddress.value === "") dropoffAddress.value = pickupAddress.value
         } else {
             devolucaoDiv.style.display = "none"; // esconde se faltar algo
         }

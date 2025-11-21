@@ -12,3 +12,6 @@ vscode/
 
 env
 venv
+
+uploads/
+*.png

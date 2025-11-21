@@ -1,0 +1,25 @@
+hours:
+  - id: 1
+    weekday: 0
+    opens_at: '08:00'
+    closes_at: '18:00'
+  - id: 2
+    weekday: 1
+    opens_at: '08:00'
+    closes_at: '18:00'
+  - id: 3
+    weekday: 2
+    opens_at: '08:00'
+    closes_at: '18:00'
+  - id: 4
+    weekday: 3
+    opens_at: '08:00'
+    closes_at: '18:00'
+  - id: 5
+    weekday: 4
+    opens_at: '08:00'
+    closes_at: '18:00'
+  - id: 6
+    weekday: 5
+    opens_at: '08:00'
+    closes_at: '12:00'

@@ -3,6 +3,7 @@
 {% block head %}
     {{ super() }}
     <script type="module" src="{{ url_for('static', filename='js/validateLocation.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block title %} Home page {% endblock %}
@@ -15,36 +16,35 @@
         <div class="Retirada" style="display: flex; flex-direction: row;"><h3>Dados da Retirada</h3></div>
         <div class="input-group">
             <label>Local da retirada</label>
-            <input list="pickup-addresses" class="addresses" autocomplete="off" data-type="pickup" type="text" placeholder="Onde você irá retirar?" name="pickup-address" id="pickup-address">
-            <datalist id="pickup-addresses">
-                {% for address in addresses %}
-                    <option data-id="{{ address.id }}" value="{{ address.street }}, {{ address.number}} - {{address.state }}, {{ address.district }}">
+            <input list="pickup-branches" class="branches" autocomplete="off" data-ref="branch" data-type="pickup" type="text" placeholder="Onde você irá retirar?" name="pickup-branch" id="pickup-branch">
+            <datalist id="pickup-branches">
+                {% for branch in branches %}
+                    <option data-id="{{ branch.id }}" value="{{ branch.name }}">
                 {% endfor %}
             </datalist>
-            <input type="hidden" name="pickup-address-id" id="pickup-address-id">
+            <input type="hidden" name="pickup-branch-id" id="pickup-branch-id">
         </div>
         
         <div class="input-group">
             <label>Data da retirada</label>
-            <input type="date" min="2025-11-18" max="2027-01-01" name="pickup-date" id="pickup-date">
+            <input type="date" min="2000-11-18" max="2027-01-01" name="pickup-date" id="pickup-date">
         </div>
         <div class="input-group">
             <label>Hora da retirada</label>
-            <input type="time" name="pickup-time" id="pickup-time">
+            <input type="time" min="1000-11-18" name="pickup-time" id="pickup-time">
         </div>
     </div>
     <div id="devolucao" class="hidden" style="display: none;">
         <h3>Dados da devolução</h3>
-
         <div class="input-group">
             <label>Local da devolução</label>
-            <input list="dropoff-addresses" class="addresses" autocomplete="off" data-type="dropoff" type="text" placeholder="Onde você irá retirar?" name="dropoff-address" id="dropoff-address">
-            <datalist id="dropoff-addresses">
-                {% for address in addresses %}
-                    <option data-id="{{ address.id }}" value="{{ address.street }}, {{ address.number}} - {{address.state }}, {{ address.district }}">
+            <input list="dropoff-branches" class="branches" autocomplete="off" data-ref="branch" data-type="dropoff" type="text" placeholder="Onde você irá retirar?" name="dropoff-branch" id="dropoff-branch">
+            <datalist id="dropoff-branches">
+                {% for branch in branches %}
+                    <option data-id="{{ branch.id }}" value="{{ branch.name }}">
                 {% endfor %}
             </datalist>
-            <input type="hidden" name="dropoff-address-id" id="dropoff-address-id">
+            <input type="hidden" name="dropoff-branch-id" id="dropoff-branch-id">
         </div>
 
         <div class="input-group">

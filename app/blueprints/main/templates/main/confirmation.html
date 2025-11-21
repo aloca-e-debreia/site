@@ -19,16 +19,18 @@
             <div class="dupla">
                 <div>
                     <p class="subtitulo">Retirada</p>
-                    <p>Local_retirada</p>
-                    <p>Data</p>
-                    <p>Horário</p>
+                    <p>{{ pickup.branch.name }}</p>
+                    <p>{{ pickup.branch.address.name() }}</p>
+                    <p>{{ pickup.date }}</p>
+                    <p>{{ pickup.time }}</p>
                 </div>
 
                 <div>
                     <p class="subtitulo">Devolução</p>
-                    <p>Local_devolução</p>
-                    <p>Data</p>
-                    <p>Horário</p>
+                    <p>{{ dropoff.branch.name }}</p>
+                    <p>{{ dropoff.branch.address.name() }}</p>
+                    <p>{{ dropoff.date }}</p>
+                    <p>{{ dropoff.time }}</p>
                 </div>
             </div>
         </div>
@@ -36,13 +38,13 @@
         <div class="card-box">
             <h3>Resumo do valor</h3>
 
-            <div class="linha"><span>Valor do veículo</span><span>R$ XXX</span></div>
-            <div class="linha"><span>Adicionais</span><span>R$ YYY</span></div>
-            <div class="linha"><span>Taxas da locadora</span><span>R$ AAA</span></div>
+            <div class="linha"><span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span></div>
+            <div class="linha"><span>Adicionais</span><span>R$ {{ rental.extras_daily_price() }}</span></div>
+            <div class="linha"><span>Taxas da locadora</span><span>12% = R$ {{ rental.subtotal() }}</span></div>
 
             <hr>
 
-            <div class="linha total"><span>Total</span><span>R$ BBB</span></div>
+            <div class="linha total"><span>Total</span><span>R$ {{ rental.total() }}</span></div>
 
             <button class="btn-continue">Continuar</button>
         </div>
