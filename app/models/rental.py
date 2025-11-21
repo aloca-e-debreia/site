@@ -1,5 +1,5 @@
+import enum
 from app import db
-from datetime import date
 
 class Pickup(db.Model):
     __tablename__ = 'pickup'
@@ -10,6 +10,10 @@ class Pickup(db.Model):
     time = db.Column(db.Time, nullable=False)
 
     branch = db.relationship("Branch", backref='pickup')
+
+    @property
+    def date_br(self):
+        return self.date.strftime("%d/%m/%Y")
 
     def __repr__(self):
         return f"Pickup<id='{self.id}', branch_id='{self.branch_id}', date='{self.date}', time='{self.time}'>"
@@ -23,6 +27,10 @@ class Dropoff(db.Model):
     time = db.Column(db.Time, nullable=False)
 
     branch = db.relationship("Branch", backref='dropoff')
+
+    @property
+    def date_br(self):
+        return self.date.strftime("%d/%m/%Y")
 
     def __repr__(self):
         return f"Dropoff<id='{self.id}', branch_id='{self.branch_id}', date='{self.date}', time='{self.time}'>"
@@ -57,6 +65,12 @@ class RentalExtra(db.Model):
     def calculate_price(self):
         return self.extra.daily_price * self.quantity
     
+class RentalStatus(enum.Enum):
+    PENDING = "pending" #hasn't got the car 
+    ACTIVE = "active" #got the car, ongoing status
+    CLOSED = "closed" #returned the car
+    CANCELED = 'canceled'
+    LATE = "late"
 
 class Rental(db.Model):
     __tablename__ = 'rental'
@@ -77,8 +91,23 @@ class Rental(db.Model):
 
     rental_extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 
+    status = db.Column(db.Enum(RentalStatus, name="rental_status"), nullable=False, default=RentalStatus.PENDING)
+
+    @property
+    def status_label(self):
+        labels = {
+            RentalStatus.PENDING: "Pendente",
+            RentalStatus.ACTIVE: "Ativa",
+            RentalStatus.CLOSED: "Concluída",
+            RentalStatus.LATE: "Atrasada",
+            RentalStatus.CANCELED: "Cancelada",
+        }
+        return labels.get(self.status, "Desconhecido")
+
     def __repr__(self):
-        return f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}', pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}'>"
+        return f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}',\
+            pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}'\
+                branch_id='{self.branch_id}', status='{self.status}'>"
     
     def extras_daily_price(self):
         return sum(extra.calculate_price() for extra in self.rental_extras)

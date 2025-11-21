@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify
 from flask_security import roles_accepted
 from flask_login import login_required, current_user
 from app.blueprints.main import main_bp
-from app.models import User, select_users_with_role
+from app.models import User, select_users_with_role, Rental, RentalStatus
 from app import db, user_datastore, login_manager
 
 @login_manager.user_loader
@@ -24,7 +24,7 @@ def dashboard():
 def promover_user():
     data = request.get_json()
     
-    user_id = data.get("id")
+    user_id = int(data.get("id"))
     user_role = data.get("role")
     promotion = data.get("promotion")
 
@@ -43,6 +43,34 @@ def promover_user():
 def user():
     return render_template('main/user.html', current_user=current_user)
 
+@main_bp.route('/user/2/api/cancel', methods=['GET', 'POST'])
+def cancel_rent():
+    data = request.get_json()
+
+    active_rent_id = int(data.get("rentId"))
+    active_rent = Rental.query.get(active_rent_id)
+    if active_rent:
+        active_rent.status = RentalStatus.CANCELED
+        db.session.commit()
+
+        return jsonify({
+            "success" : True,
+            "message" : "Locação cancelada com sucesso"
+        })
+    return jsonify({
+            "success" : False,
+            "message" : "Locação não encontrada"
+        })
+
 @main_bp.route('/user/<UserData_chosen>')
 def UserData(UserData_chosen):
-    return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen)
+    active_rents = Rental.query.filter(
+        Rental.user_id == current_user.id,
+        Rental.status.in_([RentalStatus.ACTIVE, RentalStatus.PENDING])
+    ).all()
+    finished_rents = Rental.query.filter(
+        Rental.user_id == current_user.id,
+        Rental.status.in_([RentalStatus.CLOSED, RentalStatus.CANCELED])
+    ).all()
+
+    return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen, active_rents=active_rents, finished_rents=finished_rents)
