@@ -125,4 +125,5 @@ class Vehicle(db.Model):
         from app.cloudinary_setup import cloudinary_config
         from cloudinary import CloudinaryImage
         cloudinary_config()
-        return CloudinaryImage(self.img_public_id).build_url()
+        folder = "ClickAndDrive"
+        return CloudinaryImage(f"{folder}/{self.img_public_id}").build_url()

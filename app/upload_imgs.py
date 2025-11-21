@@ -1,6 +1,5 @@
 from cloudinary_setup import cloudinary_config
-import os
-import cloudinary.uploader
+import os, pathlib, cloudinary.uploader
 
 cloudinary_config()
 
@@ -14,17 +13,20 @@ for file in os.listdir(folder):
     if not os.path.isfile(filepath):
         continue
 
-    name, _ = os.path.splitext(file)
+    public_id, _ = os.path.splitext(file)
+    extension = pathlib.Path(filepath).suffix
 
-    public_id = f"{folder_cloud}/{name}"
+    with open(filepath, "rb") as f:
+        result = cloudinary.uploader.upload(
+            f,
+            upload_preset="ClickAndDrive_preset",
+            folder=folder_cloud,
+            public_id=public_id,
+            use_filename=False,
+            unique_filename=False,
+            overwrite=True,
+            resource_type="image",
+            format=extension[1:]
+        )
 
-    result = cloudinary.uploader.upload(
-        filepath,
-        folder=folder_cloud,
-        public_id=public_id,
-        use_filename=False,
-        unique_filename=False,
-        overwrite=True
-    )
-
-    print("Updloaded:", result["secure_url"])
+    print("Uploaded:", result["secure_url"])

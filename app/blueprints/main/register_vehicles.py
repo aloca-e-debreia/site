@@ -85,16 +85,20 @@ def register_vehicles():
 
         cloudinary_config()
 
-        img_file = request.files["img-file"]  # input name no HTML
+        img_file = request.files["img-file"]
+        ext = img_file.filename.rsplit('.', 1)[-1].lower()
 
-        img_public_id = cloudinary.uploader.upload(
+        cloudinary.uploader.upload(
             img_file,
+            upload_preset="ClickAndDrive_preset",
             folder="ClickAndDrive",
-            use_filename=True,
-            public_id=f"ClickAndDrive/{model.brand.name}-{model.name}",
+            public_id=f"{model.brand.name}-{model.name}",
+            use_filename=False,
             unique_filename=False,
-            overwrite=True
-        )["public_id"]
+            overwrite=True,
+            resource_type="image",
+            format=ext
+        )
 
         new_vehicle = Vehicle(
             category_id=category_id,
@@ -109,7 +113,7 @@ def register_vehicles():
             mileage=mileage,
             n_people=n_people,
             daily_price=daily_price,
-            img_public_id=img_public_id
+            img_public_id=f"{model.brand.name}-{model.name}",
         )
 
         db.session.add(new_vehicle)

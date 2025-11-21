@@ -42,7 +42,7 @@ def seed_vehicles(app):
                     year = randint(2000, 2025),
                     mileage = uniform(0, 1000),
                     daily_price = uniform(200, 1200),
-                    img_public_id = f"ClickAndDrive/ClickAndDrive/{model.brand.name}-{model.name}",
+                    img_public_id = f"{model.brand.name}-{model.name}",
                     n_people = randint(1, 5)
                 )
                 db.session.add(vehicle)
