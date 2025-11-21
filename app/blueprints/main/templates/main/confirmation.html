@@ -18,14 +18,16 @@
             <div class="dupla">
                 <div>
                     <p class="subtitulo">Retirada</p>
-                    <p>{{ pickup.address.name() }}</p>
+                    <p>{{ pickup.branch.name }}</p>
+                    <p>{{ pickup.branch.address.name() }}</p>
                     <p>{{ pickup.date }}</p>
                     <p>{{ pickup.time }}</p>
                 </div>
 
                 <div>
                     <p class="subtitulo">Devolução</p>
-                    <p>{{ dropoff.address.name() }}</p>
+                    <p>{{ dropoff.branch.name }}</p>
+                    <p>{{ dropoff.branch.address.name() }}</p>
                     <p>{{ dropoff.date }}</p>
                     <p>{{ dropoff.time }}</p>
                 </div>

@@ -14,15 +14,17 @@ for file in os.listdir(folder):
     if not os.path.isfile(filepath):
         continue
 
-    nome, _ = os.path.splitext(file)
+    name, _ = os.path.splitext(file)
 
-    public_id = f"{folder_cloud}/{nome}"
+    public_id = f"{folder_cloud}/{name}"
 
     result = cloudinary.uploader.upload(
         filepath,
+        folder=folder_cloud,
         public_id=public_id,
-        use_filename=True,
-        unique_filename=False
+        use_filename=False,
+        unique_filename=False,
+        overwrite=True
     )
 
     print("Updloaded:", result["secure_url"])

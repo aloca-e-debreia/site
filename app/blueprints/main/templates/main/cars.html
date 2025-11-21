@@ -6,6 +6,7 @@
     {{ super() }}
     <script type="module" src="{{ url_for('static', filename='js/filterPrice.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/filter.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cars.css') }}">
 {% endblock %}
 
 {% block content %}

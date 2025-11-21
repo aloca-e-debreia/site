@@ -123,6 +123,6 @@ class Vehicle(db.Model):
 
     def get_img_url(self):
         from app.cloudinary_setup import cloudinary_config
-        cloudinary_config()
         from cloudinary import CloudinaryImage
+        cloudinary_config()
         return CloudinaryImage(self.img_public_id).build_url()

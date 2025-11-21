@@ -31,7 +31,7 @@ def create_app():
     security.init_app(app, user_datastore, register_blueprint=False)
 
     from app.blueprints.auth import auth_bp
-    from app.blueprints.main.routes import main_bp
+    from app.blueprints.main.rental import main_bp
     from app.blueprints.main.errors import register_errors
 
     register_errors(app)

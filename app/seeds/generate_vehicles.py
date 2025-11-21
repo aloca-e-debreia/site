@@ -1,18 +1,7 @@
 import yaml
-import random
 from app import db, faker
 from app.models import *
-
-def load_yaml(filename) -> dict:
-    with open(f"app/seeds/vehicles_data/{filename}", "r", encoding="utf-8") as file:
-        return yaml.safe_load(file)
-
-def create_instances_from_yaml(objList: dict, inst_name: str, Entity) -> None:
-    for obj in objList[inst_name]:
-        instance = Entity(**obj)
-        db.session.add(instance)
-        db.session.commit()
-        print (f"Create {inst_name}:", repr(instance))
+from app.seeds.yaml_operations import load_yaml, create_instances_from_yaml
 
 def seed_vehicles(app):
 
@@ -28,7 +17,7 @@ def seed_vehicles(app):
                     }
 
         for name in entities:
-            objList = load_yaml(name+".yaml")
+            objList = load_yaml("vehicles_data/"+name+".yaml")
             if entities[name].query.count() == 0:
                 create_instances_from_yaml(objList=objList, inst_name=name, Entity=entities[name])
             
@@ -53,7 +42,7 @@ def seed_vehicles(app):
                     year = randint(2000, 2025),
                     mileage = uniform(0, 1000),
                     daily_price = uniform(200, 1200),
-                    img_public_id = f"ClickAndDrive/{model.brand.name}-{model.name}",
+                    img_public_id = f"ClickAndDrive/ClickAndDrive/{model.brand.name}-{model.name}",
                     n_people = randint(1, 5)
                 )
                 db.session.add(vehicle)

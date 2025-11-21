@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pay.css') }}">
+{% endblock %}
+
 {% block content %} 
 <div class="container">
 
@@ -46,7 +51,7 @@
                 <span>Total</span><span>R$ {{ rental.total() }}</span>
             </div>
 
-            <a href="{{ url_for('main.confirmation', pickup_id=pickup.id, dropoff_id=dropoff.id, vehicle_id=vehicle.id) }}">
+            <a href="{{ url_for('main.confirmation')}}">
                 <button class="resume-btn">Continuar</button>
             </a>
         </div>

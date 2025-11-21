@@ -13,5 +13,5 @@ vscode/
 env
 venv
 
-updloads/
+uploads/
 *.png

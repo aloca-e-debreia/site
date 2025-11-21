@@ -5,27 +5,27 @@ class Pickup(db.Model):
     __tablename__ = 'pickup'
 
     id = db.Column(db.Integer, primary_key=True)
-    address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
+    branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
 
-    address = db.relationship("Address", backref='pickup')
+    branch = db.relationship("Branch", backref='pickup')
 
     def __repr__(self):
-        return f"Pickup<id='{self.id}', address_id='{self.address_id}', date='{self.date}', time='{self.time}'>"
+        return f"Pickup<id='{self.id}', branch_id='{self.branch_id}', date='{self.date}', time='{self.time}'>"
 
 class Dropoff(db.Model):
     __tablename__ = 'dropoff'
 
     id = db.Column(db.Integer, primary_key=True)
-    address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
+    branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
 
-    address = db.relationship("Address", backref='dropoff')
+    branch = db.relationship("Branch", backref='dropoff')
 
     def __repr__(self):
-        return f"Dropoff<id='{self.id}', address_id='{self.address_id}', date='{self.date}', time='{self.time}'>"
+        return f"Dropoff<id='{self.id}', branch_id='{self.branch_id}', date='{self.date}', time='{self.time}'>"
 
 class Extra(db.Model):
     __tablename__ = 'extra'
@@ -68,10 +68,12 @@ class Rental(db.Model):
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
     pickup_id = db.Column(db.Integer, db.ForeignKey('pickup.id'))
     dropoff_id = db.Column(db.Integer, db.ForeignKey('dropoff.id'))
+    branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
 
     vehicle = db.relationship("Vehicle", backref='rentals')
     pickup = db.relationship("Pickup", backref='rental')
     dropoff = db.relationship("Dropoff", backref='rental')
+    branch = db.relationship("Branch", backref='rental')
 
     rental_extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 
