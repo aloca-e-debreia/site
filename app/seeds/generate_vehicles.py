@@ -41,7 +41,7 @@ def seed_vehicles(app):
                     plate = faker.license_plate(),
                     year = randint(2000, 2025),
                     mileage = uniform(0, 1000),
-                    daily_price = uniform(200, 1200),
+                    daily_price = uniform(100, 490),
                     img_public_id = f"{model.brand.name}-{model.name}",
                     n_people = randint(1, 5)
                 )

@@ -50,6 +50,8 @@ def index():
 def cars():
     pickup_id = request.cookies.get('pickup_id')
     dropoff_id = request.cookies.get('dropoff_id')
+    pickup = Pickup.query.get(pickup_id)
+    dropoff = Dropoff.query.get(dropoff_id)
 
     if not pickup_id or not dropoff_id:
         return redirect(url_for('main.index'))
@@ -74,7 +76,7 @@ def cars():
         return resp
 
     vehicles = Vehicle.query.all()
-    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles)
+    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles, pickup=pickup, dropoff=dropoff)
 
 @main_bp.route('/pay', methods=['GET', 'POST'])
 def pay():

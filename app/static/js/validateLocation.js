@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
             pickupTime.value !== "") {
 
             devolucaoDiv.style.display = "flex"; // mostra div
-            if (dropoffAddress.value === "") dropoffAddress.value = pickupAddress.value
+            if (dropoffAddress.value === "") {
+                dropoffAddress.value = pickupAddress.value
+                document.getElementById("dropoff-branch-id").value = document.getElementById("pickup-branch-id").value
+            }
         } else {
             devolucaoDiv.style.display = "none"; // esconde se faltar algo
         }

@@ -72,7 +72,8 @@
 
         <div class="carro-imagem-preco">
             <img src="{{ vehicle.get_img_url() }}.png" alt="Carro">
-            <span class="preco">{{ vehicle.daily_price }} / dia</span>
+            <span class="preco">R$ {{ vehicle.daily_price }} / dia</span>
+            <span>Total: R$ {{ vehicle.daily_price * (dropoff.date - pickup.date).days }}</span>
         </div>
 
         <ul class="carro-info">
