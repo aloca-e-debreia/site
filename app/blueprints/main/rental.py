@@ -7,22 +7,33 @@ from app import db
 
 @main_bp.route('/api/resume/rent', methods=['POST'])
 def resume_rent():
-    data = request.get_json()
-    confirm = data.get('confirmation')
-    route = data.get('route')
+    if request.method == 'POST' and request.is_json:
+        try:    
+            data = request.get_json()
+            confirm = data.get('confirmation')
+            route = data.get('route')
 
-    url = url_for(route)
-    resp = jsonify({
-        "redirect_url" : url
-    })
-    
-    if not confirm:
-        Rental.query.filter_by(id=request.cookies.get('rental_id')).delete()
-        db.session.commit()
-        for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
-            resp.set_cookie(cookie, "", expires=0)
+            url = url_for(route)
+            resp = jsonify({
+                "success" : True,
+                "redirect_url" : url
+            })
+            
+            if not confirm:
+                Rental.query.filter_by(id=request.cookies.get('rental_id')).delete()
+                db.session.commit()
+                for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
+                    resp.set_cookie(cookie, "", expires=0)
 
-    return resp
+            return resp
+        
+        except Exception as e:
+
+            print("Erro:", e)
+            return jsonify({
+                "success" : False,
+                "message" : "Ocorreu um erro ao buscar sua locação... Tente novamente mais tarde."
+            })
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():

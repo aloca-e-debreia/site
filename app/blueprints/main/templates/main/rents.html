@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-    
+    <script src="{{ url_for('static', filename='js/rents.js') }}"></script>
 {% endblock %}
 
 {% block title %} Dashboard - {{ user_role }} {% endblock %}
@@ -13,6 +13,9 @@
     {% endif %}
 
     <h1>Locações</h1>
+
+    <button type="button"><a href="{{ url_for('main.pending_rents') }}">Locações Pendentes</a></button>
+    <button type="button"><a href="{{ url_for('main.active_rents') }}">Locações Ativas</a></button>
 
     {% for rent in rents %}
         <div>
@@ -54,7 +57,7 @@
             <h4>Total: {{ rent.total | currency }}</h4>
             
             <h3>Status: {{ rent.status_label }}</h3>
-            <button type="button">Atestar recebimento</button>
+            <button type="button" data-rent-id="{{ rent.id }}" class="{{ btn_class }}">{{ btn_message }}</button>
         </div> <br><br>
     {% endfor %}
 

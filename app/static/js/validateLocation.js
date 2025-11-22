@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 })
             })
             const data = await response.json()
+            if (!data.success) {
+                alert(data.message)
+                return
+            } 
             window.location.href = data.redirect_url
         } catch(error) {
             console.error('Erro:', error)
