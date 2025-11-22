@@ -7,5 +7,6 @@ from app import db, user_datastore, login_manager
 
 @main_bp.route('/dashboard/rents')
 def rents():
-    rents = Rental.query.all()
-    return render_template('main/rents.html', rents=rents)
+    pending_rents = Rental.query.filter_by(status=RentalStatus.PENDING)
+    active_rents = Rental.query.filter_by(status=RentalStatus.ACTIVE)
+    return render_template('main/rents.html', pending_rents, active_rents)
