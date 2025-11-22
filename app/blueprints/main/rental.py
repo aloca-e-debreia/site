@@ -1,13 +1,51 @@
-from flask import render_template, request, redirect, url_for, make_response
+from flask import render_template, request, redirect, url_for, make_response, jsonify
 from flask_login import login_required, current_user
 from datetime import date, time
 from app.blueprints.main import main_bp
 from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
 from app import db
 
+@main_bp.route('/api/resume/rent', methods=['POST'])
+def resume_rent():
+    data = request.get_json()
+    confirm = data.get('confirmation')
+    route = data.get('route')
+
+    url = url_for(route)
+    resp = jsonify({
+        "redirect_url" : url
+    })
+    
+    if not confirm:
+        Rental.query.filter_by(id=request.cookies.get('rental_id')).delete()
+        db.session.commit()
+        for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
+            resp.set_cookie(cookie, "", expires=0)
+
+    return resp
+
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():
     branches = Branch.query.all()
+
+    if request.method == 'POST' and request.is_json:
+        pickup_id = request.cookies.get('pickup_id')
+        dropoff_id = request.cookies.get('dropoff_id')
+        vehicle_id = request.cookies.get('vehicle_id')
+        rental_id = request.cookies.get('rental_id')
+
+        if vehicle_id and rental_id:
+            return jsonify({
+                "route" : "main.pay"
+            })
+        elif pickup_id and dropoff_id:
+            return jsonify({
+                "route" : "main.cars"
+            })
+        else:
+            return jsonify({
+                "route" : None
+            })
 
     if request.method == 'POST':
         #pickup/dropoff branch
@@ -52,8 +90,6 @@ def cars():
     dropoff_id = request.cookies.get('dropoff_id')
     pickup = Pickup.query.get(pickup_id)
     dropoff = Dropoff.query.get(dropoff_id)
-
-    print(type((dropoff.date - pickup.date).days))
 
     if not pickup_id or not dropoff_id:
         return redirect(url_for('main.index'))
@@ -133,8 +169,8 @@ def confirmation():
 
     if request.method == "POST":
         resp = make_response(url_for('main.index'))
-        for cookie in [pickup_id, dropoff_id, vehicle_id, rental_id]:
-            resp.set_cookie(cookie, expires=0)
+        for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
+            resp.set_cookie(cookie, "", expires=0)
         return resp
 
     pickup = Pickup.query.get(pickup_id)
@@ -142,4 +178,4 @@ def confirmation():
     vehicle = Vehicle.query.get(vehicle_id)
     rental = Rental.query.get(rental_id)
 
-    return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental)
+    return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras)

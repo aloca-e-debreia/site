@@ -43,11 +43,19 @@
             <h3>Resumo do valor</h3>
             <div class="linha"><span>Valor do veículo</span><span>{{ vehicle.daily_price | currency }}/dia</span></div>
             <div class="linha"><span>Total</span><span>{{ rental.vehicle_total | currency }}</span></div>
-            <div class="linha"><span>Adicionais</span><span>{{ rental.extras_daily_price | currency }}</span></div>
-            <div class="linha"><span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span></div>
-
             <hr>
-
+            <div class="linha"><span>Adicionais</span></div>
+            {% for rental_extra in rental_extras %}
+                {% if rental_extra.extra.selectable_quantity %}
+                    <div class="linha"><span>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</span><span>{{ rental_extra.extra.daily_price | currency }} / dia</span></div>
+                {% else %}
+                    <div class="linha"><span>{{ rental_extra.extra.name }}</span><span>{{ rental_extra.extra.daily_price | currency }}/dia</span></div>
+                {% endif %}
+            {% endfor %}
+            <div class="linha"><span>Total</span><span>{{ rental.extras_daily_price | currency }}</span></div>
+            <hr>
+            <div class="linha"><span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span></div>
+            <hr>
             <div class="linha total"><span>Total</span><span>{{ rental.total | currency }}</span></div>
 
             <button class="btn-continue">Continuar</button>

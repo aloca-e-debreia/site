@@ -1,7 +1,41 @@
 import { configureDatalists } from "./datalistsConfig.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
+    (async () => {
+        try {
+            const response = await fetch('/', {
+                method: "POST",
+                headers : {"Content-Type" : "application/json"},
+                body : JSON.stringify({})
+            })
+            const data = await response.json()
+            if (!data.route) return
+            const confirmation = confirm("Você tem uma locação em andamento, deseja continuar?")
+            if (!confirmation) data.route = 'main.index'
+            redirect(confirmation, data.route)
+        } catch(error) {
+            console.error('Erro:', error)
+        }
+    })()
+
+    async function redirect(confirmation, route) {
+        try {
+            const response = await fetch('/api/resume/rent', {
+                method: "POST",
+                headers : {"Content-Type" : "application/json"},
+                body : JSON.stringify({
+                    "confirmation" : confirmation,
+                    "route" : route
+                })
+            })
+            const data = await response.json()
+            window.location.href = data.redirect_url
+        } catch(error) {
+            console.error('Erro:', error)
+        }   
+    }
+    
     configureDatalists("branches", false)
 
     const pickupAddress = document.getElementById('pickup-branch');

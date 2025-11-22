@@ -81,15 +81,15 @@ class Rental(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
-    pickup_id = db.Column(db.Integer, db.ForeignKey('pickup.id'))
-    dropoff_id = db.Column(db.Integer, db.ForeignKey('dropoff.id'))
+    pickup_id = db.Column(db.Integer, db.ForeignKey('pickup.id'), unique=True)
+    dropoff_id = db.Column(db.Integer, db.ForeignKey('dropoff.id'), unique=True)
     branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
 
     user = db.relationship("User", backref='rentals')
-    vehicle = db.relationship("Vehicle", backref='rentals')
-    pickup = db.relationship("Pickup", backref='rental')
-    dropoff = db.relationship("Dropoff", backref='rental')
     branch = db.relationship("Branch", backref='rental')
+    pickup = db.relationship("Pickup", backref='rental', single_parent=True, uselist=False, cascade="all, delete-orphan")
+    dropoff = db.relationship("Dropoff", backref='rental', single_parent=True, uselist=False, cascade="all, delete-orphan")
+    vehicle = db.relationship("Vehicle", backref='rentals')
 
     rental_extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 

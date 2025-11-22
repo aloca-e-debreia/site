@@ -55,7 +55,7 @@
 
             {% for active_rent in active_rents %}
                 <div class="Cont">
-                    <div class="icon"><img src="" alt="Car" width="70px"></div>
+                    <div class="icon"><img src="{{ active_rent.vehicle.get_img_url() }}" alt="Car" width="70px"></div>
                     <div class="PersonalData-Text">
                         <h3>Reserva {{ loop.index }} - ID: {{ active_rent.id }}</h3>
                         <p>Ver resumo da reserva</p>
@@ -64,7 +64,7 @@
                 <div class="Cont-Details">
                     <p>Carro escolhido: {{ active_rent.vehicle.name() }}</p>
                     <p>Data da reserva: {{ active_rent.pickup.date_br }} - {{ active_rent.dropoff.date_br }}</p>
-                    <p>Preço total: {{ active_rent.total }}</p>
+                    <p>Preço total: {{ active_rent.total | currency }}</p>
                     <p>Status: {{ active_rent.status_label }}</p>
                     <button type="button" class="btn-cancel-rent" data-rent-id="{{ active_rent.id }}">Cancelar</button>
                 </div>
@@ -74,7 +74,7 @@
         {% elif UserData_chosen == "3" %}
             {% for finished_rent in finished_rents %}
                 <div class="Cont">
-                    <div class="icon"><img src="" alt="Car" width="70px"></div>
+                    <div class="icon"><img src="{{ finished_rent.vehicle.get_img_url() }}" alt="Car" width="70px"></div>
                     <div class="PersonalData-Text">
                         <h3>Reserva Passada {{ loop.index }} - ID: {{ finished_rent.id }}</h3>
                         <p>Ver resumo da reserva</p>
@@ -83,7 +83,7 @@
                 <div class="Cont-Details">
                     <p>Carro escolhido: {{ finished_rent.vehicle.name() }}</p>
                     <p>Data da reserva: {{ finished_rent.pickup.date_br }} - {{ finished_rent.dropoff.date_br }}</p>
-                    <p>Preço total: {{ finished_rent.total }}</p>
+                    <p>Preço total: {{ finished_rent.total | currency }}</p>
                     <p>Status: {{ finished_rent.status_label }}</p>
                 </div>
             {% endfor %}

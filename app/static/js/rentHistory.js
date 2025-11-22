@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     async function cancelRent(rentId) {
-        console.log(rentId)
         try {
             const response = await fetch('/user/2/api/cancel', {
                 method: "POST",
