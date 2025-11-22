@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+    
+{% endblock %}
+
+{% block title %} Dashboard - {{ user_role }} {% endblock %}
+
+{% block content %}
+
+    {% if user_role != 'Cliente' %}
+        <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
+    {% endif %}
+
+    <h1>Locações</h1>
+
+    {% for rent in rents %}
+        <div>
+            <img src="{{ rent.vehicle.get_img_url() }}" height="100px" width="100px" alt="Veículo da locação">
+            <h3>ID: {{ rent.id }}</h3>
+            <h4>Cliente</h4>
+            <ul>
+                <li>Cliente: {{ rent.user.name }}</li>
+                <li>CPF : {{ rent.user.cpf }}</li>
+                <li>Email: {{ rent.user.email }}</li>
+            </ul>
+
+            <h4>Veículo</h4>
+            <ul>
+            <li>{{ rent.vehicle.name() }}</li>
+            <li>Preço: {{ rent.vehicle.daily_price | currency }}/dia</li>
+            <li>{{ rent.vehicle.n_people }} Pessoas 🚗</li>
+            <li>{{ rent.vehicle.transmission.name }} ⚙️</li>
+            {% for feature in rent.vehicle.features %}
+                <li>{{ feature.name }}</li>
+            {% endfor %}
+            </ul>
+            <h3>Total: {{ rent.vehicle_total | currency }}</h3>
+
+            <p>Adicionais:</p>
+            <ul>
+            {% for rental_extra in rental_extras %}
+                {% if rental_extra.extra.selectable_quantity %}
+                    <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
+                {% else %}
+                    <li>{{ rental_extra.extra.name }}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+            <span>Total: {{ rent.extras_total_price }}</span>
+
+            <h4>Data: {{ rent.pickup.date_br }} - {{ rent.dropoff.date_br }}</h4>
+            <h4>Taxa da locadora = 12% = {{ rent.fee_price | currency }}</h4>
+            <h4>Total: {{ rent.total | currency }}</h4>
+            
+            <h3>Status: {{ rent.status_label }}</h3>
+            <button type="button">Atestar recebimento</button>
+        </div> <br><br>
+    {% endfor %}
+
+    <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+
+{% endblock %}

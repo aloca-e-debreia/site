@@ -40,16 +40,17 @@
         <div class="car-summary">
             <h3>Resumo</h3>
             <div class="summary-line">
-                <span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span>
+                <span>Valor do veículo</span><span>{{ vehicle.daily_price | currency }}/dia</span>
+                <span>Total</span><span>{{ rental.vehicle_total | currency }}</span>
             </div>
             <div class="summary-line">
-                <span>Adicionais</span><span>R$ {{ rental.extras_daily_price() }}</span>
+                <span>Adicionais</span><span>{{ rental.extras_daily_price | currency }}</span>
             </div>
             <div class="summary-line">
-                <span>Taxas da locadora</span><span>12% = R$ {{ rental.subtotal()}}</span>
+                <span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span>
             </div>
             <div class="summary-line total">
-                <span>Total</span><span>R$ {{ rental.total() }}</span>
+                <span>Total</span><span>{{ rental.total | currency }}</span>
             </div>
 
             <a href="{{ url_for('main.confirmation')}}">
@@ -68,7 +69,7 @@
                     <p>{{ extra.description }}</p>
                 </div>
                 <form class="extra-right" action="{{ url_for('main.pay') }}" method="post">
-                    <span class="price">R$ {{ extra.daily_price }}</span>
+                    <span class="price">{{ extra.daily_price | currency }}</span>
                     {% if extra.selectable_quantity %}
                     <div class="counter">
                         <button>-</button>

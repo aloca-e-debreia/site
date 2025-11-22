@@ -62,7 +62,8 @@ class RentalExtra(db.Model):
     rental = db.relationship("Rental", back_populates="rental_extras")
     extra = db.relationship("Extra", back_populates="rentals")
 
-    def calculate_price(self):
+    @property
+    def total(self):
         return self.extra.daily_price * self.quantity
     
 class RentalStatus(enum.Enum):
@@ -76,7 +77,7 @@ class Rental(db.Model):
     __tablename__ = 'rental'
 
     id = db.Column(db.Integer, primary_key=True)
-    fee_decimal = db.Column(db.Numeric(10, 2), nullable=False)
+    fee_decimal = db.Column(db.Numeric(5, 4), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
@@ -84,6 +85,7 @@ class Rental(db.Model):
     dropoff_id = db.Column(db.Integer, db.ForeignKey('dropoff.id'))
     branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
 
+    user = db.relationship("User", backref='rentals')
     vehicle = db.relationship("Vehicle", backref='rentals')
     pickup = db.relationship("Pickup", backref='rental')
     dropoff = db.relationship("Dropoff", backref='rental')
@@ -103,18 +105,40 @@ class Rental(db.Model):
             RentalStatus.CANCELED: "Cancelada",
         }
         return labels.get(self.status, "Desconhecido")
-
-    def __repr__(self):
-        return f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}',\
-            pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}'\
-                branch_id='{self.branch_id}', status='{self.status}'>"
     
+    @property
+    def days(self):
+        if not self.dropoff or not self.pickup:
+            return 0
+        return max((self.dropoff.date - self.pickup.date).days, 1)
+    
+    @property
     def extras_daily_price(self):
-        return sum(extra.calculate_price() for extra in self.rental_extras)
+        return sum(extra.total for extra in self.rental_extras)
 
+    @property
+    def extras_total(self):
+        return self.extras_daily_price * self.days
+
+    @property
+    def vehicle_total(self):
+        return self.vehicle.daily_price * self.days
+
+    @property
     def subtotal(self):
-        days = (self.dropoff.date - self.pickup.date).days
-        return days * (self.vehicle.daily_price + self.extras_daily_price())
+        return self.extras_total + self.vehicle_total
 
+    @property
+    def fee_price(self):
+        return self.subtotal * self.fee_decimal
+
+    @property
     def total(self):
-        return  f"{self.subtotal() * (1 + self.fee_decimal):.2f}"
+        return self.subtotal + self.fee_price
+    
+    def __repr__(self):
+        return (
+            f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}', "
+            f"pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}', "
+            f"branch_id='{self.branch_id}', status='{self.status}'>"
+        )

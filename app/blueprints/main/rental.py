@@ -53,6 +53,8 @@ def cars():
     pickup = Pickup.query.get(pickup_id)
     dropoff = Dropoff.query.get(dropoff_id)
 
+    print(type((dropoff.date - pickup.date).days))
+
     if not pickup_id or not dropoff_id:
         return redirect(url_for('main.index'))
     
@@ -128,6 +130,12 @@ def confirmation():
     
     if not vehicle_id or not rental_id:
         return redirect(url_for('main.cars'))
+
+    if request.method == "POST":
+        resp = make_response(url_for('main.index'))
+        for cookie in [pickup_id, dropoff_id, vehicle_id, rental_id]:
+            resp.set_cookie(cookie, expires=0)
+        return resp
 
     pickup = Pickup.query.get(pickup_id)
     dropoff = Dropoff.query.get(dropoff_id)

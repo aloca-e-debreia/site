@@ -41,14 +41,14 @@
 
         <div class="card-box">
             <h3>Resumo do valor</h3>
-
-            <div class="linha"><span>Valor do veículo</span><span>R$ {{ vehicle.daily_price }}/dia</span></div>
-            <div class="linha"><span>Adicionais</span><span>R$ {{ rental.extras_daily_price() }}</span></div>
-            <div class="linha"><span>Taxas da locadora</span><span>12% = R$ {{ rental.subtotal() }}</span></div>
+            <div class="linha"><span>Valor do veículo</span><span>{{ vehicle.daily_price | currency }}/dia</span></div>
+            <div class="linha"><span>Total</span><span>{{ rental.vehicle_total | currency }}</span></div>
+            <div class="linha"><span>Adicionais</span><span>{{ rental.extras_daily_price | currency }}</span></div>
+            <div class="linha"><span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span></div>
 
             <hr>
 
-            <div class="linha total"><span>Total</span><span>R$ {{ rental.total() }}</span></div>
+            <div class="linha total"><span>Total</span><span>{{ rental.total | currency }}</span></div>
 
             <button class="btn-continue">Continuar</button>
         </div>
