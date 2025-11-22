@@ -8,9 +8,8 @@
 
 {% block content %}
 
-    {% if user_role != 'Cliente' %}
-        <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
-    {% endif %}
+    <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
+    <a href="{{ url_for('main.pending_rents') }}">Acesse locações</a>
 
     <h1>Lista de clientes:</h1>
 

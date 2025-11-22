@@ -21,6 +21,11 @@ def create_app():
 
     app = Flask(__name__)
 
+    @app.template_filter()
+    def currency(value, currency="BRL"):
+        from babel.numbers import format_currency
+        return format_currency(value, currency, locale="pt_BR")
+
     app.config.from_pyfile('config.py')
 
     db.init_app(app)
@@ -42,7 +47,5 @@ def create_app():
     app.register_blueprint(main_bp, url_prefix='/')
     from app.seeds import seed_init
     seed_init(app)
-
-
 
     return app

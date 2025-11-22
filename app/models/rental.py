@@ -1,5 +1,5 @@
+import enum
 from app import db
-from datetime import date
 
 class Pickup(db.Model):
     __tablename__ = 'pickup'
@@ -10,6 +10,10 @@ class Pickup(db.Model):
     time = db.Column(db.Time, nullable=False)
 
     branch = db.relationship("Branch", backref='pickup')
+
+    @property
+    def date_br(self):
+        return self.date.strftime("%d/%m/%Y")
 
     def __repr__(self):
         return f"Pickup<id='{self.id}', branch_id='{self.branch_id}', date='{self.date}', time='{self.time}'>"
@@ -23,6 +27,10 @@ class Dropoff(db.Model):
     time = db.Column(db.Time, nullable=False)
 
     branch = db.relationship("Branch", backref='dropoff')
+
+    @property
+    def date_br(self):
+        return self.date.strftime("%d/%m/%Y")
 
     def __repr__(self):
         return f"Dropoff<id='{self.id}', branch_id='{self.branch_id}', date='{self.date}', time='{self.time}'>"
@@ -54,38 +62,86 @@ class RentalExtra(db.Model):
     rental = db.relationship("Rental", back_populates="rental_extras")
     extra = db.relationship("Extra", back_populates="rentals")
 
-    def calculate_price(self):
+    @property
+    def total(self):
         return self.extra.daily_price * self.quantity
     
+class RentalStatus(enum.Enum):
+    PENDING = "pending" #hasn't got the car 
+    ACTIVE = "active" #got the car, hasn't returned
+    LATE = "late" # got the car, is past the return deadline
+    CLOSED = "closed" #returned the car within the deadline
+    CLOSED_LATE = "closed_late" #returned the car past the return deadline
+    CANCELED = 'canceled' #canceled before getting the car
+
 
 class Rental(db.Model):
     __tablename__ = 'rental'
 
     id = db.Column(db.Integer, primary_key=True)
-    fee_decimal = db.Column(db.Numeric(10, 2), nullable=False)
+    fee_decimal = db.Column(db.Numeric(5, 4), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
-    pickup_id = db.Column(db.Integer, db.ForeignKey('pickup.id'))
-    dropoff_id = db.Column(db.Integer, db.ForeignKey('dropoff.id'))
+    pickup_id = db.Column(db.Integer, db.ForeignKey('pickup.id'), unique=True)
+    dropoff_id = db.Column(db.Integer, db.ForeignKey('dropoff.id'), unique=True)
     branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
 
-    vehicle = db.relationship("Vehicle", backref='rentals')
-    pickup = db.relationship("Pickup", backref='rental')
-    dropoff = db.relationship("Dropoff", backref='rental')
+    user = db.relationship("User", backref='rentals')
     branch = db.relationship("Branch", backref='rental')
+    pickup = db.relationship("Pickup", backref='rental', single_parent=True, uselist=False, cascade="all, delete-orphan")
+    dropoff = db.relationship("Dropoff", backref='rental', single_parent=True, uselist=False, cascade="all, delete-orphan")
+    vehicle = db.relationship("Vehicle", backref='rentals')
 
     rental_extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 
-    def __repr__(self):
-        return f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}', pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}'>"
+    status = db.Column(db.Enum(RentalStatus, name="rental_status"), nullable=False, default=RentalStatus.PENDING)
+
+    @property
+    def status_label(self):
+        labels = {
+            RentalStatus.PENDING: "Pendente",
+            RentalStatus.ACTIVE: "Ativa",
+            RentalStatus.CLOSED: "Concluída",
+            RentalStatus.CLOSED_LATE: "Concluída com atraso",
+            RentalStatus.LATE: "Atrasada",
+            RentalStatus.CANCELED: "Cancelada",
+        }
+        return labels.get(self.status, "Desconhecido")
     
+    @property
+    def days(self):
+        if not self.dropoff or not self.pickup:
+            return 0
+        return max((self.dropoff.date - self.pickup.date).days, 1)
+    
+    @property
     def extras_daily_price(self):
-        return sum(extra.calculate_price() for extra in self.rental_extras)
+        return sum(extra.total for extra in self.rental_extras)
 
+    @property
+    def extras_total(self):
+        return self.extras_daily_price * self.days
+
+    @property
+    def vehicle_total(self):
+        return self.vehicle.daily_price * self.days
+
+    @property
     def subtotal(self):
-        days = (self.dropoff.date - self.pickup.date).days
-        return days * (self.vehicle.daily_price + self.extras_daily_price())
+        return self.extras_total + self.vehicle_total
 
+    @property
+    def fee_price(self):
+        return self.subtotal * self.fee_decimal
+
+    @property
     def total(self):
-        return  f"{self.subtotal() * (1 + self.fee_decimal):.2f}"
+        return self.subtotal + self.fee_price
+    
+    def __repr__(self):
+        return (
+            f"Rental<user_id='{self.user_id}', vehicle_id='{self.vehicle_id}', "
+            f"pickup_id='{self.pickup_id}', dropoff_id='{self.dropoff_id}', "
+            f"branch_id='{self.branch_id}', status='{self.status}'>"
+        )
