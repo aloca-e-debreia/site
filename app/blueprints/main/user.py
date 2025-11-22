@@ -9,6 +9,24 @@ from app import db, get_user_datastore, login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@main_bp.route('/user')
+@login_required
+def user():
+    return render_template('main/user.html', current_user=current_user)
+
+@main_bp.route('/user/<UserData_chosen>')
+def UserData(UserData_chosen):
+    active_rents = Rental.query.filter(
+        Rental.user_id == current_user.id,
+        Rental.status.in_([RentalStatus.ACTIVE, RentalStatus.PENDING])
+    ).all()
+    finished_rents = Rental.query.filter(
+        Rental.user_id == current_user.id,
+        Rental.status.in_([RentalStatus.CLOSED, RentalStatus.CANCELED])
+    ).all()
+
+    return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen, active_rents=active_rents, finished_rents=finished_rents)
+
 @main_bp.route('/dashboard')
 @login_required
 @roles_accepted('manager', 'worker')
@@ -41,10 +59,6 @@ def promover_user():
 
         return jsonify({"success" : False, "message" : "Usuário não cadastrado"})
 
-@main_bp.route('/user')
-def user():
-    return render_template('main/user.html', current_user=current_user)
-
 @main_bp.route('/user/2/api/cancel', methods=['GET', 'POST'])
 def cancel_rent():
     data = request.get_json()
@@ -63,16 +77,3 @@ def cancel_rent():
             "success" : False,
             "message" : "Locação não encontrada"
         })
-
-@main_bp.route('/user/<UserData_chosen>')
-def UserData(UserData_chosen):
-    active_rents = Rental.query.filter(
-        Rental.user_id == current_user.id,
-        Rental.status.in_([RentalStatus.ACTIVE, RentalStatus.PENDING])
-    ).all()
-    finished_rents = Rental.query.filter(
-        Rental.user_id == current_user.id,
-        Rental.status.in_([RentalStatus.CLOSED, RentalStatus.CANCELED])
-    ).all()
-
-    return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen, active_rents=active_rents, finished_rents=finished_rents)

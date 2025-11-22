@@ -91,16 +91,13 @@ def index():
         resp.set_cookie('dropoff_id', str(dropoff.id), max_age=60*60*24)
         return resp
 
-    return render_template('main/index.html', current_user=current_user, branches=branches)
+    return render_template('main/index.html', branches=branches)
 
 
 @main_bp.route('/cars', methods=['GET', 'POST'])
-@login_required
 def cars():
     pickup_id = request.cookies.get('pickup_id')
     dropoff_id = request.cookies.get('dropoff_id')
-    pickup = Pickup.query.get(pickup_id)
-    dropoff = Dropoff.query.get(dropoff_id)
 
     if not pickup_id or not dropoff_id:
         return redirect(url_for('main.index'))
@@ -111,7 +108,6 @@ def cars():
         rental = Rental(
             pickup_id=pickup_id,
             dropoff_id=dropoff_id,
-            user_id=current_user.id,
             vehicle_id=vehicle_id,
             fee_decimal=0.12
         )
@@ -124,8 +120,10 @@ def cars():
         resp.set_cookie('rental_id', str(rental.id), max_age=60*60*24)
         return resp
 
+    pickup = Pickup.query.get(int(pickup_id))
+    dropoff = Dropoff.query.get(int(dropoff_id))
     vehicles = Vehicle.query.all()
-    return render_template('main/cars.html', current_user=current_user, vehicles=vehicles, pickup=pickup, dropoff=dropoff)
+    return render_template('main/cars.html', vehicles=vehicles, pickup=pickup, dropoff=dropoff)
 
 @main_bp.route('/pay', methods=['GET', 'POST'])
 def pay():
@@ -164,7 +162,8 @@ def pay():
 
     return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras, extras=extras)
 
-@main_bp.route('/confirmation')
+@main_bp.route('/confirmation', methods=['GET', 'POST'])
+@login_required
 def confirmation():
     
     pickup_id = request.cookies.get('pickup_id')
@@ -179,14 +178,18 @@ def confirmation():
         return redirect(url_for('main.cars'))
 
     if request.method == "POST":
-        resp = make_response(url_for('main.index'))
+        resp = make_response(redirect(url_for('main.index')))
         for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
             resp.set_cookie(cookie, "", expires=0)
         return resp
 
-    pickup = Pickup.query.get(pickup_id)
-    dropoff = Dropoff.query.get(dropoff_id)
-    vehicle = Vehicle.query.get(vehicle_id)
-    rental = Rental.query.get(rental_id)
+    pickup = Pickup.query.get(int(pickup_id))
+    dropoff = Dropoff.query.get(int(dropoff_id))
+    vehicle = Vehicle.query.get(int(vehicle_id))
+    rental = Rental.query.get(int(rental_id))
+
+    rental.user_id = current_user.id
+
+    db.session.commit()
 
     return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras)

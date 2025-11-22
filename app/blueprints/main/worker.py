@@ -1,9 +1,9 @@
 from flask import render_template, request, jsonify
 from flask_security import roles_accepted
-from flask_login import login_required, current_user
+from flask_login import login_required
 from app.blueprints.main import main_bp
-from app.models import User, select_users_with_role, Rental, RentalStatus
-from app import db, user_datastore, login_manager
+from app.models import Rental, RentalStatus
+from app import db
 
 @main_bp.route('/dashboard/api/alter/status', methods=['POST'])
 def alter_rent_status():
@@ -29,6 +29,15 @@ def alter_rent_status():
                 "message" : "Ocorreu algum erro na aplicação... Tente novamente mais tarde"
             })
 
+@main_bp.route('/dashboard/rents/pending')
+@login_required
+@roles_accepted('manager', 'worker')
+def pending_rents():
+    pending_rents = Rental.query.filter_by(status=RentalStatus.PENDING).all()
+    btn_class = "pending"
+    btn_message = "Atestar retirada"
+    return render_template('main/rents.html', rents=pending_rents, btn_class=btn_class, btn_message=btn_message)
+
 @main_bp.route('/dashboard/rents/active')
 @login_required
 @roles_accepted('manager', 'worker')
@@ -38,11 +47,11 @@ def active_rents():
     btn_message = "Atestar devolução"
     return render_template('main/rents.html', rents=active_rents, btn_class=btn_class, btn_message=btn_message)
 
-@main_bp.route('/dashboard/rents/pending')
+@main_bp.route('/dashboard/rents/late')
 @login_required
 @roles_accepted('manager', 'worker')
-def pending_rents():
-    pending_rents = Rental.query.filter_by(status=RentalStatus.PENDING).all()
-    btn_class = "pending"
-    btn_message = "Atestar retirada"
-    return render_template('main/rents.html', rents=pending_rents, btn_class=btn_class, btn_message=btn_message)
+def late_rents():
+    late_rents = Rental.query.filter_by(status=RentalStatus.LATE).all()
+    btn_class = "late"
+    btn_message = "Atestar devolução atrasada"
+    return render_template('main/rents.html', rents=late_rents, btn_class=btn_class, btn_message=btn_message)

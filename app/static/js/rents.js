@@ -30,4 +30,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     ButtonAlterStatus("pending", "Desejas atestar retirada do veículo?", "ACTIVE")
     ButtonAlterStatus("active", "Desejas atestar devolução do veículo?", "CLOSED")
+    ButtonAlterStatus("late", "Desejas atestar devolução do veículo com atraso?", "CLOSED_LATE")
 })

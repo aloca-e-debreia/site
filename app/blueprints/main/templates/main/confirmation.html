@@ -47,7 +47,7 @@
             <div class="linha"><span>Adicionais</span></div>
             {% for rental_extra in rental_extras %}
                 {% if rental_extra.extra.selectable_quantity %}
-                    <div class="linha"><span>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</span><span>{{ rental_extra.extra.daily_price | currency }} / dia</span></div>
+                    <div class="linha"><span>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</span><span>{{ rental_extra.extra.daily_price | currency }}/dia</span></div>
                 {% else %}
                     <div class="linha"><span>{{ rental_extra.extra.name }}</span><span>{{ rental_extra.extra.daily_price | currency }}/dia</span></div>
                 {% endif %}
@@ -57,8 +57,6 @@
             <div class="linha"><span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span></div>
             <hr>
             <div class="linha total"><span>Total</span><span>{{ rental.total | currency }}</span></div>
-
-            <button class="btn-continue">Continuar</button>
         </div>
     </div>
 
@@ -73,7 +71,9 @@
             <button class="payment-option">Boleto</button>
         </div>
 
-        <button class="btn-confirm">Confirmar reserva</button>
+        <form action="{{ url_for('main.confirmation') }}" method="post">
+            <button class="btn-confirm" type="submit">Confirmar reserva</button>
+        </form>
     </div>
 
 </div>

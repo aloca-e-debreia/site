@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% from "rent-details-macros.html" import rent_details %}
+
 {% block title %} {{ current_user.name }} {% endblock %}
 
 {% block extra_css %}
@@ -12,8 +14,14 @@
 
 {% block content %} 
 <div class="AllUser">
-    <a href="{{ url_for('auth.logout') }}">Logout</a>
     <div class="user">
+        <a href="{{ url_for('auth.logout') }}">Logout</a> <br>
+
+        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button>><br>
+    
+        {% if current_user.has_role('manager') or current_user.has_role('worker') %}
+            <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+        {% endif %}
         <div class="boxes">
             <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
             <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
@@ -52,6 +60,10 @@
             </div> 
         {% elif UserData_chosen == "2" %}
         <!--Precisa ver quantas reservas tem, fazer um for, se tiver 0, nenhuma reserva aparecerá.-->
+            
+            {% if active_rents|length == 0 %}
+                <p class="empty-msg">Você não possui reservas ativas.</p>
+            {% endif %}
 
             {% for active_rent in active_rents %}
                 <div class="Cont">
@@ -62,16 +74,18 @@
                     </div>
                 </div>
                 <div class="Cont-Details">
-                    <p>Carro escolhido: {{ active_rent.vehicle.name() }}</p>
-                    <p>Data da reserva: {{ active_rent.pickup.date_br }} - {{ active_rent.dropoff.date_br }}</p>
-                    <p>Preço total: {{ active_rent.total | currency }}</p>
-                    <p>Status: {{ active_rent.status_label }}</p>
+                    {{ rent_details(active_rent) }}
                     <button type="button" class="btn-cancel-rent" data-rent-id="{{ active_rent.id }}">Cancelar</button>
-                </div>
+                </div>    
             {% endfor %}
 
         
         {% elif UserData_chosen == "3" %}
+
+            {% if active_rents|length == 0 %}
+                <p class="empty-msg">Você não possui reservas canceladas ou concluídas.</p>
+            {% endif %}
+
             {% for finished_rent in finished_rents %}
                 <div class="Cont">
                     <div class="icon"><img src="{{ finished_rent.vehicle.get_img_url() }}" alt="Car" width="70px"></div>
@@ -81,11 +95,8 @@
                     </div>
                 </div>
                 <div class="Cont-Details">
-                    <p>Carro escolhido: {{ finished_rent.vehicle.name() }}</p>
-                    <p>Data da reserva: {{ finished_rent.pickup.date_br }} - {{ finished_rent.dropoff.date_br }}</p>
-                    <p>Preço total: {{ finished_rent.total | currency }}</p>
-                    <p>Status: {{ finished_rent.status_label }}</p>
-                </div>
+                    {{ rent_details(finished_rent) }}
+                </div>    
             {% endfor %}
         {% endif %}
         </div>

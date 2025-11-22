@@ -8,14 +8,13 @@
 
 {% block content %}
 
-    {% if user_role != 'Cliente' %}
-        <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
-    {% endif %}
+    <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
 
     <h1>Locações</h1>
 
     <button type="button"><a href="{{ url_for('main.pending_rents') }}">Locações Pendentes</a></button>
     <button type="button"><a href="{{ url_for('main.active_rents') }}">Locações Ativas</a></button>
+    <button type="button"><a href="{{ url_for('main.late_rents') }}">Locações Atrasadas</a></button>
 
     {% for rent in rents %}
         <div>

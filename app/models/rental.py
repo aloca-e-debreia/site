@@ -68,10 +68,12 @@ class RentalExtra(db.Model):
     
 class RentalStatus(enum.Enum):
     PENDING = "pending" #hasn't got the car 
-    ACTIVE = "active" #got the car, ongoing status
-    CLOSED = "closed" #returned the car
-    CANCELED = 'canceled'
-    LATE = "late"
+    ACTIVE = "active" #got the car, hasn't returned
+    LATE = "late" # got the car, is past the return deadline
+    CLOSED = "closed" #returned the car within the deadline
+    CLOSED_LATE = "closed_late" #returned the car past the return deadline
+    CANCELED = 'canceled' #canceled before getting the car
+
 
 class Rental(db.Model):
     __tablename__ = 'rental'
@@ -101,6 +103,7 @@ class Rental(db.Model):
             RentalStatus.PENDING: "Pendente",
             RentalStatus.ACTIVE: "Ativa",
             RentalStatus.CLOSED: "Concluída",
+            RentalStatus.CLOSED_LATE: "Concluída com atraso",
             RentalStatus.LATE: "Atrasada",
             RentalStatus.CANCELED: "Cancelada",
         }
