@@ -1,0 +1,31 @@
+engines:
+  - id: 1
+    displacement: "1.0"
+    fuel: "Flex"
+  - id: 2
+    displacement: "1.3"
+    fuel: "Flex"
+  - id: 3
+    displacement: "1.6"
+    fuel: "Gasoline"
+  - id: 4
+    displacement: "1.6 Turbo"
+    fuel: "Gasoline"
+  - id: 5
+    displacement: "2.0"
+    fuel: "Flex"
+  - id: 6
+    displacement: "2.0 Turbo"
+    fuel: "Gasoline"
+  - id: 7
+    displacement: "1.0"
+    fuel: "Gasoline"
+  - id: 8
+    displacement: "Electric"
+    fuel: "Electric"
+  - id: 9
+    displacement: "Hibrid"
+    fuel: "Hibrid"
+  - id: 10
+    displacement: "1.8"
+    fuel: "Ethanol"

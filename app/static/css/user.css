@@ -1,0 +1,118 @@
+*{
+    box-sizing: border-box;
+
+}
+
+.AllUser{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+.user{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fa7921;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.boxes{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 20px;
+}
+
+.box {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: black;
+    text-align: center;
+    line-height: 100px;  
+    background-color: #ff974f;
+    flex: 1;
+}
+
+
+.ContUser{
+    background-color: #ff974f;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 95%;
+    gap: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+a{    
+    text-decoration: none;
+    color: black;
+}
+
+
+#Text-MyData:hover, #Text-MyReservations:hover, #Text-History:hover{
+background-color: #ff9f5b;
+transition: 0.7s;
+}
+
+.Cont{
+    display: flex;
+    border-radius: 15px;
+    gap: 15px;
+    background-color: #f0f0f0;
+    align-items: center;
+    padding: 20px;
+    transition: 0.3 ease;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+
+.Cont .PersonalData_Text h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.Cont p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.AllCont{
+    display: flex;
+    justify-content: center;
+}
+
+.Cont.active{
+    border-radius: 15px 15px 0 0;
+}
+
+.Cont-Details {
+  max-height: 0;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-top: 10px;
+  padding: 0 20px;
+  transition: all 0.5s ease;
+  opacity: 0;
+  margin-top: -15px;
+  position: relative;
+  z-index: 1;
+  border-top: 2px solid #ddd;
+}
+
+.Cont-Details.open {
+  max-height: 300px; 
+  opacity: 1;
+  padding: 20px;
+  margin-top: 0;
+}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pay.css') }}">
+{% endblock %}
+
+{% block title %} Adicionais {% endblock %}
+
+{% block content %} 
+<div class="container">
+
+    <div class="car-info">
+        <div class="car-left">
+            <img src="{{ vehicle.get_img_url() }}" class="car-img">
+        </div>
+
+        <div class="car-middle">
+            <h2>{{ vehicle.name() }}</h2>
+
+            <div class="icons">
+                <span>{{ vehicle.n_people }} Pessoas 🚗</span>
+                <span>{{ vehicle.transmission.name }} ⚙️</span>
+                {% for feature in vehicle.features %}
+                    <span>{{ feature.name }}</span>
+                {% endfor %}
+            </div>
+
+            <p><strong>Adicionais selecionados:</strong></p>
+            <ul>
+                {% for rental_extra in rental_extras %}
+                    {% if rental_extra.extra.selectable_quantity %}
+                        <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
+                    {% else %}
+                        <li>{{ rental_extra.extra.name }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="car-summary">
+            <h3>Resumo</h3>
+            <div class="summary-line">
+                <span>Valor do veículo</span><span>{{ vehicle.daily_price | currency }}/dia</span>
+                <span>Total</span><span>{{ rental.vehicle_total | currency }}</span>
+            </div>
+            <div class="summary-line">
+                <span>Adicionais</span><span>{{ rental.extras_daily_price | currency }}</span>
+            </div>
+            <div class="summary-line">
+                <span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span>
+            </div>
+            <div class="summary-line total">
+                <span>Total</span><span>{{ rental.total | currency }}</span>
+            </div>
+
+            <a href="{{ url_for('main.confirmation')}}">
+                <button class="resume-btn">Continuar</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="extras-box">
+        <h2>Adicionais</h2>
+        
+        {% for extra in extras %}
+            <div class="extra-item">
+                <div class="extra-left">
+                    <h3>{{ extra.name }}</h3>
+                    <p>{{ extra.description }}</p>
+                </div>
+                <form class="extra-right" action="{{ url_for('main.pay') }}" method="post">
+                    <span class="price">{{ extra.daily_price | currency }}</span>
+                    {% if extra.selectable_quantity %}
+                    <div class="counter">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                    {% endif %}
+                    <input type="hidden" name="quantity" value="1"> <!--Mudar para o valor que o user selecionar-->
+                    <input type="hidden" name="extra_id" value="{{ extra.id }}">
+                    <button class="add-btn" type="submit">Adicionar</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

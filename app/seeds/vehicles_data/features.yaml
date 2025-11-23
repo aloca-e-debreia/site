@@ -1,0 +1,11 @@
+features:
+  - id: 1
+    name: "ABS"
+  - id: 2
+    name: "Direção elétrica"
+  - id: 3
+    name: "Direção hidráulica"
+  - id: 4
+    name: "Ar condicionado"
+  - id: 5
+    name: "Câmera de ré"

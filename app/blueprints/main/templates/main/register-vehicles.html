@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+    <script type="module" src="{{ url_for('static', filename='js/registerVehicles.js') }}"></script>
+{% endblock %}
+
+{% block title %} Cadastrar Veículo {% endblock %}
+
+{% block content %}
+
+    <h1>Cadastrar Veículo</h1>
+
+    <form id="register-vehicle-form" action="{{ url_for('main.register_vehicles') }}" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Descrição</legend>
+
+            <label for="brand">Marca</label> <br>
+            <input list="brands-search" type="text" class="search" name="search" data-ref="brand" data-type="brands" placeholder="Digite a marca..."> <br><br>
+            <datalist id="brands-search">
+                {% for brand in brands %}
+                    <option data-id="{{ brand.id }}" value="{{ brand.name }}"></option>
+                {% endfor %}
+            </datalist>
+            <input type="hidden" id="brands-brand-id" name="brands-brand-id">
+
+            <label for="brand">Modelo</label> <br>
+            <input list="models-search" type="text" class="search" name="search" data-ref="model" data-type="models" placeholder="Digite o modelo..."> <br><br>
+            <datalist id="models-search">
+                {% for model in models %}
+                    <option data-id="{{ model.id }}" value="{{ model.name }}"></option>
+                {% endfor %}
+            </datalist>
+            <input type="hidden" id="models-model-id" name="models-model-id">
+            
+            <label for="brand">Ano</label> <br>
+            <input type="number" id="year" name="year" min="2000" max="2025" placeholder="Digite o ano..."> <br><br>
+            
+            <label for="version">Versão</label> <br>
+            <input list="versions-search" type="text" class="search" name="search" data-ref="version" data-type="versions"> <br><br>
+            <datalist id="versions-search">
+                {% for version in versions %}
+                    <option data-id="{{ version.id }}" value="{{ version.name }}"></option>
+                {% endfor %}
+            </datalist>
+            <input type="hidden" id="versions-version-id" name="versions-version-id">
+
+            <label for="brand">Categoria</label> <br>
+            <input list="categories-search" type="text" class="search" name="search" data-ref="category" data-type="categories" placeholder="Digite a categoria..."> <br><br>
+            <datalist id="categories-search">
+                {% for category in categories %}
+                    <option data-id="{{ category.id }}" value="{{ category.name }}"></option>
+                {% endfor %}
+            </datalist>
+            <input type="hidden" id="categories-category-id" name="categories-category-id">
+        </fieldset>
+
+        <fieldset>
+            <legend>Dados específicos</legend>
+
+            <label for="plate">Placa</label> <br>
+            <input type="text" name="plate"> <br><br>
+
+            <label for="mileage">Quilometragem</label> <br>
+            <input type="number" step="any" name="mileage"> <br><br>
+
+            <label for="n-people">Nº de pessoas</label> <br>
+            <input type="number" name="n-people"> <br><br>
+
+            <label for="daily-price">Preço/dia</label> <br>
+            <input type="number" step="any" name="daily-price"> <br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Dados mecânicos</legend>
+
+
+            <label for="displacement">Volume de deslocamendo (cilindrada)</label> <br>
+            <input type="number" step="any" class="search-bar" name="displacement" placeholder="Digite a cilindrada..."> <br><br>
+            
+            <legend>Combustível</legend> <br>
+
+            <label for="fuel">Gasolina</label>
+            <input type="radio" class="fuel" name="fuel" value="gasoline"><br>
+
+            <label for="fuel">Etanol</label>
+            <input type="radio" class="fuel" name="fuel" value="ethanol"><br>
+
+            <label for="fuel">Elétrico</label>
+            <input type="radio" class="fuel" name="fuel" value="electric"><br>
+
+            <label for="fuel">Híbrido</label>
+            <input type="radio" class="fuel" name="fuel" value="hibrid"><br>
+
+            <legend>Transmissão</legend> <br>
+            
+            {% for transmission in transmissions %}
+                <label for="transmission">{{ transmission.name }}</label>
+                <input type="radio" class="transmission" name="transmission" value="{{ transmission.id }}">
+            {% endfor %}
+
+        </fieldset>
+        <fieldset>
+            <legend>Recursos</legend>
+            {% for feature in features %}
+                <input type="checkbox" class="feature" name="feature">
+                <label for="{{ feature.name }}">{{ feature.name }}</label> <br>
+            {% endfor %}
+        </fieldset> <br>
+
+        <fieldset>
+            <legend>Imagem</legend>
+            <input type="file" name="img-file">
+        </fieldset>
+        
+        <button type="reset">Limpar</button>
+
+        <button type="submit" id="btn">Enviar</button>
+    </form>
+
+
+    <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+
+{% endblock %}

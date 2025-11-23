@@ -1,0 +1,11 @@
+categories:
+  - id: 1
+    name: "Hatch"
+  - id: 2
+    name: "Sedan"
+  - id: 3
+    name: "SUV"
+  - id: 4
+    name: "Picape"
+  - id: 5
+    name: "Utilitary"

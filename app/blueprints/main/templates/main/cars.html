@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %} cars {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cars.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+    <script type="module" src="{{ url_for('static', filename='js/filterPrice.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/filter.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="filters">
+    
+    <div class="filterBox">
+        <label>Filtrar por nome:</label>
+        <input type="text" placeholder="Digite o nome do carro... " id="filter">
+    </div>
+
+    <div class="filterBox">
+        <label>Categoria:</label>
+        <input list="categories" id="filterCategory" placeholder="Escolha a categoria">
+        <datalist id="categories">
+            {% set seen = [] %}
+            {% for vehicle in vehicles.items %}
+                {% if vehicle.category.name not in seen %}
+                    <option value="{{ vehicle.category.name }}">
+                    {% set _ = seen.append(vehicle.category.name) %}
+                {% endif %}
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="filterBox">
+        <label>Combustível:</label>
+        <input list="fuels" id="filterFuel" placeholder="Escolha o combustível">
+        <datalist id="fuels">
+        {% set seenFuel = [] %}
+        {% for vehicle in vehicles %}
+            {% if vehicle.engine.fuel not in seenFuel %}
+                <option value="{{ vehicle.engine.fuel }}">
+                {% set _ = seenFuel.append(vehicle.engine.fuel) %}
+            {% endif %}
+        {% endfor %}
+        </datalist>
+    </div>
+    <div class="filterBox">
+        <label>Ordenar por preço:</label>
+        <input list="orderPrices" id="filterPrice" placeholder="Escolha a ordenação">
+        <datalist id="orderPrices">
+            <option value="Mais barato">
+            <option value="Mais caro">
+            <option value="Menor → Maior">
+            <option value="Maior → Menor">
+        </datalist>
+    </div>    
+    <div>
+    <div class="carros-grid">
+
+    {% for vehicle in vehicles %}
+    <div class="carro-card">
+
+        <h3 class="vehicle-title">
+            {{ vehicle.model.brand.name }}
+            {{ vehicle.model.name }}
+            {{ vehicle.engine.displacement }}
+            {{ vehicle.version.name }}
+            {{ vehicle.year }}
+        </h3>
+
+        <div class="carro-imagem-preco">
+            <img src="{{ vehicle.get_img_url() }}.png" alt="Carro">
+            <span class="preco">R$ {{ vehicle.daily_price }} / dia</span>
+            <span>Total: {{ (vehicle.daily_price * (dropoff.date - pickup.date).days) | currency }}</span>
+        </div>
+
+        <ul class="carro-info">
+            <li><strong>Categoria:</strong> {{ vehicle.category.name }}</li>
+            <li><strong>Combustível:</strong> {{ vehicle.engine.fuel }}</li>
+
+            {% for feature in vehicle.features %}
+                <li>{{ feature.name }}</li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for('main.cars') }}" method="post">
+            <input type="hidden" name="vehicle-to-rent" value="{{ vehicle.id }}">
+            <button type="submit" class="btn-alugar">Alugar</a>
+        </form>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<div class="pagination" style="text-align:center; margin:30px 0;">
+    {% if vehicles.has_prev %}
+        <a href="{{ url_for('main.cars', page=vehicles.prev_num) }}">← Anterior</a>
+    {% endif %}
+
+    <span style="margin: 0 15px;">
+        Página {{ vehicles.page }} de {{ vehicles.pages }}
+    </span>
+
+    {% if vehicles.has_next %}
+        <a href="{{ url_for('main.cars', page=vehicles.next_num) }}">Próxima →</a>
+    {% endif %}
+</div>
+
+    <p id="SemResultados" style="display:none; text-align:center; font-size:20px; font-weight:bold;">
+        Não tem nenhum carro com esse filtro.
+    </p>
+   
+{% endblock %}
