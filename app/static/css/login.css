@@ -1,3 +1,14 @@
+body {
+    background-color: #f4f6fc;
+    height: 100%;
+    margin: 0;
+    padding-inline-start: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Overpass;
+}
+
 #login {
     background-color: #fff;
     margin-top: 40px;

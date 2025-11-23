@@ -77,8 +77,8 @@
         </div>
 
         <ul class="carro-info">
-            <li><strong>Categoria:</strong> {{ vehicle.category.name }}</li>
-            <li><strong>Combustível:</strong> {{ vehicle.engine.fuel }}</li>
+            <li class="category"><strong>Categoria:</strong> {{ vehicle.category.name }}</li>
+            <li class="fuel"><strong>Combustível:</strong> {{ vehicle.engine.fuel }}</li>
 
             {% for feature in vehicle.features %}
                 <li>{{ feature.name }}</li>
@@ -95,7 +95,9 @@
     {% endfor %}
 
 </div>
-
+    <p id="SemResultados" style="display:none; text-align:center; font-size:20px; font-weight:bold;">
+        Não tem nenhum carro com esse filtro.
+    </p>
 <div class="pagination" style="text-align:center; margin:30px 0;">
     {% if vehicles.has_prev %}
         <a href="{{ url_for('main.cars', page=vehicles.prev_num) }}">← Anterior</a>
@@ -110,8 +112,6 @@
     {% endif %}
 </div>
 
-    <p id="SemResultados" style="display:none; text-align:center; font-size:20px; font-weight:bold;">
-        Não tem nenhum carro com esse filtro.
-    </p>
+    
    
 {% endblock %}

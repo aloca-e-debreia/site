@@ -197,3 +197,7 @@ def confirmation():
     db.session.commit()
 
     return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras)
+
+@main_bp.route("/contact")
+def contact():
+    return render_template("main/contact.html")
