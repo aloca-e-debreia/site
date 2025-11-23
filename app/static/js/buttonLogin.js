@@ -1,15 +1,28 @@
-const Conts = document.getElementsByClassName('Cont');
+const filterPrice = document.getElementById("filterPrice");
 
-function toggleContent(element) {
-  const next = element.nextElementSibling;
+// Função que ordena
+function ordenar() {
+    const criterio = filterPrice.value.toLowerCase();
 
-  document.querySelectorAll('.Cont-Details.open').forEach(div => {
-    if (div !== next) div.classList.remove('open');
-  });
+    // Converter NodeList em array
+    const carrosArray = Array.from(carros);
 
-  if (next && next.classList.contains('Cont-Details')) {
-    next.classList.toggle('open');
-  }
+    carrosArray.sort((a, b) => {
+        const precoA = parseFloat(a.querySelector("h2").innerText.replace("/Dia", ""));
+        const precoB = parseFloat(b.querySelector("h2").innerText.replace("/Dia", ""));
+
+        if (criterio === "mais barato" || criterio === "menor → maior") {
+            return precoA - precoB; // Crescente
+        }
+        if (criterio === "mais caro" || criterio === "maior → menor") {
+            return precoB - precoA; // Decrescente
+        }
+    });
+
+    const container = document.querySelector(".carros");
+    container.innerHTML = "";
+
+    carrosArray.forEach(carro => container.appendChild(carro));
 }
 
-
+filterPrice.addEventListener("input", ordenar);

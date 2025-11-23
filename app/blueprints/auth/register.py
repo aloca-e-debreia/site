@@ -1,8 +1,8 @@
 from flask import request, redirect, url_for, render_template, jsonify, flash
 from flask_login import login_user, login_required, current_user
 from app.blueprints.auth import auth_bp
-from app.models.user import User
-from app import db, bcrypt, user_datastore
+from app.models import User
+from app import db, bcrypt, user_datastore, is_safe_url
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -25,7 +25,14 @@ def register():
             user_datastore.add_role_to_user(user, 'client')
             db.session.commit()
             login_user(user)
-            return redirect(url_for('main.index'))
+
+            next_page = request.form['next'] or request.args.get("next")
+            print(next_page)
+            if not next_page or not is_safe_url(next_page):
+                return redirect(url_for('main.index'))
+            
+            return redirect(next_page)
+            
     
     return render_template('auth/register.html')
 

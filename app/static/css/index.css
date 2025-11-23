@@ -25,6 +25,21 @@ body {
     display: block;
     color: #393939;
 }
+#btn{
+  color: white;
+  background-color: #114043;
+  border-color: #114043;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  padding: 15px;
+  border: none;
+}
+
+#btn:hover{
+  background-color: #124649;
+}
 
 .error-message {
     font-size: 14px;
@@ -76,7 +91,7 @@ body {
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #eef3f8;
+  background-color: #f4f6fc;
   margin: 0;
   padding: 0;
 }
@@ -241,3 +256,71 @@ body {
   color: #f77f00;
   font-weight: bold;
 }
+
+.cardsPQ{
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px;
+  width: 100%;
+  margin: 20px 0 0 0;
+  gap: 30px;
+}
+
+.cardPQ{
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  height: 100%;
+  text-align: center;
+  background-color: #f4f6fc;
+  gap: 10px;
+  width: calc(33.33% - 10px);
+}
+
+.cardPQ:hover{
+  transition: 200ms;
+  transform: scale(1.05);   /* aumenta 5% */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+#titlePQ{
+  font-family: Overpass;
+  font-weight: bold;
+}
+
+.tudotitle{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.alugar {
+  width: 100vw;
+  background-color: #ffffff;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 40px 0;         /* Espaço interno para destacar a seção */
+  margin-top: 40px;        /* Distância do bloco anterior */
+  box-sizing: border-box;
+}
+
+.tudoCard{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 90%;
+}
+
+#textPQ{
+  text-align: justify;
+  padding: 0 20px 20px 20px;
+}
+
+
+

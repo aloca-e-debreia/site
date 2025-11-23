@@ -2,3 +2,16 @@
 *.venv/
 *__pycache__/
 *.env
+*.sqlite3
+*.db
+
+instance/
+venv/
+env/
+vscode/
+
+env
+venv
+
+uploads/
+*.png
