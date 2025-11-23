@@ -165,18 +165,15 @@ body {
 }
 
 #devolucao {
-  display: none;   
-  background: #f77f00;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 8px;
-  width: 100%;
+  display: none;
   flex-wrap: wrap;
-  gap: 15px;
-  display: flex;
-  justify-content: space-around;
+  gap: 18px;
   align-items: center;
-
+  background: linear-gradient(180deg, #f77f00 0%, #f36d00 100%);
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  margin-top: 20px;
   animation: fadeIn 0.2s ease-out;
 }
 

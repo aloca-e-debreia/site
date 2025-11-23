@@ -38,7 +38,7 @@
         <input list="fuels" id="filterFuel" placeholder="Escolha o combustível">
         <datalist id="fuels">
         {% set seenFuel = [] %}
-        {% for vehicle in vehicles %}
+        {% for vehicle in vehicles.items %}
             {% if vehicle.engine.fuel not in seenFuel %}
                 <option value="{{ vehicle.engine.fuel }}">
                 {% set _ = seenFuel.append(vehicle.engine.fuel) %}
@@ -59,7 +59,7 @@
     <div>
     <div class="carros-grid">
 
-    {% for vehicle in vehicles %}
+    {% for vehicle in vehicles.items %}
     <div class="carro-card">
 
         <h3 class="vehicle-title">
@@ -86,8 +86,10 @@
         </ul>
         <form action="{{ url_for('main.cars') }}" method="post">
             <input type="hidden" name="vehicle-to-rent" value="{{ vehicle.id }}">
-            <button type="submit" class="btn-alugar">Alugar</a>
-        </form>
+            <div class="btnAlugar">
+                <button type="submit" class="btn-alugar">Alugar</a>
+            </div>
+       </form>
 
     </div>
     {% endfor %}

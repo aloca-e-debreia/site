@@ -3,6 +3,72 @@
 
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    background: #f2f5f7;        /* leve cinza elegante */
+    font-family: Overpass;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+.btnDelete{
+    display: flex;
+    justify-content: center;
+    padding: 0 0 20px 0;
+}
+
+#dashboard-btn{
+    background-color: #114043;
+    border: none;
+    border-radius: 15px;
+    width: 45%;
+    padding: 20px;
+    cursor: pointer;
+    margin: 10px;
+}
+#dashboard-btn:hover{
+    background-color: #124649;
+    transition: 0.35s;
+}
+#remove-account-btn{
+    border: none;
+    background-color: red;
+    border-radius: 15px;
+    width: 45%;
+    color: white;
+    cursor: pointer;
+    padding: 20px;
+    margin: 10px;
+}
+
+#remove-account-btn:hover{
+    background-color: white;
+    color: red;
+    transition: 0.35s;
+}
+.empty-msg{
+    font-size: large;
+    display: flex;
+    justify-content: center;
+}
+
+#btnLogout{
+    border-radius: 10px; 
+    background-color: #114043; 
+    height: 50px;
+    cursor: pointer;
+    border: none;
+}
+
+#btnLogout:hover{
+    background-color: #114043;
+}
+
+#btnLogout a{
+    color: white;
+    font-weight: bold;
+}
 .AllUser{
     display: flex;
     justify-content: center;

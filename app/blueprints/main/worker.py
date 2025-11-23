@@ -4,6 +4,7 @@ from flask_login import login_required
 from app.blueprints.main import main_bp
 from app.models import Rental, RentalStatus
 from app import db
+from flask import session
 
 @main_bp.route('/dashboard/api/alter/status', methods=['POST'])
 def alter_rent_status():

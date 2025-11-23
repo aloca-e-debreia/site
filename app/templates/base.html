@@ -2,72 +2,74 @@
 <html lang="pt-br">
 <head>
     {% block head %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Click&Drive | {% block title %} {% endblock %}</title>
-        <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-        {% block extra_css %} {% endblock %}
-        {% block extra_js %} {% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click&Drive | {% block title %}{% endblock %}</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+    {% block extra_css %}{% endblock %}
+    {% block extra_js %}{% endblock %}
     {% endblock %}
 </head>
-<body>
-    {% block header %}
-    {% if current_user.is_authenticated %}
-    <header>
-        <div id="ContHeader">
-            <div id="logo">
-                <a href="{{ url_for('main.index') }}" style="text-decoration: none; color: black;">
-                    <img src="" alt="CLICK & DRIVE">
-                </a>
-            </div>
-            <div class="elementosHeader">
-                <ul>
-                    <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
-                    <li><i class="ri-car-line"></i> <a href="{{ url_for('main.cars') }}">LISTA DE CARROS</a></li>
-                   <li><i class="ri-question-line"></i> AJUDA</li>
-                    <div style="display: flex;">
-                        <img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt=""  width="35px" height="35px">    
-                        <li class="login" id="entrar" style="margin-right: -20px; text-transform: uppercase;"><i class="ri-user-fill"></i><a href="{{ url_for('main.user') }}">{{ current_user.name }}</a>
-                    </div>
-                </ul>
-            </div>
-        </div>
-    </header> <br>
-    {% else %}
-    <header>
-        <div id="ContHeader">
-            <div id="logo">
-                <a href="{{ url_for('main.index') }}" style="text-decoration: none; color: black;">
-                    <img src="" alt="CLICK & DRIVE">
-                </a>
-            </div>
-            <div class="elementosHeader">
-                <ul>
-                    <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
-                    <li><i class="ri-car-line"></i> <a href="{{ url_for('main.cars') }}">LISTA DE CARROS</a></li>
-                    <li><i class="ri-question-line"></i> AJUDA</li>
-                    <div style="display: flex;">
-                        <img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt=""  width="35px" height="35px">    
-                        <li class="login" id="entrar" style="margin-right: -20px;"><i class="ri-user-fill"></i><a href="{{ url_for('auth.login') }}">ENTRAR</a>|</li> <br>
-                        <li><a href="{{ url_for('auth.register') }}" style="color: black; text-decoration: none;">CADASTRAR</a></li>
-                    </div>
-                </ul>
-            </div>
-        </div>
-    </header> <br>
-    {% endif %}
-    {% endblock %}
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <div class="asd" style="display: flex; margin-top: auto; flex-direction: column; " >
-    <footer>
-        <p>© 2025 Click & Drive — Todos os direitos reservados.</p>
-    </footer>
+<body>
+
+{% block header %}
+<header>
+    <div id="ContHeader">
+
+        <div id="logo">
+            <a href="{{ url_for('main.index') }}" class="logo-link" style="text-decoration: none; color: black;">
+                <img src="" alt="CLICK & DRIVE">
+            </a>
+        </div>
+
+        <nav class="elementosHeader">
+            <ul>
+
+                <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
+                <li><i class="ri-car-line"></i> <a href="{{ url_for('main.cars') }}" style="text-decoration: none; color: black;">LISTA DE CARROS</a></li>
+                <li><i class="ri-question-line"></i> AJUDA</li>
+
+                {% if current_user.is_authenticated %}
+                <li class="menu-user">
+                    <img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png"
+                         alt="avatar" width="35" height="35">
+
+                    <a href="{{ url_for('main.user') }}" class="login-username">
+                        {{ current_user.name }}
+                    </a>
+                </li>
+
+                {% else %}
+                <li class="menu-user">
+                    <img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png"
+                         alt="avatar" width="35" height="35">
+
+                    <a href="{{ url_for('auth.login') }}" class="login-link">ENTRAR</a>
+                    <span>|</span>
+                    <a href="{{ url_for('auth.register') }}" class="register-link">CADASTRAR</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+
     </div>
+</header>
+{% endblock %}
+
+<br>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer style="margin-top:auto;">
+    <p>© 2025 Click & Drive — Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>
