@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from datetime import date, time
 from app.blueprints.main import main_bp
 from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
-from app import db
+from app import db, send_email
 
 @main_bp.route('/api/resume/rent', methods=['POST'])
 def resume_rent():
@@ -179,6 +179,7 @@ def confirmation():
 
     if request.method == "POST":
         resp = make_response(redirect(url_for('main.UserData', UserData_chosen=2, opened=rental_id)))
+
         for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
             resp.set_cookie(cookie, "", expires=0)
         return resp
@@ -193,3 +194,25 @@ def confirmation():
     db.session.commit()
 
     return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras)
+
+@main_bp.route('/confirmation/api/email', methods=['POST'])
+def confirmation_email():
+    if request.method == 'POST':
+        if send_email (
+            subject="Registro de reserva",
+            recipients=[current_user.email],
+            body_text="Parabéns! Sua locação foi registrada com sucesso",
+        ):
+            return jsonify({
+                "success" : True,
+                "title" : "Parabéns! Sua locação foi registrada.",
+                'message' : "Sua locação foi registrada com sucesso!\n\nUm email foi enviado à sua conta confirmando a sua reserva ;)",
+                "type" : "success"
+            })    
+        
+        return jsonify({
+            "success" : False,
+            "title" : "Erro ao registrar sua locação :/",
+            "message" : "Houve um erro ao enviar o email confirmando a sua reserva",
+            "type" : "error"
+        })
