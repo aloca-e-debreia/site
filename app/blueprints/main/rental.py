@@ -178,7 +178,7 @@ def confirmation():
         return redirect(url_for('main.cars'))
 
     if request.method == "POST":
-        resp = make_response(redirect(url_for('main.index')))
+        resp = make_response(redirect(url_for('main.UserData', UserData_chosen=2, opened=rental_id)))
         for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
             resp.set_cookie(cookie, "", expires=0)
         return resp

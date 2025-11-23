@@ -5,6 +5,8 @@ from app.blueprints.main import main_bp
 from app.models import User, select_users_with_role, Rental, RentalStatus
 from app import db, get_user_datastore, login_manager
 
+# USER PORTAL
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -15,6 +17,7 @@ def user():
     return render_template('main/user.html', current_user=current_user)
 
 @main_bp.route('/user/<UserData_chosen>')
+@login_required
 def UserData(UserData_chosen):
     active_rents = Rental.query.filter(
         Rental.user_id == current_user.id,
@@ -27,18 +30,53 @@ def UserData(UserData_chosen):
 
     return render_template('main/user.html', current_user=current_user, UserData_chosen=UserData_chosen, active_rents=active_rents, finished_rents=finished_rents)
 
-@main_bp.route('/dashboard')
+@main_bp.route('/user/2/api/cancel', methods=['POST'])
+@login_required
+def cancel_rent():
+    if request.method == 'POST' and request.is_json:
+        data = request.get_json()
+
+        active_rent_id = int(data.get("rentId"))
+        active_rent = Rental.query.get(active_rent_id)
+        if active_rent:
+            active_rent.status = RentalStatus.CANCELED
+            db.session.commit()
+
+            return jsonify({
+                "success" : True,
+                "message" : "Locação cancelada com sucesso"
+            })
+        return jsonify({
+                "success" : False,
+                "message" : "Locação não encontrada"
+            })
+
+# DASHBOARD
+
+@main_bp.route('/dashboard/clients')
 @login_required
 @roles_accepted('manager', 'worker')
-def dashboard():
+def dashboard_clients():
     clients = select_users_with_role('client')
-    if current_user.has_role('manager'):
-        workers, managers = select_users_with_role('worker'), select_users_with_role('manager')
-        return render_template('main/dashboard.html', user_role='Gerente', clients=clients, workers=workers, managers=managers)
-    else:
-        return render_template('main/dashboard.html', user_role='Funcionário', clients=clients, workers=None, managers=None)
+    return render_template('main/dashboard.html', user_roles=current_user.roles, list='clientes', list_role='client', users=clients)
+    
+@main_bp.route('/dashboard/workers')
+@login_required
+@roles_accepted('manager')
+def dashboard_workers():
+    workers = select_users_with_role('worker')
+    return render_template('main/dashboard.html', user_roles=current_user.roles, list='funcionários', list_role='worker', users=workers)
+
+@main_bp.route('/dashboard/managers')
+@login_required
+@roles_accepted('manager')
+def dashboard_managers():
+    managers = select_users_with_role('manager')
+    return render_template('main/dashboard.html', user_roles=current_user.roles, list='gerentes', list_role='manager', users=managers)
 
 @main_bp.route('/dashboard/api/promote', methods=['POST'])
+@login_required
+@roles_accepted('worker', 'manager')
 def promover_user():
     if request.method == "POST" and request.is_json:
         data = request.get_json()
@@ -58,22 +96,3 @@ def promover_user():
             return jsonify({"success" : True, "message" : "Usuário promovido com sucesso"})
 
         return jsonify({"success" : False, "message" : "Usuário não cadastrado"})
-
-@main_bp.route('/user/2/api/cancel', methods=['GET', 'POST'])
-def cancel_rent():
-    data = request.get_json()
-
-    active_rent_id = int(data.get("rentId"))
-    active_rent = Rental.query.get(active_rent_id)
-    if active_rent:
-        active_rent.status = RentalStatus.CANCELED
-        db.session.commit()
-
-        return jsonify({
-            "success" : True,
-            "message" : "Locação cancelada com sucesso"
-        })
-    return jsonify({
-            "success" : False,
-            "message" : "Locação não encontrada"
-        })

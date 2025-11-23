@@ -17,10 +17,10 @@
     <div class="user">
         <a href="{{ url_for('auth.logout') }}">Logout</a> <br>
 
-        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button>><br>
+        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button><br>
     
         {% if current_user.has_role('manager') or current_user.has_role('worker') %}
-            <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('main.dashboard_clients') }}">Dashboard</a>
         {% endif %}
         <div class="boxes">
             <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
@@ -59,14 +59,13 @@
                 <button>Editar Dados</button> 
             </div> 
         {% elif UserData_chosen == "2" %}
-        <!--Precisa ver quantas reservas tem, fazer um for, se tiver 0, nenhuma reserva aparecerá.-->
             
             {% if active_rents|length == 0 %}
                 <p class="empty-msg">Você não possui reservas ativas.</p>
             {% endif %}
 
             {% for active_rent in active_rents %}
-                <div class="Cont">
+                <div class="Cont" data-rental-id="{{ active_rent.id }}">
                     <div class="icon"><img src="{{ active_rent.vehicle.get_img_url() }}" alt="Car" width="70px"></div>
                     <div class="PersonalData-Text">
                         <h3>Reserva {{ loop.index }} - ID: {{ active_rent.id }}</h3>
@@ -82,7 +81,7 @@
         
         {% elif UserData_chosen == "3" %}
 
-            {% if active_rents|length == 0 %}
+            {% if finished_rents|length == 0 %}
                 <p class="empty-msg">Você não possui reservas canceladas ou concluídas.</p>
             {% endif %}
 

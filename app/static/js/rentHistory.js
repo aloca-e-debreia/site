@@ -31,27 +31,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     document.querySelectorAll(".btn-cancel-rent").forEach(button => {
-        button.addEventListener("click", event => {
-            event.preventDefault()
+            button.addEventListener("click", event => {
+                event.preventDefault()
 
-            if (!confirm("Deseja cancelar a locação?")) return
-            
-            cancelRent(button.dataset.rentId)
-        }) 
-    });
-
-    document.querySelectorAll(".Cont").forEach(cont => {
-        cont.addEventListener("click", () => {
-            const details = cont.nextElementSibling;
-
-            if (details && details.classList.contains("Cont-Details"))
-                details.classList.toggle("open");    
+                if (!confirm("Deseja cancelar a locação?")) return
+                
+                cancelRent(button.dataset.rentId)
+            }) 
         })
-    })
     
     document.getElementById("remove-account-btn").addEventListener("click", event => {
         event.preventDefault()
-        if (confirm("Deseja remover sua conta?"))
-            removeAccount(event.target.dataset.id)
+        if (confirm("Deseja remover sua conta?")) removeAccount(event.target.dataset.id)
     })
+
+    const ContClass = document.querySelectorAll(".Cont")
+    if (ContClass) {
+        ContClass.forEach(cont => {
+            cont.addEventListener("click", () => {
+                const details = cont.nextElementSibling;
+
+                if (details && details.classList.contains("Cont-Details"))
+                    details.classList.toggle("open");    
+            })
+        })
+    }   
+
+    (function recentPaidRent() {
+        const openedId = new URLSearchParams(window.location.search).get("opened")
+        if (!openedId) return
+
+        const target = document.querySelector(`[data-rental-id="${openedId}"]`)
+        if (!target) return
+        target.click()
+        target.scrollIntoView({behavior : "smooth"})
+    })()
+
 })

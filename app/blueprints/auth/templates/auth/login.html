@@ -18,7 +18,7 @@
 
     <div class="ContLogin"; style="display: flex; align-items: center; justify-content: center;">
         <form method="POST" action="{{ url_for('auth.login') }}" id="login">
-            <input type="hidden" name="next" value="{{ next }}">
+            <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
             <div class="input-group">
                 <label>Email</label><br>
                     <input type="text" name="email" class="input" id="email" required placeholder="Digite seu e-mail"><br><br>
@@ -29,7 +29,7 @@
             </div>
             <button type="submit" class="btn" id="button">Enviar</button><br><br>
             <div class="links">
-                <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('auth.register') }}">Criar conta</a>
+                <a href="#">Esqueceu a senha?</a> | <a href="{{ url_for('auth.register', next=request.args.get('next', '')) }}">Criar conta</a>
             </div>
         </form>
     </div>
