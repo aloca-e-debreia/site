@@ -3,8 +3,7 @@ from app.models import Address, Branch, BusinessHours
 from app.seeds.yaml_operations import load_yaml
 from random import randint
 from datetime import datetime
-
-def to_time(string): return datetime.strptime(string, "%H:%M").time() 
+from app import to_time
 
 def seed_branches(app):
 

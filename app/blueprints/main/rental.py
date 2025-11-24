@@ -1,9 +1,8 @@
 from flask import render_template, request, redirect, url_for, make_response, jsonify
 from flask_login import login_required, current_user
-from datetime import date, time
 from app.blueprints.main import main_bp
 from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
-from app import db
+from app import db, send_email, to_time, to_date
 
 @main_bp.route('/api/resume/rent', methods=['POST'])
 def resume_rent():
@@ -64,23 +63,24 @@ def index():
 
         dropoff_branch_id = request.form['dropoff-branch-id']
 
-        #pickup/dropoff time
-        pickup_year, pickup_month, pickup_day = list(map(int, request.form['pickup-date'].split('-')))
-        dropoff_year, dropoff_month, dropoff_day = list(map(int, request.form['dropoff-date'].split('-')))
+        #pickup/dropoff date
+        pickup_date = to_date(request.form['pickup-date'])
+        dropoff_date = to_date(request.form['dropoff-date'])
 
-        pickup_hour, pickup_min = list(map(int, request.form['pickup-time'].split(':')))
-        dropoff_hour, dropoff_min = list(map(int, request.form['dropoff-time'].split(':')))
+        #pickup/dropoff time
+        pickup_time = to_time(request.form['pickup-time'])
+        dropoff_time = to_time(request.form['dropoff-time'])
 
         pickup = Pickup(
             branch_id=pickup_branch_id,
-            date=date(pickup_year, pickup_month, pickup_day),
-            time=time(pickup_hour, pickup_min)
+            date=pickup_date,
+            time=pickup_time
         )
 
         dropoff = Dropoff(
             branch_id=dropoff_branch_id,
-            date=date(dropoff_year, dropoff_month, dropoff_day),
-            time=time(dropoff_hour, dropoff_min)
+            date=dropoff_date,
+            time=dropoff_time
         )
         
         db.session.add_all([pickup, dropoff])
@@ -145,22 +145,42 @@ def pay():
     vehicle = Vehicle.query.get(int(vehicle_id))
     rental = Rental.query.get(int(rental_id))
 
-    if request.method == 'POST':
-        extra = Extra.query.get(int(request.form['extra_id']))
-        quantity = request.form['quantity']
-
-        assoc = RentalExtra.query.filter_by(rental_id=rental_id, extra_id=extra.id).first()
-
-        if not assoc: #if the location doesn't have the extra
-            rental_extra = RentalExtra(rental=rental, extra=extra, quantity=int(quantity))
-            db.session.add(rental_extra)
-            rental.rental_extras.append(rental_extra)
-        else:
-            assoc.quantity = quantity
-
-        db.session.commit()
-
     return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras, extras=extras)
+
+@main_bp.route('api/pay/add-extra', methods=['POST'])
+def add_extra():
+    if request.method == 'POST':
+        try:
+            extra = Extra.query.get(int(request.form['extra_id']))
+            quantity = int(request.form['quantity'])
+            rental = Rental.query.get(int(request.form['rental_id']))
+
+            assoc = RentalExtra.query.filter_by(rental_id=rental.id, extra_id=extra.id).first()
+
+            if not assoc: #if the location doesn't have the extra
+                rental_extra = RentalExtra(rental=rental, extra=extra, quantity=int(quantity))
+                db.session.add(rental_extra)
+                rental.rental_extras.append(rental_extra)
+            else:
+                assoc.quantity = quantity
+
+            db.session.commit()
+
+            return jsonify({
+                "success" : True,
+            })
+        
+        except Exception as e:
+            print("Erro ao adicionar extra:", e)
+        
+        return jsonify({
+            "success" : False
+        })
+
+@main_bp.route('/api/pay/<int:rental_id>/extras')
+def extras_html(rental_id):
+    rental = Rental.query.get_or_404(rental_id)
+    return render_template('rental_extras.html', rental_extras=rental.rental_extras)
 
 @main_bp.route('/confirmation', methods=['GET', 'POST'])
 @login_required
@@ -179,6 +199,7 @@ def confirmation():
 
     if request.method == "POST":
         resp = make_response(redirect(url_for('main.UserData', UserData_chosen=2, opened=rental_id)))
+
         for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
             resp.set_cookie(cookie, "", expires=0)
         return resp
@@ -193,3 +214,25 @@ def confirmation():
     db.session.commit()
 
     return render_template('main/confirmation.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras)
+
+@main_bp.route('/confirmation/api/email', methods=['POST'])
+def confirmation_email():
+    if request.method == 'POST':
+        if send_email (
+            subject="Registro de reserva",
+            recipients=[current_user.email],
+            body_text="Parabéns! Sua locação foi registrada com sucesso",
+        ):
+            return jsonify({
+                "success" : True,
+                "title" : "Parabéns! Sua locação foi registrada.",
+                'message' : "Sua locação foi registrada com sucesso!\n\nUm email foi enviado à sua conta confirmando a sua reserva ;)",
+                "type" : "success"
+            })    
+        
+        return jsonify({
+            "success" : False,
+            "title" : "Erro ao registrar sua locação :/",
+            "message" : "Houve um erro ao enviar o email confirmando a sua reserva",
+            "type" : "error"
+        })

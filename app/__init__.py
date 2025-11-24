@@ -1,11 +1,35 @@
+from flask import current_app, request
+from urllib.parse import urlparse, urljoin
+from app.extensions import mail 
+from flask_mail import Message
+from datetime import datetime
 from app.extensions import *
+import re
 
 user_datastore = None
 
+def to_time(string): return datetime.strptime(string, "%H:%M").time() 
+
+def to_date(string): return datetime.strptime(string, "%Y-%m-%d").date()
+
+def send_email(subject, recipients, body_text, body_html=None):
+    try:
+        if not current_app.config.get('MAIL_SERVER'):
+            raise RuntimeError("Erro: Flask-Mail não configurado no app.config!")
+        
+        for email in recipients:
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                raise ValueError(f"Invalid email address: {email}")
+
+        msg = Message(subject=subject, recipients=recipients, body=body_text)
+        if body_html: msg.html = body_html
+        mail.send(msg)
+        return True
+    except Exception as e:
+        current_app.logger.error(f"Error sending email: {e}")
+        return False
+
 def is_safe_url(target):
-    from urllib.parse import urlparse, urljoin
-    from flask import request
-    
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
@@ -23,7 +47,6 @@ def create_roles():
 def create_app():
     from flask import Flask
     from flask_security import SQLAlchemyUserDatastore
-    from app.blueprints.main.mailtest import register_app_email
 
     global user_datastore
 
@@ -63,7 +86,6 @@ def create_app():
     from app.blueprints.main.errors import register_errors
 
     register_errors(app)
-    register_app_email(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp, url_prefix='/')
 

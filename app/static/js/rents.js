@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
             })
             const data = await answer.json()
-            alert(data.message)
-            window.location.reload()
+            return data
         } catch(error) {
             console.error('Erro:', error)
         }   
@@ -20,10 +19,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function ButtonAlterStatus(btnClass, message, newStatus) {
         document.querySelectorAll("."+btnClass).forEach(btn => {
-            btn.addEventListener("click", () => {
-                if (!confirm(message)) return
+            btn.addEventListener("click", async event => {
+                event.preventDefault()
+
+                if (!await swal({
+                    title : message,
+                    text : "Uma vez confirmado, o cliente receberá um email confirmando a operação.",
+                    icon : "info",
+                    buttons : true,
+                    dangermode : true
+                })) {
+                    swal("Operação cancelada.")
+                    return
+                }
+
                 rentId = btn.dataset.rentId
-                alterRentStatus(rentId, newStatus)
+                
+                var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                
+                loadingModal.show();
+        
+                try {
+                    const result = await alterRentStatus(rentId, newStatus)
+                    loadingModal.hide();
+                    await swal(result.title, result.message, result.type)
+                }
+                catch (error) {
+                    console.error(error)
+                    data.message
+                }
+                finally {
+                    loadingModal.hide();
+                }
             })
         })
     }

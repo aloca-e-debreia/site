@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %} confirmação {% endblock %}
+{% from "loading-modal-macros.html" import loading_modal %}
+
+{% block title %} Confirmação {% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{{ url_for('static', filename='js/btnpayment.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/btnpayment.js') }}" type="module"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -71,9 +75,12 @@
             <button class="payment-option">Boleto</button>
         </div>
 
-        <form action="{{ url_for('main.confirmation') }}" method="post">
-            <button class="btn-confirm" type="submit">Confirmar reserva</button>
+        <form action="{{ url_for('main.confirmation') }}" method="post" id="confirm-form">
+            <button class="btn-confirm" type="submit" id="btn-confirm" data-confirmation-email="{{ url_for('main.confirmation_email') }}">Confirmar reserva</button>
         </form>
+
+        {{ loading_modal("Registrando sua locação...") }}
+
     </div>
 
 </div>
