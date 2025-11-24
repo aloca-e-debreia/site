@@ -8,6 +8,7 @@ def load_yaml(filename) -> dict:
 def create_instances_from_yaml(objList: dict, inst_name: str, Entity) -> None:
     for obj in objList[inst_name]:
         instance = Entity(**obj)
-        db.session.add(instance)
-        db.session.commit()
-        print (f"Create {inst_name}:", repr(instance))
+        if not Entity.query.get(instance.id):
+            db.session.add(instance)
+            db.session.commit()
+            print (f"Create {inst_name}:", repr(instance))

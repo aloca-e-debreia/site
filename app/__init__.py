@@ -1,15 +1,18 @@
+from flask import current_app, request
+from urllib.parse import urlparse, urljoin
+from app.extensions import mail 
+from flask_mail import Message
+from datetime import datetime
 from app.extensions import *
+import re
 
 user_datastore = None
 
+def to_time(string): return datetime.strptime(string, "%H:%M").time() 
+
+def to_date(string): return datetime.strptime(string, "%Y-%m-%d").date()
 
 def send_email(subject, recipients, body_text, body_html=None):
-
-    from flask import current_app
-    from app.extensions import mail 
-    from flask_mail import Message
-    import re
-    
     try:
         if not current_app.config.get('MAIL_SERVER'):
             raise RuntimeError("Erro: Flask-Mail não configurado no app.config!")
@@ -27,9 +30,6 @@ def send_email(subject, recipients, body_text, body_html=None):
         return False
 
 def is_safe_url(target):
-    from urllib.parse import urlparse, urljoin
-    from flask import request
-    
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc

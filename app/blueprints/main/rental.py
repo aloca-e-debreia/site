@@ -1,9 +1,8 @@
 from flask import render_template, request, redirect, url_for, make_response, jsonify
 from flask_login import login_required, current_user
-from datetime import date, time
 from app.blueprints.main import main_bp
 from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
-from app import db, send_email
+from app import db, send_email, to_time, to_date
 
 @main_bp.route('/api/resume/rent', methods=['POST'])
 def resume_rent():
@@ -64,23 +63,24 @@ def index():
 
         dropoff_branch_id = request.form['dropoff-branch-id']
 
-        #pickup/dropoff time
-        pickup_year, pickup_month, pickup_day = list(map(int, request.form['pickup-date'].split('-')))
-        dropoff_year, dropoff_month, dropoff_day = list(map(int, request.form['dropoff-date'].split('-')))
+        #pickup/dropoff date
+        pickup_date = to_date(request.form['pickup-date'])
+        dropoff_date = to_date(request.form['dropoff-date'])
 
-        pickup_hour, pickup_min = list(map(int, request.form['pickup-time'].split(':')))
-        dropoff_hour, dropoff_min = list(map(int, request.form['dropoff-time'].split(':')))
+        #pickup/dropoff time
+        pickup_time = to_time(request.form['pickup-time'])
+        dropoff_time = to_time(request.form['dropoff-time'])
 
         pickup = Pickup(
             branch_id=pickup_branch_id,
-            date=date(pickup_year, pickup_month, pickup_day),
-            time=time(pickup_hour, pickup_min)
+            date=pickup_date,
+            time=pickup_time
         )
 
         dropoff = Dropoff(
             branch_id=dropoff_branch_id,
-            date=date(dropoff_year, dropoff_month, dropoff_day),
-            time=time(dropoff_hour, dropoff_min)
+            date=dropoff_date,
+            time=dropoff_time
         )
         
         db.session.add_all([pickup, dropoff])

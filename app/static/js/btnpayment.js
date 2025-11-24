@@ -20,7 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const result = await emailSendVerify(event.target.dataset.confirmationEmail)
             loadingModal.hide();
-            await swal(result.title, result.message, result.type)
+            await swal({
+                title : result.title,
+                text : result.message,
+                icon : result.type
+            })
             confirmForm.submit()
         }
         catch (error) {
