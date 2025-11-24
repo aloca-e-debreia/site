@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, url_for, redirect
 from flask_security import roles_accepted
 from flask_login import login_required, current_user
 from app.blueprints.main import main_bp
@@ -14,7 +14,7 @@ def load_user(user_id):
 @main_bp.route('/user')
 @login_required
 def user():
-    return render_template('main/user.html', current_user=current_user)
+    return redirect(url_for('main.UserData', UserData_chosen='1'))
 
 @main_bp.route('/user/<UserData_chosen>')
 @login_required

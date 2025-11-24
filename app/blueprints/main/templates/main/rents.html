@@ -3,72 +3,93 @@
 {% from "loading-modal-macros.html" import loading_modal %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rents.css') }}">
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{{ url_for('static', filename='js/rents.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/openrents.js') }}"></script>
+<script src="{{ url_for('static', filename='js/rents.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 {% endblock %}
 
 {% block title %} Dashboard - {{ user_role }} {% endblock %}
 
 {% block content %}
+<div class="TitleLocation">
+    <h1 class="page-title">Locações</h1>
+</div>
+<div class="AllLocations">
+    <div class="filter-buttons">
+        <a href="{{ url_for('main.pending_rents') }}" class="filter-btn">Locações Pendentes</a>
+        <a href="{{ url_for('main.active_rents') }}" class="filter-btn">Locações Ativas</a>
+        <a href="{{ url_for('main.late_rents') }}" class="filter-btn">Locações Atrasadas</a>
+    </div>
 
-    <a href="{{ url_for('main.register_vehicles') }}">Clique para cadastrar veículos</a>
-
-    <h1>Locações</h1>
-
-    <button type="button"><a href="{{ url_for('main.pending_rents') }}">Locações Pendentes</a></button>
-    <button type="button"><a href="{{ url_for('main.active_rents') }}">Locações Ativas</a></button>
-    <button type="button"><a href="{{ url_for('main.late_rents') }}">Locações Atrasadas</a></button>
-
+<div class="rent-list">
+    {% if rents|length == 0 %}
+        <div class="no-rents">
+            <p>Não há nenhuma locação disponível.</p>
+        </div>
+    {% endif %}
+    
     {% for rent in rents %}
-        <div>
-            <img src="{{ rent.vehicle.get_img_url() }}" height="100px" width="100px" alt="Veículo da locação">
-            <h3>ID: {{ rent.id }}</h3>
+    <div class="rent-item">
+        <div class="rent-summary" data-toggle="rent-{{ rent.id }}">
+            <div class="r-left">
+                <img src="{{ rent.vehicle.get_img_url() }}" class="r-img">
+                <div class="r-info">
+                    <h3>Reserva {{ rent.id }}</h3>
+                    <p>Ver resumo da reserva</p>
+                </div>
+            </div>
+
+            <div class="r-arrow">⌄</div>
+        </div>
+
+        <div class="rent-details" id="rent-{{ rent.id }}">
+
             <h4>Cliente</h4>
             <ul>
-                <li>Cliente: {{ rent.user.name }}</li>
-                <li>CPF : {{ rent.user.cpf }}</li>
-                <li>Email: {{ rent.user.email }}</li>
+                <li><strong>Nome:</strong> {{ rent.user.name }}</li>
+                <li><strong>CPF:</strong> {{ rent.user.cpf }}</li>
+                <li><strong>Email:</strong> {{ rent.user.email }}</li>
             </ul>
 
             <h4>Veículo</h4>
             <ul>
-            <li>{{ rent.vehicle.name() }}</li>
-            <li>Preço: {{ rent.vehicle.daily_price | currency }}/dia</li>
-            <li>{{ rent.vehicle.n_people }} Pessoas 🚗</li>
-            <li>{{ rent.vehicle.transmission.name }} ⚙️</li>
-            {% for feature in rent.vehicle.features %}
+                <li>{{ rent.vehicle.name() }}</li>
+                <li>{{ rent.vehicle.daily_price | currency }}/dia</li>
+                <li>{{ rent.vehicle.n_people }} Pessoas 🚗</li>
+                <li>{{ rent.vehicle.transmission.name }} ⚙️</li>
+                {% for feature in rent.vehicle.features %}
                 <li>{{ feature.name }}</li>
-            {% endfor %}
+                {% endfor %}
             </ul>
-            <h3>Total: {{ rent.vehicle_total | currency }}</h3>
 
-            <p>Adicionais:</p>
+            <h4>Valores</h4>
             <ul>
-            {% for rental_extra in rental_extras %}
-                {% if rental_extra.extra.selectable_quantity %}
-                    <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
-                {% else %}
-                    <li>{{ rental_extra.extra.name }}</li>
-                {% endif %}
-            {% endfor %}
+                <li><strong>Total veículo:</strong> {{ rent.vehicle_total | currency }}</li>
+                <li><strong>Taxa 12%:</strong> {{ rent.fee_price | currency }}</li>
+                <li><strong>Total geral:</strong> {{ rent.total | currency }}</li>
             </ul>
-            <span>Total: {{ rent.extras_total_price }}</span>
 
-            <h4>Data: {{ rent.pickup.date_br }} - {{ rent.dropoff.date_br }}</h4>
-            <h4>Taxa da locadora = 12% = {{ rent.fee_price | currency }}</h4>
-            <h4>Total: {{ rent.total | currency }}</h4>
-            
-            <h3>Status: {{ rent.status_label }}</h3>
-            <button type="button" data-rent-id="{{ rent.id }}" class="{{ btn_class }}">{{ btn_message }}</button>
-        </div> <br><br>
+            <h4>Datas</h4>
+            <p>{{ rent.pickup.date_br }} → {{ rent.dropoff.date_br }}</p>
+
+            <button class="action-btn {{ btn_class }}" data-rent-id="{{ rent.id }}">
+                {{ btn_message }}
+            </button>
+        </div>
+
+    </div>
     {% endfor %}
-    
-    <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+</div>
 
-    {{ loading_modal("Registrando a operação...") }}
+<div class="Acesspages"> 
+    <a class="back-link" href="{{ url_for('main.index') }}" style="color: white; text-decoration: none;">Voltar à página principal</a> 
+    <a class="top-link" href="{{ url_for('main.dashboard_controll') }}" style="color: white; text-decoration: none;">Voltar para a pagina anterior</a> 
+</div>
+{{ loading_modal("Registrando a operação...") }}
 
 {% endblock %}
