@@ -1,0 +1,6 @@
+{% macro rent_details(rent) %}
+    <p>Carro escolhido: {{ rent.vehicle.name() }}</p>
+    <p>Data da reserva: {{ rent.pickup.date_br }} - {{ rent.dropoff.date_br }}</p>
+    <p>Preço total: {{ rent.total | currency }}</p>
+    <p>Status: {{ rent.status_label }}</p>
+{% endmacro %}

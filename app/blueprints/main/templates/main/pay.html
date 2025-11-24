@@ -1,99 +1,85 @@
 {% extends "base.html" %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pay.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='js/pay.js') }}"></script>
+{% endblock %}
+
+{% block title %} Adicionais {% endblock %}
+
 {% block content %} 
 <div class="container">
 
-    <div class="car-info">
+    <div class="car-info" id="car-info">
         <div class="car-left">
-            <img src="carro.png" class="car-img">
+            <img src="{{ vehicle.get_img_url() }}" class="car-img">
         </div>
 
         <div class="car-middle">
-            <h2>Carro 1</h2>
+            <h2>{{ vehicle.name() }}</h2>
 
             <div class="icons">
-                <span>4 🚗</span>
-                <span>Manual ⚙️</span>
-                <span>Sem ar-condicionado 🧊</span>
+                <span>{{ vehicle.n_people }} Pessoas 🚗</span>
+                <span>{{ vehicle.transmission.name }} ⚙️</span>
+                {% for feature in vehicle.features %}
+                    <span>{{ feature.name }}</span>
+                {% endfor %}
             </div>
-
-            <p><strong>Adicionais selecionados:</strong></p>
-            <ul>
-                <li>XXX</li>
-                <li>YYY</li>
-                <li>ZZZ</li>
-            </ul>
+            <div id="rental-extras-container">
+                {% include "rental_extras.html" %}
+            </div>
         </div>
 
         <div class="car-summary">
             <h3>Resumo</h3>
             <div class="summary-line">
-                <span>Valor do veículo</span><span>R$ XXX</span>
+                <span>Valor do veículo</span><span>{{ vehicle.daily_price | currency }}/dia</span>
+                <span>Total</span><span>{{ rental.vehicle_total | currency }}</span>
             </div>
             <div class="summary-line">
-                <span>Adicionais</span><span>R$ YYY</span>
+                <span>Adicionais</span><span>{{ rental.extras_daily_price | currency }}</span>
             </div>
             <div class="summary-line">
-                <span>Taxas da locadora</span><span>R$ AAA</span>
+                <span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span>
             </div>
             <div class="summary-line total">
-                <span>Total</span><span>R$ BBB</span>
+                <span>Total</span><span>{{ rental.total | currency }}</span>
             </div>
 
-            <button class="resume-btn">Continuar</button>
+            <a href="{{ url_for('main.confirmation')}}">
+                <button class="resume-btn">Continuar</button>
+            </a>
         </div>
     </div>
 
     <div class="extras-box">
         <h2>Adicionais</h2>
-
-        <div class="extra-item">
-            <div class="extra-left">
-                <h3>Lavagem antecipada</h3>
-                <p>Nem se preocupe em lavar o carro na volta.</p>
-            </div>
-            <div class="extra-right">
-                <span class="price">R$ 49,99</span>
-                <button class="add-btn">Adicionar</button>
-            </div>
-        </div>
-
-        <div class="extra-item">
-            <div class="extra-left">
-                <h3>Motorista adicional</h3>
-                <p>Tenha um motorista extra para descansar.</p>
-            </div>
-            <div class="extra-right">
-                <span class="price">R$ 19,99/dia</span>
-
-                <div class="counter">
-                    <button>-</button>
-                    <span>0</span>
-                    <button>+</button>
+        
+        {% for extra in extras %}
+            <div class="extra-item">
+                <div class="extra-left">
+                    <h3>{{ extra.name }}</h3>
+                    <p>{{ extra.description }}</p>
                 </div>
-
-                <button class="add-btn">Adicionar</button>
+                <form class="extra-right" action="{{ url_for('main.add_extra') }}" method="post" id="{{ extra.id }}-form">
+                    <span class="price">{{ extra.daily_price | currency }}</span>
+                    {% if extra.selectable_quantity %}
+                    <div class="counter">
+                        <button class="rmv-extra-btn" data-id="{{ extra.id }}">-</button>
+                        <span id="{{ extra.id }}">0</span>
+                        <button class="add-extra-btn" data-id="{{ extra.id }}">+</button>
+                    </div>
+                    {% endif %}
+                    <input type="hidden" name="quantity" id="{{ extra.id }}-quantity" value="1">
+                    <input type="hidden" name="extra_id" value="{{ extra.id }}">
+                    <input type="hidden" name="rental_id" value="{{ rental.id }}">
+                    <button class="send-extra-btn" type="submit" data-id="{{ extra.id }}">Adicionar</button>
+                </form>
             </div>
-        </div>
-
-        <div class="extra-item">
-            <div class="extra-left">
-                <h3>Cadeira de bebê</h3>
-                <p>Ideal para crianças de 1 a 4 anos.</p>
-            </div>
-            <div class="extra-right">
-                <span class="price">R$ 31,99/bebê</span>
-
-                <div class="counter">
-                    <button>-</button>
-                    <span>0</span>
-                    <button>+</button>
-                </div>
-
-                <button class="add-btn">Adicionar</button>
-            </div>
-        </div>
-
+        {% endfor %}
     </div>
 
 </div>

@@ -1,11 +1,11 @@
 categories:
   - id: 1
-    name: Hatch
+    name: "Hatch"
   - id: 2
-    name: Sedan
+    name: "Sedan"
   - id: 3
-    name: SUV
+    name: "SUV"
   - id: 4
-    name: Picape
+    name: "Picape"
   - id: 5
-    name: Utilitary
+    name: "Utilitary"

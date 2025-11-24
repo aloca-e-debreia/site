@@ -1,0 +1,10 @@
+<p><strong>Adicionais selecionados:</strong></p>
+<ul>
+    {% for rental_extra in rental_extras %}
+        {% if rental_extra.extra.selectable_quantity %}
+            <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
+        {% else %}
+            <li>{{ rental_extra.extra.name }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>

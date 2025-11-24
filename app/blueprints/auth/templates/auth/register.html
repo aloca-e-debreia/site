@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% block head %}
-    {{ super() }}
+{% block extra_js %}
     <script type="module" src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}
 
@@ -19,6 +18,7 @@
 
     <div class="ContLogin"; style="display: flex; align-items: center; justify-content: center;">
         <form id="auth-form" method="POST" action="{{ url_for('auth.register') }}">
+            <input type="hidden" name="next" value ="{{ request.args.get('next', '') }}">
             <div class="input-group">
                 <label>Nome</label><br>
                 <input type="text" name="name" id="name" placeholder="Digite seu primeiro nome" required>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboardControll.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="AllControll">
+        <div class="ContainerControll">
+            <a href="{{ url_for('main.register_vehicles') }}"><div>Cadastrar Veiculos</div></a>
+            <a href="{{ url_for('main.pending_rents') }}"><div>Acesse locações</div></a>
+            <a href="{{ url_for('main.list_clients') }}"><div>Lista de pessoas</div></a>
+        </div>
+    </div>
+{% endblock %}

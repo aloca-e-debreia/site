@@ -3,6 +3,72 @@
 
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    background: #f2f5f7;        /* leve cinza elegante */
+    font-family: Overpass;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+.btnDelete{
+    display: flex;
+    justify-content: center;
+    padding: 0 0 20px 0;
+}
+
+#dashboard-btn{
+    background-color: #114043;
+    border: none;
+    border-radius: 15px;
+    width: 45%;
+    padding: 20px;
+    cursor: pointer;
+    margin: 10px;
+}
+#dashboard-btn:hover{
+    background-color: #124649;
+    transition: 0.35s;
+}
+#remove-account-btn{
+    border: none;
+    background-color: red;
+    border-radius: 15px;
+    width: 45%;
+    color: white;
+    cursor: pointer;
+    padding: 20px;
+    margin: 10px;
+}
+
+#remove-account-btn:hover{
+    background-color: white;
+    color: red;
+    transition: 0.35s;
+}
+.empty-msg{
+    font-size: large;
+    display: flex;
+    justify-content: center;
+}
+
+#btnLogout{
+    border-radius: 10px; 
+    background-color: #114043; 
+    height: 50px;
+    cursor: pointer;
+    border: none;
+}
+
+#btnLogout:hover{
+    background-color: #124649;
+}
+
+#btnLogout a{
+    color: white;
+    font-weight: bold;
+}
 .AllUser{
     display: flex;
     justify-content: center;
@@ -96,6 +162,7 @@ transition: 0.7s;
 }
 
 .Cont-Details {
+  position: relative;
   max-height: 0;
   overflow: hidden;
   background-color: #fff;
@@ -108,11 +175,55 @@ transition: 0.7s;
   position: relative;
   z-index: 1;
   border-top: 2px solid #ddd;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 35px;
 }
 
 .Cont-Details.open {
-  max-height: 300px; 
+  max-height: 600px; 
   opacity: 1;
   padding: 20px;
   margin-top: 0;
+}
+
+.field{
+    display: flex;
+    flex-direction: column;
+    background: #fafafa;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #124649;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.field label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 15px;
+    color: #333;
+}
+
+.field p {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 15px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    border: 1px solid #12464922;
+}
+
+.edit-btn{
+   position: absolute; 
+   bottom: 10px; 
+   right: 20px; 
+   margin: 0; 
+   border-radius: 10px; 
+   background-color: #114043; 
+   cursor: pointer; 
+   color: #ddd;
+}
+
+.edit-btn:hover{
+    background-color: #124649;
 }

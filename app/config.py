@@ -1,4 +1,4 @@
-import os
+import os, cloudinary
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,3 +17,15 @@ SECURITY_LOGIN_URL = os.environ.get("SECURITY_LOGIN_URL")
 
 SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get("SQLALCHEMY_TRACK_MODIFICATIONS")
+
+CLOUDINARY_CLOUD_NAME=os.getenv("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY=os.getenv("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET=os.getenv("CLOUDINARY_API_SECRET")
+
+MAIL_SERVER = os.environ.get("MAIL_SERVER")
+MAIL_PORT = os.environ.get("MAIL_PORT")
+MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS")
+MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
+MAIL_DEFAULT_SENDER_NAME = os.environ.get("MAIL_DEFAULT_SENDER_NAME")

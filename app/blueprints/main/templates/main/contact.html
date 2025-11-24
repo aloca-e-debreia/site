@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %} Contato {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="contato-container">
+    <h2 class="contato-titulo">Contato</h2>
+
+    <form class="contato-form">
+        
+        <div class="contato-grupo">
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome">
+        </div>
+
+        <div class="contato-linha">
+            <div class="contato-coluna">
+                <label for="email">E-mail</label>
+                <input type="email" id="email">
+            </div>
+
+            <div class="contato-coluna">
+                <label for="assunto">Assunto</label>
+                <select id="assunto">
+                    <option value="">Selecione</option>
+                    <option>Dúvidas</option>
+                    <option>Orçamento</option>
+                    <option>Suporte</option>
+                    <option>Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="contato-grupo">
+            <label for="mensagem">Mensagem</label>
+            <textarea id="mensagem"></textarea>
+        </div>
+
+        <button type="submit" class="contato-btn">Enviar</button>
+    </form>
+</div>
+
+{% endblock %}

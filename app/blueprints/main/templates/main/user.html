@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
+{% from "rent-details-macros.html" import rent_details %}
+
 {% block title %} {{ current_user.name }} {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='js/rentHistory.js') }}"></script>
+{% endblock %}
 
 {% block content %} 
 <div class="AllUser">
@@ -11,9 +21,9 @@
             <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
         </div>
         <div class="AllCont">
-        <div class="ContUser">        
+        <div class="ContUser">
         {% if UserData_chosen == "1" %}
-            <div class="Cont" onclick="toggleContent(this)">
+            <div class="Cont">
                 <div class="icon"><img src="https://images.icon-icons.com/3106/PNG/512/person_avatar_account_user_icon_191606.png" alt="Person" style="width:70px ;"></div>
                 <div class="PersonalData-Text">
                     <h3>Dados Pessoais</h3>
@@ -22,90 +32,142 @@
                 <div class=""></div>
             </div>
             <div class="Cont-Details">
-                <p>Username: {{ current_user.name }}</p>
+                <div class="field">
+                    <label>Username</label>
+                    <p>{{ current_user.name }}</p>
+                </div>
                 <!--Descriptografar-->
-                <p>Senha: {{ current_user.password }}</p>
-                <button>Editar Dados</button> 
+                <div class="field">
+                    <label>Senha</label>
+                    <p>{{ current_user.password }}</p>
+                </div>
+
+                <div class="field">
+                    <label>Username</label>
+                    <p>{{ current_user.name }}</p>
+                </div>
+
+                <div class="field">
+                    <label>CPF</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label> E-mail</label>
+                    <p>{{ current_user.email }}</p>
+                </div>
+
+                <div class="field">
+                    <label>Data de nascimento</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Nacionalidade</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Celular</label>
+                    <p>..........</p>
+                </div>
+                <div>
+                <button class="edit-btn">Editar Dados</button> 
+                </div>
             </div>  
 
-            <div class="Cont" onclick="toggleContent(this)">
-                <div class="icon"><img src="../../../../static/Images/Adress.png" alt="Adress" width="70px"></div>
+            <div class="Cont">
+                <div class="icon"><img src="https://res.cloudinary.com/dh60ejwrj/image/upload/v1763735942/ClickAndDrive/Adress.png" alt="Adress" width="70px"></div>
                 <div class="Adress-Text">
                     <h3>Endereço</h3> 
                     <p>Dados do seu endereço</p>
                 </div>
             </div>
             <div class="Cont-Details">
-                <p>Cidade: </p>
-                <p>Bairro: </p>
-                <p>Rua: </p>
-                <button>Editar Dados</button> 
-            </div> 
-        {% elif UserData_chosen == "2" %}
-        <!--Precisa ver quantas reservas tem, fazer um for, se tiver 0, nenhuma reserva aparecerá.-->
-            <div class="Cont" onclick="toggleContent(this)">
-                <div class="icon"><img src="" alt="Car" width="70px"></div>
-                <div class="PersonalData-Text">
-                    <h3>Reserva 1</h3>
-                    <p>Ver resumo da reserva</p>
+                <div class="field">
+                    <label>País</label>
+                    <p>..........</p>
                 </div>
-            </div>
-            <div class="Cont-Details">
-                <p>Carro escolhido: </p>
-                <p>Data da reserva: </p>
-                <p>Preço total: </p>
-                <button>Editar Dados</button> 
-            </div> 
 
-            <div class="Cont" onclick="toggleContent(this)">
-                <div class="icon"><img src="" alt="Car" width="70px"></div>
-                <div class="Adress-Text">
-                    <h3>Reserva 2</h3>
-                    <p>Ver resumo da reserva</p>
+                <div class="field">
+                    <label>Estado</label>
+                    <p>..........</p>
                 </div>
-            </div>
-            <div class="Cont-Details">
-                <p>Carro escolhido: </p>
-                <p>Data da reserva: </p>
-                <p>Preço total: </p>
-                <button>Editar Dados</button> 
+
+                <div class="field">
+                    <label>Cidade</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Rua</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Bairro</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>CEP</label>
+                    <p>..........</p>
+                </div>
+                <div>
+                <button class="edit-btn">Editar Dados</button> 
+                </div>
             </div> 
+            <button id="btnLogout" ><a href="{{ url_for('auth.logout') }}">Logout</a></button> <br>
+
+        {% elif UserData_chosen == "2" %}
+            
+            {% if active_rents|length == 0 %}
+                <div class="empty-msg">
+                    <p >Você não possui reservas ativas.</p>
+                </div>
+            {% endif %}
+
+            {% for active_rent in active_rents %}
+                <div class="Cont" data-rental-id="{{ active_rent.id }}">
+                    <div class="icon"><img src="{{ active_rent.vehicle.get_img_url() }}" alt="Car" width="70px"></div>
+                    <div class="PersonalData-Text">
+                        <h3>Reserva {{ loop.index }} - ID: {{ active_rent.id }}</h3>
+                        <p>Ver resumo da reserva</p>
+                    </div>
+                </div>
+                <div class="Cont-Details">
+                    {{ rent_details(active_rent) }}
+                    <button type="button" class="btn-cancel-rent" data-rent-id="{{ active_rent.id }}">Cancelar</button>
+                </div>    
+            {% endfor %}
 
         
         {% elif UserData_chosen == "3" %}
-            <div class="Cont" onclick="toggleContent(this)">
-                    <div class="icon"><img src="" alt="Car" width="70px"></div>
+
+            {% if finished_rents|length == 0 %}
+                <p class="empty-msg">Você não possui reservas canceladas ou concluídas.</p>
+            {% endif %}
+
+            {% for finished_rent in finished_rents %}
+                <div class="Cont">
+                    <div class="icon"><img src="{{ finished_rent.vehicle.get_img_url() }}" alt="Car" width="70px"></div>
                     <div class="PersonalData-Text">
-                        <h3>Reserva Passada 1</h3>
+                        <h3>Reserva Passada {{ loop.index }} - ID: {{ finished_rent.id }}</h3>
                         <p>Ver resumo da reserva</p>
                     </div>
                 </div>
                 <div class="Cont-Details">
-                    <p>Carro escolhido: </p>
-                    <p>Data da reserva: </p>
-                    <p>Preço total: </p>
-                    <button>Editar Dados</button> 
-                </div> 
-
-                <div class="Cont" onclick="toggleContent(this)">
-                    <div class="icon"><img src="" alt="Car" width="70px"></div>
-                    <div class="Adress-Text">
-                        <h3>Reserva Passada 2</h3>
-                        <p>Ver resumo da reserva</p>
-                    </div>
-                </div>
-                <div class="Cont-Details">
-                    <p>Carro escolhido: </p>
-                    <p>Data da reserva: </p>
-                    <p>Preço total: </p>
-                    <button>Editar Dados</button> 
-                </div> 
-            </div>
-        </div>
-</div>        
-</div>
+                    {{ rent_details(finished_rent) }}
+                </div>    
+            {% endfor %}
         {% endif %}
-
-
+        </div>
+    </div>        
+    <div class="btnDelete">
+        {% if current_user.has_role('manager') or current_user.has_role('worker') %}
+            <button id="dashboard-btn"><a href="{{ url_for('main.dashboard_controll') }}" style="color: white;">Dashboard</a></button>
+        {% endif %}
+        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button><br>
     </div>
+</div>
 {% endblock %}

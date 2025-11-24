@@ -20,8 +20,13 @@ class Role(db.Model, fsqla_v3.FsRoleMixin):
 class User(db.Model, fsqla_v3.FsUserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    address_id = db.Column(db.Integer, db.ForeignKey('address.id'), unique=True)
+
     name = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=True) #change to birhtdate
+    birthdate = db.Column(db.Date, nullable=True)
+    cpf = db.Column(db.String(11), unique=True, nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
 
     _cpf_encrypted = db.Column(db.String(255), unique=True, nullable=True)
 
@@ -33,17 +38,15 @@ class User(db.Model, fsqla_v3.FsUserMixin):
     def cpf(self, plain_cpf):
         self._cpf_encrypted = encrypt_data(plain_cpf) 
 
-
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
-
     active = db.Column(db.Boolean(), default=True)
     fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False, default=lambda: str(uuid.uuid4()))
 
     roles = db.relationship('Role', secondary=role_user, backref=db.backref('users', lazy='dynamic'))
+    address = db.relationship("Address", backref='user')
 
     def __repr__(self):
-        return f"<User(name='{self.name}, age='{self.age}', cpf='{self.cpf}', email='{self.email}', senha='{self.password}')>"    
+        return f"<User(name='{self.name}, birthdate='{self.birthdate}', cpf='{self.cpf}', email='{self.email}', senha='{self.password}')>"
+    
 def select_users_with_role(role):
     user_role = Role.query.filter_by(name=role).first()
     if user_role:
