@@ -45,12 +45,14 @@ def remove_account():
             db.session.commit()
             return jsonify({
                 "success" : True,
-                "message" : "Conta removida com sucesso!",
+                "title" : "Conta removida com sucesso!",
+                "icon" : "success",
                 "redirect_url" : url_for('main.index')
             })
         except Exception as e:
             print("Erro:", e)
             return jsonify({
                 "success" : False,
-                "message" : "Erro.. Não foi possível localizar sua conta"
+                "icon" : "error",
+                "title" : "Erro.. Não foi possível localizar sua conta"
             })

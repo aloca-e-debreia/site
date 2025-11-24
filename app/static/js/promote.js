@@ -12,8 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             })
             const data = await answer.json()
-            alert(data.message)
-            window.location.reload()
+            await swal({
+                title : data.title,
+                icon : data.icon,
+            })
+            if (data.success) window.location.reload()
         } catch(error) {
             console.error('Erro:', error)
         }
@@ -23,13 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     promoteButtons.forEach(button => {
 
-        button.addEventListener("click", event => {
+        button.addEventListener("click", async event => {
             
             event.preventDefault()
 
-            if (confirm("Promover o user?"))
-                if (button.dataset.role == "client") promoteUser(button.dataset.id, button.dataset.role, 'worker')
-                else promoteUser(button.dataset.id, button.dataset.role, 'manager')
+            if (! await swal({
+                title : "Desejas promover o usuário?",
+                message : "Ele(a) receberá um email comprovando a promoção",
+                icon : "info",
+                buttons : true,
+                dangermode : true
+            })) return 
+
+            if (button.dataset.role == "client") promoteUser(button.dataset.id, button.dataset.role, 'worker')
+            else promoteUser(button.dataset.id, button.dataset.role, 'manager')
 
         })
     })

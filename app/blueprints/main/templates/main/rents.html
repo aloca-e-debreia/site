@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
+{% from "loading-modal-macros.html" import loading_modal %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+{% endblock %}
+
 {% block extra_js %}
     <script src="{{ url_for('static', filename='js/rents.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 {% endblock %}
 
 {% block title %} Dashboard - {{ user_role }} {% endblock %}
@@ -59,7 +66,9 @@
             <button type="button" data-rent-id="{{ rent.id }}" class="{{ btn_class }}">{{ btn_message }}</button>
         </div> <br><br>
     {% endfor %}
-
+    
     <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+
+    {{ loading_modal("Registrando a operação...") }}
 
 {% endblock %}

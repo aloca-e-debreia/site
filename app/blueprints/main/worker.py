@@ -3,7 +3,7 @@ from flask_security import roles_accepted
 from flask_login import login_required
 from app.blueprints.main import main_bp
 from app.models import Rental, RentalStatus
-from app import db
+from app import db, send_email
 
 @main_bp.route('/dashboard/api/alter/status', methods=['POST'])
 def alter_rent_status():
@@ -12,21 +12,44 @@ def alter_rent_status():
             data = request.get_json()
             rent_id = data.get("rent_id")
             new_status = data.get("new_status")
+
             rent = Rental.query.get(rent_id)
             rent.status = RentalStatus[new_status]
 
             db.session.commit()
 
+            operation = {
+                "ACTIVE" : "retirada",
+                "CLOSED" : "devolução",
+                "CLOSED_LATE" : "devolução com atraso"
+            }
+
+            if send_email (
+                subject=f"Atestado de {operation[new_status]}",
+                recipients=[rent.user.email],
+                body_text="Parabéns! Sua locação foi registrada com sucesso",
+            ):
+                return jsonify({
+                    "success" : True,
+                    "title" : "Locação alterada com sucesso!",
+                    "message" : f"Um email ao cliente foi enviado atestando a {operation[new_status]}",
+                    "type" : "success"
+                })
+            
             return jsonify({
-                "success" : True,
-                "message" : "Locação alterada com sucesso"            
-            })
+                    "success" : False,
+                    "title" : "Locação alterada com sucesso!",
+                    "message" :"Entretanto, ocorreu um erro ao enviar o email ao cliente...",
+                    "type" : "info"
+                })
         
         except Exception as e:
             print("Erro ao alterar status da locação:", e)
             return jsonify({
                 "success" : False,
-                "message" : "Ocorreu algum erro na aplicação... Tente novamente mais tarde"
+                "title" : "Erro na aplicação",
+                "message" : "Não foi possível registrar a operação... Tente novamente mais tarde",
+                "type" : "error"
             })
 
 @main_bp.route('/dashboard/rents/pending')

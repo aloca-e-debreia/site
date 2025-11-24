@@ -44,11 +44,14 @@ def cancel_rent():
 
             return jsonify({
                 "success" : True,
-                "message" : "Locação cancelada com sucesso"
+                "title" : "Locação cancelada com sucesso",
+                "icon" : "success"
             })
+        
         return jsonify({
                 "success" : False,
-                "message" : "Locação não encontrada"
+                "title" : "Locação não encontrada",
+                "icon" : "error"
             })
 
 # DASHBOARD
@@ -77,7 +80,7 @@ def dashboard_managers():
 @main_bp.route('/dashboard/api/promote', methods=['POST'])
 @login_required
 @roles_accepted('worker', 'manager')
-def promover_user():
+def promote_user():
     if request.method == "POST" and request.is_json:
         data = request.get_json()
 
@@ -93,6 +96,14 @@ def promover_user():
 
             db.session.commit()
 
-            return jsonify({"success" : True, "message" : "Usuário promovido com sucesso"})
+            return jsonify({
+                "success" : True,
+                "title" : "Usuário promovido com sucesso",
+                "icon" : "success"
+            })
 
-        return jsonify({"success" : False, "message" : "Usuário não cadastrado"})
+        return jsonify({
+            "success" : False,
+            "title" : "Usuário não cadastrado",
+            "icon" : "error"
+        })

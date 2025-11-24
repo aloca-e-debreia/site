@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 body : JSON.stringify({'userId' : userId})
             })
             const data = await response.json()
-            alert(data.message)
+            await swal({
+                title : data.title,
+                icon : data.icon
+            })
             if (data.success) window.location.href = data.redirect_url
         } catch(error) {
             console.error('Erro:', error)
@@ -23,7 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 body : JSON.stringify({'rentId' : rentId})
             })
             const data = await response.json()
-            alert(data.message)
+            await swal({
+                title : data.title,
+                icon : data.icon
+            })
             if (data.success) window.location.reload()
         } catch(error) {
             console.error('Erro:', error)
@@ -31,18 +37,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     document.querySelectorAll(".btn-cancel-rent").forEach(button => {
-            button.addEventListener("click", event => {
-                event.preventDefault()
+        button.addEventListener("click", async event => {
+            event.preventDefault()
 
-                if (!confirm("Deseja cancelar a locação?")) return
-                
-                cancelRent(button.dataset.rentId)
-            }) 
-        })
+            if (!await swal({
+                title : "Desejas cancelar a locação?",
+                icon : "warning",
+                buttons : true,
+                dangermode : true
+            })) return
+            
+            cancelRent(button.dataset.rentId)
+        }) 
+    })
     
-    document.getElementById("remove-account-btn").addEventListener("click", event => {
+    document.getElementById("remove-account-btn").addEventListener("click", async event => {
         event.preventDefault()
-        if (confirm("Deseja remover sua conta?")) removeAccount(event.target.dataset.id)
+        if (await swal({
+            title : "Desejas remover sua conta?",
+            icon : "warning",
+            buttons : true,
+            dangermode : true
+        })) removeAccount(event.target.dataset.id)
     })
 
     const ContClass = document.querySelectorAll(".Cont")

@@ -1,9 +1,9 @@
-export async function emailSendVerify (apiRoute) {
+export async function emailSendVerify (apiRoute, json=JSON.stringify({})) {
     
     const response = await fetch(apiRoute, {
         method: "POST",
         headers : {"Content-Type" : "application/json"},
-        body : JSON.stringify({})
+        body : json
     })
 
     if (!response.ok) throw new Error("Falha na requisição")
