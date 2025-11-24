@@ -15,3 +15,5 @@ venv
 
 uploads/
 *.png
+
+seed_all.py

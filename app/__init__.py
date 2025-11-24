@@ -70,4 +70,7 @@ def create_app():
     from app.seeds import seed_init
     seed_init(app)
 
+    from app.seeds.seed_all import register_seed_all
+    register_seed_all(app)
+
     return app
