@@ -36,10 +36,48 @@
                 <div class=""></div>
             </div>
             <div class="Cont-Details">
-                <p>Username: {{ current_user.name }}</p>
+                <div class="field">
+                    <label>Username</label>
+                    <p>{{ current_user.name }}</p>
+                </div>
                 <!--Descriptografar-->
-                <p>Senha: {{ current_user.password }}</p>
-                <button>Editar Dados</button> 
+                <div class="field">
+                    <label>Senha</label>
+                    <p>{{ current_user.password }}</p>
+                </div>
+
+                <div class="field">
+                    <label>Username</label>
+                    <p>{{ current_user.name }}</p>
+                </div>
+
+                <div class="field">
+                    <label>CPF</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label> E-mail</label>
+                    <p>{{ current_user.email }}</p>
+                </div>
+
+                <div class="field">
+                    <label>Data de nascimento</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Nacionalidade</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Celular</label>
+                    <p>..........</p>
+                </div>
+                <div>
+                <button class="edit-btn">Editar Dados</button> 
+                </div>
             </div>  
 
             <div class="Cont">
@@ -50,10 +88,38 @@
                 </div>
             </div>
             <div class="Cont-Details">
-                <p>Cidade: </p>
-                <p>Bairro: </p>
-                <p>Rua: </p>
-                <button>Editar Dados</button> 
+                <div class="field">
+                    <label>País</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Estado</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Cidade</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Rua</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Bairro</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>CEP</label>
+                    <p>..........</p>
+                </div>
+                <div>
+                <button class="edit-btn">Editar Dados</button> 
+                </div>
             </div> 
             <button id="btnLogout" ><a href="{{ url_for('auth.logout') }}">Logout</a></button> <br>
 
