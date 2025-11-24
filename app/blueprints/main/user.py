@@ -34,9 +34,15 @@ def dashboard():
     clients = select_users_with_role('client')
     if current_user.has_role('manager'):
         workers, managers = select_users_with_role('worker'), select_users_with_role('manager')
-        return render_template('main/dashboard.html', user_role='Gerente', clients=clients, workers=workers, managers=managers)
+        return render_template('main/dashboardControll.html', user_role='Gerente', clients=clients, workers=workers, managers=managers)
     else:
         return render_template('main/dashboard.html', user_role='Funcionário', clients=clients, workers=None, managers=None)
+
+@main_bp.route('listPerson')
+@login_required
+@roles_accepted('manager', 'worker')
+def listPerson():
+    return render_template('main/listperson.html')
 
 @main_bp.route('/dashboard/api/promote', methods=['POST'])
 def promover_user():

@@ -1,8 +1,7 @@
-/* ESTILO GERAL DA PÁGINA */
 body {
     margin: 0;
     padding: 0;
-    background: #f2f5f7;        /* leve cinza elegante */
+    background: #f2f5f7;
     font-family: Overpass;
     display: flex;
     flex-direction: column;
@@ -22,7 +21,6 @@ header{
     justify-content: space-between;
 }
 
-/* CONTAINER DOS FILTROS */
 #filters {
     display: flex;
     justify-content: center;
@@ -60,11 +58,11 @@ header{
 
 .carros-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 25px;
     padding: 20px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1600px;
 }
 
 .carro-card {
@@ -75,6 +73,11 @@ header{
     transition: 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
+}
+.carro-card .btnAlugar {
+    margin-top: auto; 
+    display: flex;
+    justify-content: center;
 }
 
 .carro-card:hover {
@@ -121,11 +124,10 @@ header{
 }
 
 .btn-alugar {
-    display: block;
     text-align: center;
     background: #114043;
     width: 100%;
-    padding: 10px 0;
+    padding: 12px 0;
     border-radius: 10px;
     font-weight: bold;
     color: white;
@@ -134,16 +136,13 @@ header{
     margin-top: auto;
     cursor: pointer;
 }
-.btnAlugar{
-    margin-top: auto;
-}
+
 
 
 .btn-alugar:hover {
     background: #0e3336;
 }
 
-/* RESPONSIVIDADE */
 @media (max-width: 1100px) {
     .carros-grid {
         grid-template-columns: repeat(3, 1fr);

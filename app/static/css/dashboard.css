@@ -9,6 +9,19 @@ body {
     font-family: Overpass;
 }
 
+.ContainerLocation{
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+#RegisterVeh{
+    width: 100%;
+    text-align: center;
+    background-color: #003F46;
+    padding: 12px;
+    border-radius: 12px;
+}
 .dashboard-links {
     display: flex;
     gap: 20px;
