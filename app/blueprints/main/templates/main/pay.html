@@ -4,12 +4,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pay.css') }}">
 {% endblock %}
 
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='js/pay.js') }}"></script>
+{% endblock %}
+
 {% block title %} Adicionais {% endblock %}
 
 {% block content %} 
 <div class="container">
 
-    <div class="car-info">
+    <div class="car-info" id="car-info">
         <div class="car-left">
             <img src="{{ vehicle.get_img_url() }}" class="car-img">
         </div>
@@ -24,17 +28,9 @@
                     <span>{{ feature.name }}</span>
                 {% endfor %}
             </div>
-
-            <p><strong>Adicionais selecionados:</strong></p>
-            <ul>
-                {% for rental_extra in rental_extras %}
-                    {% if rental_extra.extra.selectable_quantity %}
-                        <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
-                    {% else %}
-                        <li>{{ rental_extra.extra.name }}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+            <div id="rental-extras-container">
+                {% include "rental_extras.html" %}
+            </div>
         </div>
 
         <div class="car-summary">
@@ -68,18 +64,19 @@
                     <h3>{{ extra.name }}</h3>
                     <p>{{ extra.description }}</p>
                 </div>
-                <form class="extra-right" action="{{ url_for('main.pay') }}" method="post">
+                <form class="extra-right" action="{{ url_for('main.add_extra') }}" method="post" id="{{ extra.id }}-form">
                     <span class="price">{{ extra.daily_price | currency }}</span>
                     {% if extra.selectable_quantity %}
                     <div class="counter">
-                        <button>-</button>
-                        <span>0</span>
-                        <button>+</button>
+                        <button class="rmv-extra-btn" data-id="{{ extra.id }}">-</button>
+                        <span id="{{ extra.id }}">0</span>
+                        <button class="add-extra-btn" data-id="{{ extra.id }}">+</button>
                     </div>
                     {% endif %}
-                    <input type="hidden" name="quantity" value="1"> <!--Mudar para o valor que o user selecionar-->
+                    <input type="hidden" name="quantity" id="{{ extra.id }}-quantity" value="1">
                     <input type="hidden" name="extra_id" value="{{ extra.id }}">
-                    <button class="add-btn" type="submit">Adicionar</button>
+                    <input type="hidden" name="rental_id" value="{{ rental.id }}">
+                    <button class="send-extra-btn" type="submit" data-id="{{ extra.id }}">Adicionar</button>
                 </form>
             </div>
         {% endfor %}

@@ -145,22 +145,42 @@ def pay():
     vehicle = Vehicle.query.get(int(vehicle_id))
     rental = Rental.query.get(int(rental_id))
 
-    if request.method == 'POST':
-        extra = Extra.query.get(int(request.form['extra_id']))
-        quantity = request.form['quantity']
-
-        assoc = RentalExtra.query.filter_by(rental_id=rental_id, extra_id=extra.id).first()
-
-        if not assoc: #if the location doesn't have the extra
-            rental_extra = RentalExtra(rental=rental, extra=extra, quantity=int(quantity))
-            db.session.add(rental_extra)
-            rental.rental_extras.append(rental_extra)
-        else:
-            assoc.quantity = quantity
-
-        db.session.commit()
-
     return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras, extras=extras)
+
+@main_bp.route('api/pay/add-extra', methods=['POST'])
+def add_extra():
+    if request.method == 'POST':
+        try:
+            extra = Extra.query.get(int(request.form['extra_id']))
+            quantity = int(request.form['quantity'])
+            rental = Rental.query.get(int(request.form['rental_id']))
+
+            assoc = RentalExtra.query.filter_by(rental_id=rental.id, extra_id=extra.id).first()
+
+            if not assoc: #if the location doesn't have the extra
+                rental_extra = RentalExtra(rental=rental, extra=extra, quantity=int(quantity))
+                db.session.add(rental_extra)
+                rental.rental_extras.append(rental_extra)
+            else:
+                assoc.quantity = quantity
+
+            db.session.commit()
+
+            return jsonify({
+                "success" : True,
+            })
+        
+        except Exception as e:
+            print("Erro ao adicionar extra:", e)
+        
+        return jsonify({
+            "success" : False
+        })
+
+@main_bp.route('/api/pay/<int:rental_id>/extras')
+def extras_html(rental_id):
+    rental = Rental.query.get_or_404(rental_id)
+    return render_template('rental_extras.html', rental_extras=rental.rental_extras)
 
 @main_bp.route('/confirmation', methods=['GET', 'POST'])
 @login_required
