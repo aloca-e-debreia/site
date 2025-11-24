@@ -98,6 +98,10 @@ def index():
 def cars():
     pickup_id = request.cookies.get('pickup_id')
     dropoff_id = request.cookies.get('dropoff_id')
+    page = request.args.get("page", 1, type=int)
+
+    # PAGINAÇÃO CERTA
+    vehicles = Vehicle.query.paginate(page=page, per_page=12)
 
     if not pickup_id or not dropoff_id:
         return redirect(url_for('main.index'))
@@ -122,7 +126,7 @@ def cars():
 
     pickup = Pickup.query.get(int(pickup_id))
     dropoff = Dropoff.query.get(int(dropoff_id))
-    vehicles = Vehicle.query.all()
+
     return render_template('main/cars.html', vehicles=vehicles, pickup=pickup, dropoff=dropoff)
 
 @main_bp.route('/pay', methods=['GET', 'POST'])
@@ -236,3 +240,7 @@ def confirmation_email():
             "message" : "Houve um erro ao enviar o email confirmando a sua reserva",
             "type" : "error"
         })
+
+@main_bp.route("/contact")
+def contact():
+    return render_template("main/contact.html")

@@ -1,0 +1,126 @@
+body {
+    background-color: #f4f6fc;
+    height: 100%;
+    margin: 0;
+    padding-inline-start: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Overpass;
+}
+
+.contato-container {
+    background: white;
+    width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.contato-titulo {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.contato-form {
+    background: #F5F5F5;
+    padding: 30px;
+    border-radius: 25px;
+}
+
+.contato-grupo label,
+.contato-coluna label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.contato-form input,
+.contato-form select,
+.contato-form textarea {
+    width: 95%;
+    padding: 12px 15px;
+    border-radius: 20px;
+    border: none;
+    background: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.contato-form textarea {
+    height: 180px;
+    resize: none;
+}
+
+.contato-linha {
+    display: flex;
+    gap: 40px;
+}
+
+.contato-coluna {
+    flex: 1;
+}
+
+.contato-btn {
+    width: 250px;
+    margin: 0 auto;
+    display: block;
+    border: none;
+    background: #003F46;
+    color: white;
+    padding: 12px 0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.contato-btn:hover {
+    background: #00585c;
+}
+
+@media (max-width: 900px) {
+    .contato-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .contato-form {
+        padding: 20px;
+    }
+
+    .contato-linha {
+        gap: 20px;
+    }
+}
+
+/* Para celulares */
+@media (max-width: 600px) {
+
+    .contato-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .contato-linha {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .contato-form input,
+    .contato-form select,
+    .contato-form textarea {
+        width: 100%;
+    }
+
+    .contato-btn {
+        width: 100%;
+        padding: 14px 0;
+        font-size: 15px;
+    }
+
+    .contato-titulo {
+        text-align: center;
+        font-size: 22px;
+    }
+}

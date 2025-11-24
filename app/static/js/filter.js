@@ -1,56 +1,62 @@
-const input = document.getElementById("filter");
-const carros = document.querySelectorAll(".carro");
+const inputName = document.getElementById("filter");
 const filterCategory = document.getElementById("filterCategory");
 const filterFuel = document.getElementById("filterFuel");
+const filterPrice = document.getElementById("filterPrice");
+
+const carros = document.querySelectorAll(".carro-card");
 const noResults = document.getElementById("SemResultados");
+const container = document.querySelector(".carros-grid");
 
-function verificarResultados() {
-    const algumVisivel = Array.from(carros).some(carro => carro.style.display !== "none");
-    carros.forEach(carro => {
-        if (!algumVisivel) {
-            noResults.style.display = "block";
-        } else {
-            noResults.style.display = "none";
-    }})
-}
+function aplicarFiltros() {
+    const nomeTexto = inputName.value.toLowerCase();
+    const categoriaTexto = filterCategory.value.toLowerCase();
+    const fuelTexto = filterFuel.value.toLowerCase();
 
-input.addEventListener("input", function () {
-    const texto = input.value.toLowerCase();
+    let carrosArray = Array.from(carros);
 
-    carros.forEach(carro => {
-        const nome = carro.querySelector(".vehicleName").innerText.toLowerCase();
+    carrosArray.forEach(carro => {
+        const nome = carro.querySelector(".vehicle-title").innerText.toLowerCase();
+        const categoria = carro.querySelector(".category").innerText.toLowerCase();
+        const fuel = carro.querySelector(".fuel").innerText.toLowerCase();
 
-        if (nome.includes(texto)) {
+        const matchNome = nome.includes(nomeTexto);
+        const matchCategoria = categoria.includes(categoriaTexto) || categoriaTexto === "";
+        const matchFuel = fuel.includes(fuelTexto) || fuelTexto === "";
+
+        if (matchNome && matchCategoria && matchFuel) {
             carro.style.display = "block";
         } else {
             carro.style.display = "none";
         }
     });
-    verificarResultados()
-});
-    
 
-function filtrar() {
-    const categoria = filterCategory.value.toLowerCase();
-    const fuel = filterFuel.value.toLowerCase();
+    // Se nenhum carro visível → avisar
+    const temVisivel = carrosArray.some(c => c.style.display !== "none");
+    noResults.style.display = temVisivel ? "none" : "block";
 
-    carros.forEach(carro => {
-        const carroCategoria = carro.querySelector("#category").innerText.toLowerCase();
-        const carroFuel = carro.querySelector("li").innerText.toLowerCase(); 
+    // ORDENAR APENAS OS QUE ESTÃO VISÍVEIS
+    const criterio = filterPrice.value.toLowerCase();
+    let carrosOrdenados = carrosArray.filter(c => c.style.display !== "none");
 
-        const matchCategoria = categoria === "" || carroCategoria.includes(categoria);
-        const matchFuel = fuel === "" || carroFuel.includes(fuel);
+    carrosOrdenados.sort((a, b) => {
+        const precoA = parseFloat(
+            a.querySelector(".preco").innerText.replace("R$", "").replace("/ dia", "").trim()
+        );
 
-        if (matchCategoria && matchFuel) {
-            carro.style.display = "block";
-        } else {
-            carro.style.display = "none";
-        }
-        });
-    verificarResultados()
+        const precoB = parseFloat(
+            b.querySelector(".preco").innerText.replace("R$", "").replace("/ dia", "").trim()
+        );
+
+        if (criterio === "mais barato" || criterio === "menor → maior") return precoA - precoB;
+        if (criterio === "mais caro" || criterio === "maior → menor") return precoB - precoA;
+        return 0;
+    });
+
+    container.innerHTML = "";
+    carrosOrdenados.forEach(c => container.appendChild(c));
 }
 
-
-
-filterCategory.addEventListener("input", filtrar);
-filterFuel.addEventListener("input", filtrar);
+inputName.addEventListener("input", aplicarFiltros);
+filterCategory.addEventListener("input", aplicarFiltros);
+filterFuel.addEventListener("input", aplicarFiltros);
+filterPrice.addEventListener("input", aplicarFiltros);

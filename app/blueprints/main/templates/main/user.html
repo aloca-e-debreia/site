@@ -15,13 +15,6 @@
 {% block content %} 
 <div class="AllUser">
     <div class="user">
-        <a href="{{ url_for('auth.logout') }}">Logout</a> <br>
-
-        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button><br>
-    
-        {% if current_user.has_role('manager') or current_user.has_role('worker') %}
-            <a href="{{ url_for('main.dashboard_clients') }}">Dashboard</a>
-        {% endif %}
         <div class="boxes">
             <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
             <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
@@ -39,10 +32,48 @@
                 <div class=""></div>
             </div>
             <div class="Cont-Details">
-                <p>Username: {{ current_user.name }}</p>
+                <div class="field">
+                    <label>Username</label>
+                    <p>{{ current_user.name }}</p>
+                </div>
                 <!--Descriptografar-->
-                <p>Senha: {{ current_user.password }}</p>
-                <button>Editar Dados</button> 
+                <div class="field">
+                    <label>Senha</label>
+                    <p>{{ current_user.password }}</p>
+                </div>
+
+                <div class="field">
+                    <label>Username</label>
+                    <p>{{ current_user.name }}</p>
+                </div>
+
+                <div class="field">
+                    <label>CPF</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label> E-mail</label>
+                    <p>{{ current_user.email }}</p>
+                </div>
+
+                <div class="field">
+                    <label>Data de nascimento</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Nacionalidade</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Celular</label>
+                    <p>..........</p>
+                </div>
+                <div>
+                <button class="edit-btn">Editar Dados</button> 
+                </div>
             </div>  
 
             <div class="Cont">
@@ -53,15 +84,47 @@
                 </div>
             </div>
             <div class="Cont-Details">
-                <p>Cidade: </p>
-                <p>Bairro: </p>
-                <p>Rua: </p>
-                <button>Editar Dados</button> 
+                <div class="field">
+                    <label>País</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Estado</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Cidade</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Rua</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>Bairro</label>
+                    <p>..........</p>
+                </div>
+
+                <div class="field">
+                    <label>CEP</label>
+                    <p>..........</p>
+                </div>
+                <div>
+                <button class="edit-btn">Editar Dados</button> 
+                </div>
             </div> 
+            <button id="btnLogout" ><a href="{{ url_for('auth.logout') }}">Logout</a></button> <br>
+
         {% elif UserData_chosen == "2" %}
             
             {% if active_rents|length == 0 %}
-                <p class="empty-msg">Você não possui reservas ativas.</p>
+                <div class="empty-msg">
+                    <p >Você não possui reservas ativas.</p>
+                </div>
             {% endif %}
 
             {% for active_rent in active_rents %}
@@ -100,5 +163,11 @@
         {% endif %}
         </div>
     </div>        
+    <div class="btnDelete">
+        {% if current_user.has_role('manager') or current_user.has_role('worker') %}
+            <button id="dashboard-btn"><a href="{{ url_for('main.dashboard_controll') }}" style="color: white;">Dashboard</a></button>
+        {% endif %}
+        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button><br>
+    </div>
 </div>
 {% endblock %}
