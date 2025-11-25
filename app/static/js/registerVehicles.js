@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             })
             const data = await response.json()
-            alert(data.message)
+            await swal({
+                title: data.message,
+                icon: data.icon
+            })
             if (data.success) {
                 window.location.reload()
             }
