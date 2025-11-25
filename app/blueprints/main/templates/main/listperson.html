@@ -11,22 +11,40 @@
 {% block title %} Dashboard - {{ user_role }} {% endblock %}
 
 {% block content %}
-
-    <a href="{{ url_for('main.list_clients') }}">Listagem de clientes</a>
-    <a href="{{ url_for('main.list_workers') }}">Listagem de funcionários</a>
-    <a href="{{ url_for('main.list_managers') }}">Listagem de gerentes</a>
-
+        
     <div class="AllClient">
+        
         <div class="clientContainer">
-            <h1>Lista de {{ list }}</h1>
+            <div class="listagem">
+                <a href="{{ url_for('main.list_clients') }}" style="text-decoration: none; color: white;">Listagem de clientes</a>
+                <a href="{{ url_for('main.list_workers') }}" style="text-decoration: none; color: white;">Listagem de funcionários</a>
+                <a href="{{ url_for('main.list_managers') }}" style="text-decoration: none; color: white;">Listagem de gerentes</a>
+            </div>
+            <h1 style="text-align: center;">Lista de {{ list }}</h1>
+            <div class="userslist">
+                {% for user in users %}
+                <div class="user-card">
+                    <p class="user-name">{{ user.name }}</p>
+                    <p class="user-status">
+                        {% if user.is_active %}
+                            <span class="ativo">Ativo</span>
+                        {% else %}
+                            <span class="inativo">Inativo</span>
+                        {% endif %}
+                    </p>
 
-            {% for user in users %}
-                <p>{{ user.name }} - {% if user.is_active %} Ativo {% else %} Inativo {% endif %}</p>
-                {% if list_role != 'manager' %} <button type="button" class="promote" data-id="{{ user.id }}" data-role="{{ list_role }}"> Promover </button> {% endif %}
-            {% endfor %}
+                    {% if list_role != 'manager' %}
+                        <button type="button" class="promote" data-id="{{ user.id }}" data-role="{{ list_role }}">Promover</button>
+                    {% endif %}
+                </div>
+
+                {% endfor %}
+            </div>
         </div>
     </div>
-
-    <a href="{{ url_for('main.index') }}">Clique para voltar à nossa página principal</a></p>
+<div class="Acesspages">
+    <a class="back-link" href="{{ url_for('main.index') }}" style="color: white; text-decoration: none;">Voltar à página principal</a>
+    <a class="top-link" href="{{ url_for('main.dashboard_controll') }}" style="color: white; text-decoration: none;">Voltar para a pagina anterior</a>
+</div>
 
 {% endblock %}

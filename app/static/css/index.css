@@ -37,6 +37,12 @@ body {
   border: none;
 }
 
+.btnListCars{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 #btn:hover{
   background-color: #124649;
 }
@@ -295,15 +301,15 @@ body {
 }
 
 .alugar {
-  width: 100vw;
+  width: 99.5vw;
   background-color: #ffffff;
   position: relative;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  padding: 40px 0;         /* Espaço interno para destacar a seção */
-  margin-top: 40px;        /* Distância do bloco anterior */
+  padding: 40px 0;         
+  margin-top: 40px;        
   box-sizing: border-box;
 }
 

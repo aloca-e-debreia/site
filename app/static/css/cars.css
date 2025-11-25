@@ -50,7 +50,9 @@ header{
     outline: none;
     transition: 0.2s;
 }
-
+.pagination #prenex:hover{
+    text-decoration: underline;
+}
 #filters input:focus {
     border-color: #007BFF;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
@@ -58,7 +60,7 @@ header{
 
 .carros-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
     padding: 20px;
     width: 100%;
@@ -74,8 +76,11 @@ header{
     display: flex;
     flex-direction: column;
 }
-.carro-card .btnAlugar {
+.carro-card form {
     margin-top: auto; 
+}
+
+.btnAlugar {
     display: flex;
     justify-content: center;
 }

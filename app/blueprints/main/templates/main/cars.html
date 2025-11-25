@@ -100,7 +100,7 @@
     </p>
 <div class="pagination" style="text-align:center; margin:30px 0;">
     {% if vehicles.has_prev %}
-        <a href="{{ url_for('main.cars', page=vehicles.prev_num) }}">← Anterior</a>
+        <span id="prenex"><a href="{{ url_for('main.cars', page=vehicles.prev_num) }}" style="text-decoration: none; color: black;">← Anterior</a></span>
     {% endif %}
 
     <span style="margin: 0 15px;">
@@ -108,10 +108,8 @@
     </span>
 
     {% if vehicles.has_next %}
-        <a href="{{ url_for('main.cars', page=vehicles.next_num) }}">Próxima →</a>
+        <span id="prenex"><a href="{{ url_for('main.cars', page=vehicles.next_num) }}" style="text-decoration: none; color: black;">Próxima →</a></span>
     {% endif %}
 </div>
 
-    
-   
 {% endblock %}

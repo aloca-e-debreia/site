@@ -3,10 +3,47 @@ body {
     height: 100%;
     margin: 0;
     padding-inline-start: 0;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-family: Overpass;
+}
+.Acesspages{
+    display: flex;
+    justify-content: space-around;
+}
+
+.listagem{
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+    gap: 20px;
+}
+
+.listagem a{
+    background-color: #ff974f;
+    padding: 15px;
+    border-radius: 20px;
+    width: 33.33% ;
+    text-align: center;
+}
+
+.listagem a:hover{
+    background-color: #fa7921;
+    transition: 0.3s;
+
+}
+.back-link, .top-link {
+    width: 45%;
+    text-align: center;
+    background-color: #114043;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.back-link:hover, .top-link:hover{
+    background-color: #124649;
+    transition: 0.3s;
 }
 
 .ContainerLocation{
@@ -35,7 +72,7 @@ body {
     border-radius: 20px;
     padding: 30px;
     flex-direction: column;
-    width: 50%;
+    width: 70%;
 }
 
 .clientContainer p{
@@ -102,6 +139,53 @@ h1 {
     cursor: pointer;
     font-size: 13px;
     transition: 0.2s;
+    width: 35%;
+}
+
+.btnpromote{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.userslist {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.user-card {
+    background: #f4f6fc;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.07);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.user-card .user-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #003F46;
+}
+
+.user-card .user-status {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.ativo, .inativo {
+    font-weight: bold;
+}
+
+.user-card .promote {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .promote:hover {

@@ -25,8 +25,17 @@ header {
     align-items: center;
     gap: 20px;
     font-weight: 600;
+    transition: transform 0.5s ease-in-out ;
 }
 
+.login-link:hover, .register-link:hover{
+  text-decoration: underline;
+}
+
+#a123:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
 .menu-user {
     display: flex;
     align-items: center;
@@ -67,12 +76,6 @@ footer {
   margin-top: auto; 
   position: relative;
 }
-html{
-    min-height:100%;
-    height: 100%;
-    background-color: #f7f7f7;
-}
-
 
 main {
     flex: 1; 
