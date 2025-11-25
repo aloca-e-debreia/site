@@ -76,8 +76,11 @@ header{
     display: flex;
     flex-direction: column;
 }
-.carro-card .btnAlugar {
+.carro-card form {
     margin-top: auto; 
+}
+
+.btnAlugar {
     display: flex;
     justify-content: center;
 }
