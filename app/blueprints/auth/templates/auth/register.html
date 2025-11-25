@@ -13,13 +13,15 @@
 
 {% block content %}
 
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <p>{{ message }}</p> <br><br>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    <div style="justify-self: center;">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p>{{ message }}</p> <br><br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
 
     <div class="ContRegister" style="display: flex;flex-direction: column; align-items: center; justify-content: center;">
         <form id="auth-form" method="POST" action="{{ url_for('auth.register') }}" >
