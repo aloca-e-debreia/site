@@ -1,8 +1,16 @@
 header {
     background-color: #fa7921;
     width: 100%;
-    padding: 25px 30px;
     box-sizing: border-box;
+}
+#logo img {
+    height: 155px;   
+    object-fit: contain;
+}
+#logo{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
 #ContHeader {
@@ -87,4 +95,7 @@ footer {
     width: 100%;
     background-color: #fa7921;
     margin-top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }

@@ -4,6 +4,7 @@ from app.extensions import mail
 from flask_mail import Message
 from datetime import datetime
 from app.extensions import *
+from app.crypto import *
 import re
 
 user_datastore = None
@@ -12,7 +13,7 @@ def to_time(string): return datetime.strptime(string, "%H:%M").time()
 
 def to_date(string): return datetime.strptime(string, "%Y-%m-%d").date()
 
-def send_email(subject, recipients, body_text, body_html=None):
+def send_email(subject, recipients, body_text=None, body_html=None):
     try:
         if not current_app.config.get('MAIL_SERVER'):
             raise RuntimeError("Erro: Flask-Mail não configurado no app.config!")
@@ -21,8 +22,9 @@ def send_email(subject, recipients, body_text, body_html=None):
             if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
                 raise ValueError(f"Invalid email address: {email}")
 
-        msg = Message(subject=subject, recipients=recipients, body=body_text)
+        msg = Message(subject=subject, recipients=recipients)
         if body_html: msg.html = body_html
+        if body_text: msg.html = body_text
         mail.send(msg)
         return True
     except Exception as e:
@@ -47,6 +49,7 @@ def create_roles():
 def create_app():
     from flask import Flask
     from flask_security import SQLAlchemyUserDatastore
+    from app.blueprints.main.mailtest import register_app_email
 
     global user_datastore
 
@@ -63,6 +66,7 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
     mail.init_app(app)
+    init_fernet(app)
 
     from app.models import User, Role, Rental, RentalStatus
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -86,6 +90,7 @@ def create_app():
     from app.blueprints.main.errors import register_errors
 
     register_errors(app)
+    register_app_email(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp, url_prefix='/')
 

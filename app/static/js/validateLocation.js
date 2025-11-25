@@ -11,7 +11,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             })
             const data = await response.json()
             if (!data.route) return
-            const confirmation = confirm("Você tem uma locação em andamento, deseja continuar?")
+            const confirmation = await swal({
+                title: "Você tem uma locação em andamento, deseja continuar?",
+                icon: "info",
+                buttons: true,
+                dangermode: true
+            })
             if (!confirmation) data.route = 'main.index'
             redirect(confirmation, data.route)
         } catch(error) {
@@ -31,7 +36,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             })
             const data = await response.json()
             if (!data.success) {
-                alert(data.message)
+                swal({
+                    title : data.message,
+                    icon: "error",
+                })
                 return
             } 
             window.location.href = data.redirect_url

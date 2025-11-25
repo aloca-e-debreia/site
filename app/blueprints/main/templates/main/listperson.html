@@ -17,8 +17,10 @@
         <div class="clientContainer">
             <div class="listagem">
                 <a href="{{ url_for('main.list_clients') }}" style="text-decoration: none; color: white;">Listagem de clientes</a>
-                <a href="{{ url_for('main.list_workers') }}" style="text-decoration: none; color: white;">Listagem de funcionários</a>
-                <a href="{{ url_for('main.list_managers') }}" style="text-decoration: none; color: white;">Listagem de gerentes</a>
+                {% if user_role == 'Manager' %}
+                    <a href="{{ url_for('main.list_workers') }}" style="text-decoration: none; color: white;">Listagem de funcionários</a>
+                    <a href="{{ url_for('main.list_managers') }}" style="text-decoration: none; color: white;">Listagem de gerentes</a>
+                {% endif %}
             </div>
             <h1 style="text-align: center;">Lista de {{ list }}</h1>
             <div class="userslist">
@@ -34,7 +36,7 @@
                     </p>
 
                     {% if list_role != 'manager' %}
-                        <button type="button" class="promote" data-id="{{ user.id }}" data-role="{{ user_role }}">Promover</button>
+                        <button type="button" class="promote" data-id="{{ user.id }}" data-role="{{ list_role }}">Promover</button>
                     {% endif %}
                 </div>
 

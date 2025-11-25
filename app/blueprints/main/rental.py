@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from app.blueprints.main import main_bp
 from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
 from app import db, send_email, to_time, to_date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 @main_bp.route('/api/resume/rent', methods=['POST'])
 def resume_rent():
@@ -126,7 +128,6 @@ def cars():
 
     pickup = Pickup.query.get(int(pickup_id))
     dropoff = Dropoff.query.get(int(dropoff_id))
-
     return render_template('main/cars.html', vehicles=vehicles, pickup=pickup, dropoff=dropoff)
 
 @main_bp.route('/pay', methods=['GET', 'POST'])
@@ -153,11 +154,13 @@ def pay():
 
 @main_bp.route('api/pay/add-extra', methods=['POST'])
 def add_extra():
-    if request.method == 'POST':
+    if request.method == 'POST' and request.is_json:
         try:
-            extra = Extra.query.get(int(request.form['extra_id']))
-            quantity = int(request.form['quantity'])
-            rental = Rental.query.get(int(request.form['rental_id']))
+            data = request.get_json()
+
+            rental = Rental.query.get(int(data.get("rental_id")))
+            extra = Extra.query.get(int(data.get("extra_id")))
+            quantity = data.get("quantity")
 
             assoc = RentalExtra.query.filter_by(rental_id=rental.id, extra_id=extra.id).first()
 
@@ -181,10 +184,43 @@ def add_extra():
             "success" : False
         })
 
+@main_bp.route('/api/pay/extra/remove', methods=['POST'])
+def remove_extra():
+    if request.method == 'POST' and request.is_json:
+        try:
+            data = request.get_json()
+            extra_id = data.get("extra_id")
+            rental_id = data.get("rental_id")
+
+            RentalExtra.query.filter_by(rental_id=rental_id, extra_id=extra_id).delete()
+
+            db.session.commit()
+
+            return jsonify ({
+                "success" : True
+            })
+        
+        except Exception as e:
+            print("Erro ao remover o extra", e)
+            return jsonify({
+                "success" : False
+            })
+
 @main_bp.route('/api/pay/<int:rental_id>/extras')
-def extras_html(rental_id):
+def selected_extras_html(rental_id):
     rental = Rental.query.get_or_404(rental_id)
     return render_template('rental_extras.html', rental_extras=rental.rental_extras)
+
+@main_bp.route('/api/pay/<int:rental_id>/extras/list')
+def extras_html(rental_id):
+    extras = Extra.query.all()
+    rental = Rental.query.get_or_404(rental_id)
+    return render_template('extras.html', extras=extras, rental=rental)
+
+@main_bp.route('/api/pay/<int:rental_id>/car/summary')
+def car_summary(rental_id):
+    rental = Rental.query.get_or_404(rental_id)
+    return render_template('car-summary.html', rental=rental)
 
 @main_bp.route('/confirmation', methods=['GET', 'POST'])
 @login_required
@@ -203,7 +239,6 @@ def confirmation():
 
     if request.method == "POST":
         resp = make_response(redirect(url_for('main.UserData', UserData_chosen=2, opened=rental_id)))
-
         for cookie in ['pickup_id', 'dropoff_id', 'vehicle_id', 'rental_id']:
             resp.set_cookie(cookie, "", expires=0)
         return resp
@@ -222,10 +257,13 @@ def confirmation():
 @main_bp.route('/confirmation/api/email', methods=['POST'])
 def confirmation_email():
     if request.method == 'POST':
+        rental = Rental.query.get(int(request.cookies.get('rental_id')))
+        title = "Confirmação de reserva"
+        message = f"Foi registrada em {date.today().strftime("%d/%m/%Y")}, às {datetime.now(ZoneInfo("America/Sao_Paulo")).strftime("%H:%M:%S")} uma locação no seu email. Se você não sabe quem fez a locação, contate-nos imediatamente!"
         if send_email (
             subject="Registro de reserva",
             recipients=[current_user.email],
-            body_text="Parabéns! Sua locação foi registrada com sucesso",
+            body_html=render_template('email.html', rental=rental, title=title, message=message)
         ):
             return jsonify({
                 "success" : True,

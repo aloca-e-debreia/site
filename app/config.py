@@ -1,4 +1,4 @@
-import os, cloudinary
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,3 +29,4 @@ MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
 MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
 MAIL_DEFAULT_SENDER_NAME = os.environ.get("MAIL_DEFAULT_SENDER_NAME")
+FERNET_KEY = os.environ.get("FERNET_KEY")

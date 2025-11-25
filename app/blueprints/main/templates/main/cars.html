@@ -79,6 +79,7 @@
         <ul class="carro-info">
             <li class="category"><strong>Categoria:</strong> {{ vehicle.category.name }}</li>
             <li class="fuel"><strong>Combustível:</strong> {{ vehicle.engine.fuel }}</li>
+            <li class="fuel"><strong>Transmissão:</strong> {{ vehicle.transmission.name }}</li> <br>
 
             {% for feature in vehicle.features %}
                 <li>{{ feature.name }}</li>

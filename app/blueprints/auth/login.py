@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app.blueprints.auth import auth_bp
 from app.models import User
 from app import bcrypt, db, is_safe_url
+import hashlib
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -13,9 +14,10 @@ def login():
     
     if request.method == 'POST':
         email = request.form['email'].lower()
+        hashed_email = hashlib.sha256(email.encode()).hexdigest()
         password = request.form['password']
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email_hash=hashed_email).first()
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user, remember=False)
             

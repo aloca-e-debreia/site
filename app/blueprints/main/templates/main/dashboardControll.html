@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block content %}
+<h1 style="justify-self: center;">Seja bem vindo, {{ user_name }}!</h1>
+<p style="justify-self: center; width: 25%; font-size: medium;">Esta é a sua área de controle de locações, cadastro de veículos e ajustes de permissões de usuários, aproveite!</p>
     <div class="AllControll">
         <div class="ContainerControll">
             <a href="{{ url_for('main.register_vehicles') }}"><div>Cadastrar Veiculos</div></a>

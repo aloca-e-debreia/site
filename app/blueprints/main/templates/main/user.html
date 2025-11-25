@@ -16,9 +16,9 @@
 <div class="AllUser">
     <div class="user">
         <div class="boxes">
-            <div class="box" id="Text-MyData"><a href="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</a></div>
-            <div class="box" id="Text-MyReservations"><a href="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</a></div>
-            <div class="box" id="Text-History"><a href="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</a></div>
+            <div class="box" id="Text-MyData" data-route="{{ url_for('main.UserData', UserData_chosen='1') }}">Meus dados</div>
+            <div class="box" id="Text-MyReservations" data-route="{{ url_for('main.UserData', UserData_chosen='2') }}">Minhas reservas</div>
+            <div class="box" id="Text-History" data-route="{{ url_for('main.UserData', UserData_chosen='3') }}">Historico</div>
         </div>
         <div class="AllCont">
         <div class="ContUser">
@@ -117,7 +117,7 @@
                 <button class="edit-btn">Editar Dados</button> 
                 </div>
             </div> 
-            <button id="btnLogout" ><a href="{{ url_for('auth.logout') }}">Logout</a></button> <br>
+            <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button><br>
 
         {% elif UserData_chosen == "2" %}
             
@@ -137,7 +137,9 @@
                 </div>
                 <div class="Cont-Details">
                     {{ rent_details(active_rent) }}
-                    <button type="button" class="btn-cancel-rent" data-rent-id="{{ active_rent.id }}">Cancelar</button>
+                    {% if active_rent.status_label != "Ativa" %}
+                        <button type="button" class="btn-cancel-rent" data-rent-id="{{ active_rent.id }}">Cancelar</button>
+                    {% endif %}
                 </div>    
             {% endfor %}
 
@@ -165,9 +167,9 @@
     </div>        
     <div class="btnDelete">
         {% if current_user.has_role('manager') or current_user.has_role('worker') %}
-            <button id="dashboard-btn"><a href="{{ url_for('main.dashboard_controll') }}" style="color: white;">Dashboard</a></button>
+            <button id="dashboard-btn" data-route="{{ url_for('main.dashboard_controll', user_name=current_user.name) }}" style="color: white;">Dashboard</a></button>
         {% endif %}
-        <button id="remove-account-btn" data-id="{{ current_user.id }}">Excluir conta</button><br>
+        <button id="btnLogout" data-route="{{ url_for('auth.logout') }}" style="color: white;">Logout</a></button> <br>
     </div>
 </div>
 {% endblock %}

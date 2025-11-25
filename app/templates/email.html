@@ -1,0 +1,64 @@
+<h1 style="justify-self: center;">{{ title }}</h1>
+
+<p>
+    {{ message }}
+</p>
+
+<hr>
+<h3>Dados do cliente</h3>
+<ul>
+    <li>Cliente: {{ rental.user.name }}</li>
+    <li>CPF: {{ rental.user.cpf }}</li>
+    
+</ul>
+<h3>Dados da locação</h3>
+<ul>
+    <li>ID: {{ rental.id }}</li>
+    <li>Carro escolhido: {{ rental.vehicle.name() }}</li>
+    <li>Placa: {{ rental.vehicle.plate }}</li>
+    <li>Combustível: {{ rental.vehicle.engine.fuel }}</li>
+    <li>Transmissão: {{ rental.vehicle.transmission.name }}</li>
+    <li>Preço: {{ rental.vehicle.daily_price | currency }}/dia</li>
+    <li>Funcionalidades:</li>
+    <ul>
+        {% for feature in rental.vehicle.features %}
+            <li>{{ feature.name }}</li>
+        {% endfor %}
+    </ul>
+    {% if rental.rental_extras | length != 0 %}
+        <li>Adicionais:</li>
+        <ul>
+        {% for rental_extra in rental.rental_extras %}
+            {% if rental_extra.extra.selectable_quantity %}
+                <li>{{ rental_extra.quantity }} X {{ rental_extra.extra.name }}</li>
+            {% else %}
+                <li>{{ rental_extra.extra.name }}</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    {% endif %}
+</ul>
+<h3>Retirada</h3>
+<ul>
+    <li>Agência: {{ rental.pickup.branch.name }}</li>
+    <li>Endereço: {{ rental.pickup.branch.address.name() }}</li>
+    <li>Data: {{ rental.pickup.date }}</li>
+    <li>Hora: {{ rental.pickup.time }}</li>
+</ul>
+<h3>Devolução</h3>
+<ul>
+    <li>Agência: {{ rental.dropoff.branch.name }}</li>
+    <li>Endereço: {{ rental.dropoff.branch.address.name() }}</li>
+    <li>Data: {{ rental.dropoff.date }}</li>
+    <li>Hora: {{ rental.dropoff.time }}</li>
+</ul>
+<h3>Valores</h3>
+    <ul>
+        <li>Valor do veículo: {{ rental.vehicle.daily_price | currency }}/dia</li>
+        <li>Total do veículo: {{ rental.vehicle_total | currency }}</li>
+        <li>Adicionais: {{ rental.extras_total | currency }}</li>
+        <li>Taxas da locadora: 12% = {{ rental.fee_price | currency }}</li>
+        <li><b>Total geral<b>: {{ rental.total | currency }}</li>
+    </ul>
+<hr>
+<h4>ESTE É UM DISPARO AUTOMÁTICO. POR FAVOR NÃO RESPONDA A ESTE EMAIL</h4>

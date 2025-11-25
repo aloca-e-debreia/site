@@ -7,14 +7,15 @@ def seed_vehicles(app):
 
     @app.cli.command("seed_vehicles")
     def seed():
-        entities = {"categories" : Category,
-                    "brands" : Brand,
-                    "models" : Model,
-                    "versions" : Version,
-                    "transmissions" : Transmission,
-                    "engines" : Engine,
-                    "features" : Feature
-                    }
+        entities = {
+            "categories" : Category,
+            "brands" : Brand,
+            "models" : Model,
+            "versions" : Version,
+            "transmissions" : Transmission,
+            "engines" : Engine,
+            "features" : Feature
+        }
 
         for name in entities:
             objList = load_yaml("vehicles_data/"+name+".yaml")
@@ -46,6 +47,6 @@ def seed_vehicles(app):
                     n_people = randint(1, 5)
                 )
                 db.session.add(vehicle)
-                print("Create vehicle:", repr(vehicle))
+                print("Create vehicle:", vehicle)
 
             db.session.commit()
