@@ -29,10 +29,10 @@
 
         <nav class="elementosHeader">
             <ul>
-
-                <li><i class="ri-map-pin-line"></i> MAPA DAS LOCADORAS</li>
-                <li><i class="ri-car-line"></i> <a href="{{ url_for('main.cars') }}" style="text-decoration: none; color: black;">LISTA DE CARROS</a></li>
-                <li><i class="ri-question-line"></i><a href="{{ url_for('main.contact') }}" style="text-decoration: none; color: black;">CONTATO</a></li>
+                
+                <li id="a123"><i class="ri-map-pin-line"></i> <a href="#mapa123" style="text-decoration: none; color: black;">MAPA DAS LOCADORAS</a></li>
+                <li id="a123"><i class="ri-car-line"></i> <a href="{{ url_for('main.cars') }}" style="text-decoration: none; color: black;">LISTA DE CARROS</a></li>
+                <li id="a123"><i class="ri-question-line"></i><a href="{{ url_for('main.contact') }}" style="text-decoration: none; color: black;">CONTATO</a></li>
 
                 {% if current_user.is_authenticated %}
                 <li class="menu-user">

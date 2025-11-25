@@ -178,13 +178,7 @@ h1 {
     margin-bottom: 10px;
 }
 
-.ativo {
-    color: #2ecc71;
-    font-weight: bold;
-}
-
-.inativo {
-    color: #e74c3c;
+.ativo, .inativo {
     font-weight: bold;
 }
 
