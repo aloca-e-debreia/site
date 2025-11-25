@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
+
 {% block head %}
     {{ super() }}
     <script type="module" src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}
 
+
 {% block title %} Cadastro {% endblock %}
 
+
 {% block content %}
+
 
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
@@ -17,16 +21,18 @@
         {% endif %}
     {% endwith %}
 
-    <div class="ContRegister" style="display: flex; align-items: center; justify-content: center;">
+
+    <div class="ContRegister" style="display: flex;flex-direction: column; align-items: center; justify-content: center;">
         <form id="auth-form" method="POST" action="{{ url_for('auth.register') }}" >
             <h2 id="form-title">Cadastro</h2>
             <h3 class="input-title">Informações pessoais</h3>
             <div id="input-group-personal" class="form-grid">
                 <div class="input-group">
                     <label>Nome</label><br>
-                    <input type="text" name="name" id="nome" placeholder="Digite seu primeiro nome" required>
-                    <div id="nome-error" class="error-message"></div>
+                    <input type="text" name="name" id="name" placeholder="Digite seu primeiro nome" required>
+                    <div id="name-error" class="error-message"></div>
                 </div>
+
 
                 <div class="input-group">
                     <label>Email</label><br>
@@ -48,14 +54,15 @@
 
                 <div class="input-group">
                     <label>Nacionalidade</label><br>
-                    <input type="text" name="nacionalidade" id="nacionalidade" placeholder="Digite sua nacionalidade" required>
-                    <div id="nacionalidade-error" class="error-message"></div>
+                    <input type="text" name="nation" id="nation" placeholder="Digite sua nacionalidade" required>
+                    <div id="nation-error" class="error-message"></div>
                 </div>
+
 
                 <div class="input-group">
                     <label>Celular</label><br>
-                    <input type="tel" name="celular" id="celular" placeholder="Digite seu número de telefone" required>
-                    <div id="celular-error" class="error-message"></div>
+                    <input type="tel" name="phone" id="phone" placeholder="Digite seu número de telefone" required>
+                    <div id="phone-error" class="error-message"></div>
                 </div>
             </div>
 
@@ -63,20 +70,20 @@
             <div id="input-group-adress" class="form-grid">
                 <div class="input-group">
                     <label>País</label><br>
-                    <input type="text" name="pais" id="pais" placeholder="Digite seu país" required>
-                    <div id="pais-error" class="error-message"></div>
+                    <input type="text" name="country" id="country" placeholder="Digite seu país" required>
+                    <div id="country-error" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label>Estado</label><br>
-                    <input type="text" name="estado" id="estado" placeholder="Digite seu estado" required>
+                    <input type="text" name="state" id="state" placeholder="Digite seu estado" required>
                     <div id="estado-error" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label>Cidade</label><br>
-                    <input type="text" name="cidade" id="cidade"  placeholder="Digite sua cidade" required>
-                    <div id="cidade-error" class="error-message"></div>
+                    <input type="text" name="city" id="city"  placeholder="Digite sua cidade" required>
+                    <div id="city-error" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
@@ -87,14 +94,14 @@
 
                 <div class="input-group">
                     <label>Rua</label><br>
-                    <input type="text" name="rua" id="rua" placeholder="Digite sua Rua" required>
-                    <div id="rua-error" class="error-message"></div>
+                    <input type="text" name="road" id="road" placeholder="Digite sua Rua" required>
+                    <div id="road-error" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
-                    <label>Número</label><br>
-                    <input type="number" name="numero" id="numero" placeholder="Digite seu número" required>
-                    <div id="num-error" class="error-message"></div>
+                    <label>Bairro</label><br>
+                    <input type="text" name="hood" id="hood" placeholder="Digite seu bairro" required>
+                    <div id="hood-error" class="error-message"></div>
                 </div>
             </div>
 
@@ -102,24 +109,26 @@
             <div id="input-group-password" class="form-grid">
                 <div class="input-group">
                     <label>Crie uma senha</label><br>
-                    <input type="password" name="senha" class="input" id="password" required placeholder="Digite sua senha"><br><br>
+                    <input type="password" name="password" class="input" id="password" required placeholder="Digite sua senha"><br><br>
                     <div id="password-error" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label>Confirme sua senha</label><br>
-                    <input type="password" name="password" class="input" id="confirm-password" required placeholder="Digite a mesma senha"><br><br>
+                    <input type="password" name="confirm-password" class="input" id="confirm-password" required placeholder="Digite a mesma senha"><br><br>
                     <div id="confirm-password-error" class="error-message"></div>
                 </div>
 
+
             </div>
+
 
             <div class="register-btn">
             <p><a href="{{ url_for('auth.login') }}">Já tem uma conta? Faça login</a></p>
-                <button type="submit" class="btn" id="button">Enviar</button>       
+                <button type="submit" class="btn" id="button">Enviar</button>      
         </div>
         </form>
-        <div class="warning" id="warning">
+        <div class="warning" id="register-warning">
         {% with messages = get_flashed_messages()%}
             {% if messages%}
                 {% for message in messages%}
@@ -129,6 +138,7 @@
         {% endwith %}
     </div>
     </div>
-    
+   
+
 
 {% endblock %}

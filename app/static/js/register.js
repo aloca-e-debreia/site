@@ -7,15 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonForm = document.getElementById('button')
     const authForm = document.getElementById('auth-form')
 
-    let elements = [ 'nome','email','CPF','data','nacionalidade','celular',
-                     'pais','estado','cidade','CEP','rua','numero',
+
+    let elements = [ 'name','email','cpf','data','nation','phone',
+                     'country','state','city','CEP','road','hood',
                      'password','confirm-password']
 
     let validateMessage = {
         'email' : 'Por favor, digite um email válido',
         'password' : 'Por favor, digite uma senha de pelo menos 8 dígitos',
         'CPF': 'Digite um CPF válido',
-        'celular' : 'Digite um número válido',
+        'phone' : 'Digite um número válido',
         'CEP' : 'Digite um CEP válido'
     }
 
@@ -30,16 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         blankSpaces = 0
-        
+       
         elements.forEach((id) => blankSpaces += isFieldBlank(id, validFields))
  
         elements.forEach((id) => isValidField(id, validFields, validateMessage))
 
         if (validFields['email']) await existantDataValue('email', validFields)
         console.log(validFields)
-        if (blankSpaces > 0) document.getElementById('warning').textContent = 'Todos os campos são obrigatórios!'
-        
-        else document.getElementById('warning').textContent = ''
+        if (blankSpaces > 0) document.getElementById('register-warning').textContent = 'Todos os campos são obrigatórios!'
+       
+        else document.getElementById('register-warning').textContent = ''
 
         if (isValidForm(validFields)) authForm.submit()
 

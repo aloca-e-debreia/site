@@ -103,11 +103,22 @@ function isValidEmail(fieldValue, errorField, message) {
 
 function isValidPassword(fieldValue, errorField, message) {
     if (fieldValue.length < 8) {
-        errorField.textContent = message
-        return false
+        errorField.textContent = message;
+        return false;
     }
-    return true
+    const confirmPassword = document.getElementById('confirm-password').value.trim();
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    if (fieldValue !== confirmPassword) {
+        confirmPasswordError.textContent = 'As senhas não coincidem';
+        return false;
+    } else {
+        confirmPasswordError.textContent = '';
+    }
+    return true;
 }
+
+
+
 
 export function isValidField(id, validFields, validateMessage) {
     const fieldValue = document.getElementById(id).value.trim()
@@ -132,7 +143,7 @@ export function isValidField(id, validFields, validateMessage) {
 export function isFieldBlank(id, validFields) {
     const fieldValue = document.getElementById(id).value.trim()
     const errorField = document.getElementById(id+'-error')
-    if (blankField(fieldValue, errorField, `Por favor, digite seu/sua ${id}`)) {
+    if (blankField(fieldValue, errorField, "Por favor, preencha esse campo")) {
         validFields[id] = false
         return true
     }
