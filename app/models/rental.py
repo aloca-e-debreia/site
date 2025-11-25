@@ -96,6 +96,10 @@ class Rental(db.Model):
     rental_extras = db.relationship("RentalExtra", back_populates='rental', cascade="all, delete-orphan")
 
     status = db.Column(db.Enum(RentalStatus, name="rental_status"), nullable=False, default=RentalStatus.PENDING)
+    
+    @property
+    def extras(self):
+        return [rental_extra.extra for rental_extra in self.rental_extras]
 
     @property
     def status_label(self):

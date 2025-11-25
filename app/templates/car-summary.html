@@ -1,0 +1,20 @@
+<h3>Resumo</h3>
+<div class="summary-line">
+    <span>Valor do veículo</span><span>{{ rental.vehicle.daily_price | currency }}/dia</span>
+</div>
+<div class="summary-line">
+    <span>Total</span><span>{{ rental.vehicle_total | currency }}</span>
+</div>
+<div class="summary-line">
+    <span>Adicionais</span><span>{{ rental.extras_daily_price | currency }}</span>
+</div>
+<div class="summary-line">
+    <span>Taxas da locadora</span><span>12% = {{ rental.fee_price | currency }}</span>
+</div>
+<div class="summary-line total">
+    <span>Total</span><span>{{ rental.total | currency }}</span>
+</div>
+
+<a href="{{ url_for('main.confirmation')}}">
+    <button class="resume-btn">Continuar</button>
+</a>

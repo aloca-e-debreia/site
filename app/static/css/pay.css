@@ -125,7 +125,7 @@ body {
     cursor: pointer;
 }
 
-.send-extra-btn {
+.send-extra-btn, .remove-extra {
     background: #114043;
     color: white;
     padding: 6px 16px;
@@ -136,4 +136,15 @@ body {
 
 .send-extra-btn:hover {
     background: #0c2d2f;
+}
+
+.remove-extra {
+    color:black;
+    background:#f7f7f9;
+    border: #114043 solid 1px;
+}
+
+.remove-extra:hover {
+    background:#ddd;
+    border: 2px;
 }

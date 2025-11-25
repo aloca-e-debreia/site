@@ -1,0 +1,25 @@
+{% for extra in extras %}
+    <div class="extra-item">
+        <div class="extra-left">
+            <h3>{{ extra.name }}</h3>
+            <p>{{ extra.description }}</p>
+        </div>
+        <div class="extra-right" action="{{ url_for('main.pay') }}" method="post" id="{{ extra.id }}-form">
+            <span class="price">{{ extra.daily_price | currency }}</span>
+            {% if not extra in rental.extras %}
+                {% if extra.selectable_quantity %}
+                <div class="counter">
+                    <button class="rmv-extra-btn" data-id="{{ extra.id }}">-</button>
+                    <span id="{{ extra.id }}">0</span>
+                    <button class="add-extra-btn" data-id="{{ extra.id }}">+</button>
+                </div>
+                {% endif %}
+                <input type="hidden" name="quantity" id="{{ extra.id }}-quantity" value="1">
+                <input type="hidden" name="rental_id" value="{{ rental.id }}" id="{{ rental.id }}" class="rental-id">
+                <button class="send-extra-btn" type="button" data-extra-id="{{ extra.id }}">Adicionar</button>
+            {% else %}
+                <button type="button" class="remove-extra" data-extra-id="{{ extra.id }}" data-rental-id="{{ rental.id }}">Remover</button>
+            {% endif %}
+            </div>
+    </div>
+{% endfor %}
