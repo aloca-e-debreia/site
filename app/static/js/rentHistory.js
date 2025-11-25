@@ -36,30 +36,36 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    document.querySelectorAll(".btn-cancel-rent").forEach(button => {
-        button.addEventListener("click", async event => {
-            event.preventDefault()
+    const cancelRentButtons = document.querySelectorAll(".btn-cancel-rent")
+    if (cancelRentButtons) {
+        cancelRentButtons.forEach(button => {
+            button.addEventListener("click", async event => {
+                event.preventDefault()
 
-            if (!await swal({
-                title : "Desejas cancelar a locação?",
+                if (!await swal({
+                    title : "Desejas cancelar a locação?",
+                    icon : "warning",
+                    buttons : true,
+                    dangermode : true
+                })) return
+                
+                cancelRent(button.dataset.rentId)
+            }) 
+        })
+    }
+    
+    const removeAccountBtn = document.getElementById("remove-account-btn")
+    if (removeAccountBtn) {
+        removeAccountBtn.addEventListener("click", async event => {
+            event.preventDefault()
+            if (await swal({
+                title : "Desejas remover sua conta?",
                 icon : "warning",
                 buttons : true,
                 dangermode : true
-            })) return
-            
-            cancelRent(button.dataset.rentId)
-        }) 
-    })
-    
-    document.getElementById("remove-account-btn").addEventListener("click", async event => {
-        event.preventDefault()
-        if (await swal({
-            title : "Desejas remover sua conta?",
-            icon : "warning",
-            buttons : true,
-            dangermode : true
-        })) removeAccount(event.target.dataset.id)
-    })
+            })) removeAccount(event.target.dataset.id)
+        })
+    }
 
     const ContClass = document.querySelectorAll(".Cont")
     if (ContClass) {
@@ -82,5 +88,19 @@ document.addEventListener("DOMContentLoaded", () => {
         target.click()
         target.scrollIntoView({behavior : "smooth"})
     })()
+
+    Array.from(document.getElementsByTagName("button")).forEach(btn => {
+        btn.addEventListener("click", event => {
+            event.preventDefault()
+            if (btn.dataset.route) window.location.href=btn.dataset.route
+        })
+    })
+
+    document.querySelectorAll(".box").forEach(box => {
+        box.addEventListener("click", event => {
+            event.preventDefault()
+            if (box.dataset.route) window.location.href=box.dataset.route
+        })
+    })
 
 })
