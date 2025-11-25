@@ -29,6 +29,8 @@ def register():
             db.session.commit()
             login_user(user)
             return redirect(url_for('main.index'))
+        else:
+            flash("Já existe um usuário com as mesmas credenciais")
    
     return render_template('auth/register.html')
 
