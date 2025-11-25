@@ -20,4 +20,3 @@ def seed_init(app):
     seed_branches(app)
     seed_extras(app)
     seed_all(app)
-    seed_all(app)

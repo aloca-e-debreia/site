@@ -13,7 +13,6 @@ def alter_rent_status():
             data = request.get_json()
             rent_id = data.get("rent_id")
             new_status = data.get("new_status")
-
             rent = Rental.query.get(rent_id)
             rent.status = RentalStatus[new_status]
 

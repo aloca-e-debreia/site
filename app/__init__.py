@@ -48,6 +48,7 @@ def create_roles():
 def create_app():
     from flask import Flask
     from flask_security import SQLAlchemyUserDatastore
+    from app.blueprints.main.mailtest import register_app_email
 
     global user_datastore
 
@@ -88,6 +89,7 @@ def create_app():
     from app.blueprints.main.errors import register_errors
 
     register_errors(app)
+    register_app_email(app)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp, url_prefix='/')
 
