@@ -1,14 +1,17 @@
 header {
-    background-color: #fa7921;
-    width: 100%;
-    padding: 25px 30px;
-    box-sizing: border-box;
+  background-color: #fa7921;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #ContHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.elementosHeader {
+  margin-right: 20px;
 }
 
 .elementosHeader ul {
