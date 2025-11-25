@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from app.blueprints.main import main_bp
 from app.models import Branch, Vehicle, Pickup, Dropoff, Extra, Rental, RentalExtra
 from app import db, send_email, to_time, to_date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 @main_bp.route('/api/resume/rent', methods=['POST'])
 def resume_rent():
@@ -255,10 +257,13 @@ def confirmation():
 @main_bp.route('/confirmation/api/email', methods=['POST'])
 def confirmation_email():
     if request.method == 'POST':
+        rental = Rental.query.get(int(request.cookies.get('rental_id')))
+        title = "Confirmação de reserva"
+        message = f"Foi registrada em {date.today().strftime("%d/%m/%Y")}, às {datetime.now(ZoneInfo("America/Sao_Paulo")).strftime("%H:%M:%S")} uma locação no seu email. Se você não sabe quem fez a locação, contate-nos imediatamente!"
         if send_email (
             subject="Registro de reserva",
             recipients=[current_user.email],
-            body_text="Parabéns! Sua locação foi registrada com sucesso",
+            body_html=render_template('email.html', rental=rental, title=title, message=message)
         ):
             return jsonify({
                 "success" : True,

@@ -13,7 +13,7 @@ def to_time(string): return datetime.strptime(string, "%H:%M").time()
 
 def to_date(string): return datetime.strptime(string, "%Y-%m-%d").date()
 
-def send_email(subject, recipients, body_text, body_html=None):
+def send_email(subject, recipients, body_text=None, body_html=None):
     try:
         if not current_app.config.get('MAIL_SERVER'):
             raise RuntimeError("Erro: Flask-Mail não configurado no app.config!")
@@ -22,8 +22,9 @@ def send_email(subject, recipients, body_text, body_html=None):
             if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
                 raise ValueError(f"Invalid email address: {email}")
 
-        msg = Message(subject=subject, recipients=recipients, body=body_text)
+        msg = Message(subject=subject, recipients=recipients)
         if body_html: msg.html = body_html
+        if body_text: msg.html = body_text
         mail.send(msg)
         return True
     except Exception as e:
