@@ -95,4 +95,7 @@ footer {
     width: 100%;
     background-color: #fa7921;
     margin-top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }

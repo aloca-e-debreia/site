@@ -1,10 +1,11 @@
 from flask import render_template, request, jsonify
 from flask_security import roles_accepted
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.blueprints.main import main_bp
 from app.models import Rental, RentalStatus
 from app import db, send_email
-from flask import session
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 @main_bp.route('/dashboard/api/alter/status', methods=['POST'])
 def alter_rent_status():
@@ -23,16 +24,18 @@ def alter_rent_status():
                 "CLOSED" : "devolução",
                 "CLOSED_LATE" : "devolução com atraso"
             }
-
+            op = operation[new_status]
+            title = f"Atestado de {op}"
+            message = f"Foi registrada em {date.today().strftime("%d/%m/%Y")}, às {datetime.now(ZoneInfo("America/Sao_Paulo")).strftime("%H:%M:%S")} a devolução do seu veículo pelo funcionário {current_user.name}. Se você não fez a {op}, contate-nos imediatamente!"
             if send_email (
-                subject=f"Atestado de {operation[new_status]}",
+                subject=f"Registro de {op}",
                 recipients=[rent.user.email],
-                body_text="Parabéns! Sua locação foi registrada com sucesso",
+                body_text=render_template('email.html', rental=rent, title=title, message=message)
             ):
                 return jsonify({
                     "success" : True,
                     "title" : "Locação alterada com sucesso!",
-                    "message" : f"Um email ao cliente foi enviado atestando a {operation[new_status]}",
+                    "message" : f"Um email ao cliente foi enviado atestando a {op}",
                     "type" : "success"
                 })
             

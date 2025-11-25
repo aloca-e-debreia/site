@@ -70,6 +70,7 @@
             <h4>Valores</h4>
             <ul>
                 <li><strong>Total veículo:</strong> {{ rent.vehicle_total | currency }}</li>
+                <li><strong>Adicionais:</strong> {{ rent.extras_total | currency }}</li>
                 <li><strong>Taxa 12%:</strong> {{ rent.fee_price | currency }}</li>
                 <li><strong>Total geral:</strong> {{ rent.total | currency }}</li>
             </ul>

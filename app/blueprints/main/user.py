@@ -82,7 +82,7 @@ def list_managers():
 @login_required
 @roles_accepted('manager', 'worker')
 def dashboard_controll():
-    return render_template('main/dashboardControll.html')
+    return render_template('main/dashboardControll.html', user_name=current_user.name)
 
 @main_bp.route('/dashboard/api/promote', methods=['POST'])
 @login_required

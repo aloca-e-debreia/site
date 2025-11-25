@@ -31,15 +31,28 @@ body {
     background-color: #124649;
     transition: 0.35s;
 }
-#remove-account-btn{
+#remove-account-btn {
+
+    border-radius: 10px; 
+    height: 50px;
+    cursor: pointer;
+    border: none;
+
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.btn-cancel-rent {
     border: none;
     background-color: red;
     border-radius: 15px;
-    width: 45%;
+    width: 60%;
     color: white;
     cursor: pointer;
     padding: 20px;
     margin: 10px;
+    justify-self: center;
 }
 
 #remove-account-btn:hover{
@@ -54,11 +67,12 @@ body {
 }
 
 #btnLogout{
-    border-radius: 10px; 
     background-color: #114043; 
-    height: 50px;
+    border-radius: 15px;
+    width: 45%;
     cursor: pointer;
-    border: none;
+    padding: 20px;
+    margin: 10px;
 }
 
 #btnLogout:hover{
