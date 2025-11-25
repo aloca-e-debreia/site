@@ -1,4 +1,6 @@
-from app import db
+from app import db, encrypt_data, decrypt_data
+from sqlalchemy.ext.hybrid import hybrid_property
+import hashlib
 
 ## NAMING
 
@@ -100,7 +102,9 @@ class Vehicle(db.Model):
 
     features = db.relationship("Feature", secondary=vehicle_feature, backref="vehicle")
 
-    plate = db.Column(db.String(7), nullable=False, unique=True)
+    _plate_encrypted = db.Column(db.Text, nullable=False, unique=True)
+    plate_hash = db.Column(db.String(64), nullable=False)
+
     year = db.Column(db.Integer, nullable=False)
     mileage = db.Column(db.Numeric(10, 2), nullable=False)
     status = db.Column(db.Boolean(), default=True, nullable=False)
@@ -108,11 +112,25 @@ class Vehicle(db.Model):
     img_public_id = db.Column(db.String(200), nullable=False)
     n_people = db.Column(db.Integer, nullable=False)
 
+    @hybrid_property
+    def plate(self):
+        if self._plate_encrypted is None: return None
+        return decrypt_data(self._plate_encrypted)
+
+    @plate.setter
+    def plate(self, plain_plate):
+        if not plain_plate:
+            self._plate_encrypted = None
+            self.plate_hash = None
+            return
+        self._plate_encrypted = encrypt_data(plain_plate)
+        self.plate_hash = hashlib.sha256(plain_plate.encode()).hexdigest()
+    
     def __repr__(self):
         return f"<Vehicle(category_id={self.category_id},\
             model_id={self.model_id}, version_id={self.version_id},\
             transmission_id={self.transmission_id}, engine_id={self.engine_id}, \
-            plate='{self.plate}', year='{self.year}', \
+            plate='{self.plate_hash}', year='{self.year}', \
             mileage='{self.mileage}', daily_price='{self.daily_price}'>,\
             img_public_id={self.img_public_id}"
     

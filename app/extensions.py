@@ -4,6 +4,7 @@ from flask_security import Security
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 from faker import Faker
+from flask_mail import Mail
 from apscheduler.schedulers.background import BackgroundScheduler
 
 login_manager = LoginManager()

@@ -61,21 +61,21 @@ def cancel_rent():
 @roles_accepted('manager', 'worker')
 def list_clients():
     clients = select_users_with_role('client')
-    return render_template('main/listperson.html', user_roles=current_user.roles, list='clientes', list_role='client', users=clients)
+    return render_template('main/listperson.html', list='clientes', list_role='client', users=clients)
     
 @main_bp.route('/dashboard/workers')
 @login_required
 @roles_accepted('manager')
 def list_workers():
     workers = select_users_with_role('worker')
-    return render_template('main/listperson.html', user_roles=current_user.roles, list='funcionários', list_role='worker', users=workers)
+    return render_template('main/listperson.html', list='funcionários', list_role='worker', users=workers)
 
 @main_bp.route('/dashboard/managers')
 @login_required
 @roles_accepted('manager')
 def list_managers():
     managers = select_users_with_role('manager')
-    return render_template('main/listperson.html', user_roles=current_user.roles, list='gerentes', list_role='manager', users=managers)
+    return render_template('main/listperson.html', list='gerentes', list_role='manager', users=managers)
 
 
 @main_bp.route('dashboard/controll')

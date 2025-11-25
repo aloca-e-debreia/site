@@ -4,6 +4,7 @@ from app.extensions import mail
 from flask_mail import Message
 from datetime import datetime
 from app.extensions import *
+from app.crypto import *
 import re
 
 user_datastore = None
@@ -63,6 +64,7 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
     mail.init_app(app)
+    init_fernet(app)
 
     from app.models import User, Role, Rental, RentalStatus
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
