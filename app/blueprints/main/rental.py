@@ -87,8 +87,8 @@ def index():
         db.session.commit()
 
         resp = make_response(redirect(url_for('main.cars')))
-        resp.set_cookie('pickup_id', str(pickup.id), max_age=60*60*24)
-        resp.set_cookie('dropoff_id', str(dropoff.id), max_age=60*60*24)
+        resp.set_cookie('pickup_id', str(pickup.id), max_age=60*60*24, samesite = "None")
+        resp.set_cookie('dropoff_id', str(dropoff.id), max_age=60*60*24, samesite= "None")
         return resp
 
     return render_template('main/index.html', branches=branches)
@@ -120,8 +120,8 @@ def cars():
         db.session.commit()
 
         resp = make_response(redirect(url_for('main.pay')))
-        resp.set_cookie('vehicle_id', str(vehicle_id), max_age=60*60*24)
-        resp.set_cookie('rental_id', str(rental.id), max_age=60*60*24)
+        resp.set_cookie('vehicle_id', str(vehicle_id), max_age=60*60*24, samesite= "None", )
+        resp.set_cookie('rental_id', str(rental.id), max_age=60*60*24, samesite= "None", )
         return resp
 
     pickup = Pickup.query.get(int(pickup_id))
@@ -150,7 +150,7 @@ def pay():
 
     return render_template('main/pay.html', pickup=pickup, dropoff=dropoff, vehicle=vehicle, rental=rental, rental_extras=rental.rental_extras, extras=extras)
 
-@main_bp.route('api/pay/add-extra', methods=['POST'])
+@main_bp.route('/api/pay/add-extra', methods=['POST'])
 def add_extra():
     if request.method == 'POST':
         try:

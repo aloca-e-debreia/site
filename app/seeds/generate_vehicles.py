@@ -39,7 +39,7 @@ def seed_vehicles(app):
                     engine_id = choice(engines),
                     features = list(set(choice(features) for _ in range(3))),
 
-                    plate = faker.license_plate(),
+                    plate = faker.license_plate()[:7], #setting varchar limits
                     year = randint(2000, 2025),
                     mileage = uniform(0, 1000),
                     daily_price = uniform(100, 490),

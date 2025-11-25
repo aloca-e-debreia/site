@@ -3,7 +3,8 @@ from app.models import Address, Branch, BusinessHours
 from app.seeds.yaml_operations import load_yaml
 from random import randint
 from datetime import datetime
-from app import to_time
+
+def to_time(string): return datetime.strptime(string, "%H:%M").time() 
 
 def seed_branches(app):
 
@@ -13,7 +14,7 @@ def seed_branches(app):
         #creates n fake addresses
         for _ in range (qnt_addresses):
             address = Address(
-                state="São Paulo",
+                uf="2", #fixing state to UF 
                 city=faker.city(),
                 street=faker.street_name(),
                 number=randint(0, 2000),
