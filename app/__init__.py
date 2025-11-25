@@ -96,8 +96,4 @@ def create_app():
     from app.seeds import seed_init
     seed_init(app)
 
-    from app.models.user import User 
-    from app.models.user import Role
-
-
     return app

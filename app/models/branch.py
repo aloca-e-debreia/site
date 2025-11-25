@@ -4,7 +4,7 @@ class Address(db.Model):
     __tablename__ = 'address'
     id = db.Column(db.Integer, primary_key=True)
     country = db.Column(db.String(100), nullable=False, default='Brasil')
-    uf = db.Column(db.String(2), nullable=False)
+    state = db.Column(db.String(2), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     district = db.Column(db.String(100), nullable=False)
     street = db.Column(db.String(100), nullable=False)
@@ -13,10 +13,10 @@ class Address(db.Model):
     postal_code = db.Column(db.String(12), nullable=False)
 
     def __repr__(self):
-        return f"<Address(uf='{self.uf}', city='{self.city}', district='{self.district}', street='{self.street}', number='{self.number}', complement='{self.complement}', postal_code='{self.postal_code}')>"
+        return f"<Address(state='{self.state}', city='{self.city}', district='{self.district}', street='{self.street}', number='{self.number}', complement='{self.complement}', postal_code='{self.postal_code}')>"
     
     def name(self):
-        return f"{self.street}, {self.number} - {self.uf }, {self.district}"
+        return f"{self.street}, {self.number} - {self.state }, {self.district}"
     
 class BusinessHours(db.Model):
     __tablename__ = 'business_hours'
