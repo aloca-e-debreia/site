@@ -22,7 +22,7 @@
 
             {% for user in users %}
                 <p>{{ user.name }} - {% if user.is_active %} Ativo {% else %} Inativo {% endif %}</p>
-                {% if list_role != 'manager' %} <button type="button" class="promote" data-id="{{ user.id }}" data-role="{{ user_role }}"> Promover </button> {% endif %}
+                {% if list_role != 'manager' %} <button type="button" class="promote" data-id="{{ user.id }}" data-role="{{ list_role }}"> Promover </button> {% endif %}
             {% endfor %}
         </div>
     </div>
