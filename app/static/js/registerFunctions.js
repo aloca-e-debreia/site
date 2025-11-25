@@ -48,12 +48,38 @@ function blankField(field, errorField, message) {
     return false
 }
 
-function isValidAge(fieldValue, errorField, message) {
-    if (!(Number(fieldValue) > 0 && Number(fieldValue) < 120)) {
-        errorField.textContent = message
+function isValidBirthDate(fieldValue, errorField) {
+    if (!fieldValue) {
+        errorField.textContent = "Informe sua data de nascimento"
         return false
     }
-    errorField.textContent = ''
+
+    const today = new Date()
+    const birthdate = new Date(fieldValue)
+
+    const min_age = new Date(
+        birthdate.getFullYear() + 18,
+        birthdate.getMonth(),
+        birthdate.getDate()
+    )
+
+    const max_age = new Date(
+        birthdate.getFullYear() + 120,
+        birthdate.getMonth(),
+        birthdate.getDate()
+    )
+
+    if (today < min_age) {
+        errorField.textContent = "Você precisa ter pelo menos 18 anos para se cadastrar"
+        return false
+    }
+
+    if (today > max_age) {
+        errorField.textContent = "Idade impossível! (mais de 120 anos)"
+        return false
+    }
+
+    errorField.textContent = ""
     return true
 }
 
@@ -77,11 +103,22 @@ function isValidEmail(fieldValue, errorField, message) {
 
 function isValidPassword(fieldValue, errorField, message) {
     if (fieldValue.length < 8) {
-        errorField.textContent = message
-        return false
+        errorField.textContent = message;
+        return false;
     }
-    return true
+    const confirmPassword = document.getElementById('confirm-password').value.trim();
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    if (fieldValue !== confirmPassword) {
+        confirmPasswordError.textContent = 'As senhas não coincidem';
+        return false;
+    } else {
+        confirmPasswordError.textContent = '';
+    }
+    return true;
 }
+
+
+
 
 export function isValidField(id, validFields, validateMessage) {
     const fieldValue = document.getElementById(id).value.trim()
@@ -91,8 +128,8 @@ export function isValidField(id, validFields, validateMessage) {
         case 'CPF':
             validFields['CPF'] = isValidCPF(fieldValue, errorField, validateMessage['CPF'])
             break
-        case 'age':
-            validFields['age'] = isValidAge(fieldValue, errorField, validateMessage['age'])
+        case 'data':
+            validFields['data'] = isValidBirthDate(fieldValue, errorField, validateMessage['data'])
             break
         case 'email':
             validFields['email'] = isValidEmail(fieldValue, errorField, validateMessage['email'])
@@ -106,7 +143,7 @@ export function isValidField(id, validFields, validateMessage) {
 export function isFieldBlank(id, validFields) {
     const fieldValue = document.getElementById(id).value.trim()
     const errorField = document.getElementById(id+'-error')
-    if (blankField(fieldValue, errorField, `Por favor, digite seu ${id}`)) {
+    if (blankField(fieldValue, errorField, "Por favor, preencha esse campo")) {
         validFields[id] = false
         return true
     }

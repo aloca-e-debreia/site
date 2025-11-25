@@ -1,8 +1,9 @@
 from flask import request, redirect, url_for, render_template, jsonify, flash
 from flask_login import login_user, login_required, current_user
 from app.blueprints.auth import auth_bp
-from app.models import User
-from app import db, bcrypt, user_datastore, is_safe_url
+from app.models.user import User
+from app import db, bcrypt, user_datastore
+
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -13,42 +14,37 @@ def register():
 
         user = User.query.filter_by(email=email).first()
         if not user:
-            user = User (
+            user = User(
                 name=name,
                 email=email,
                 password=bcrypt.generate_password_hash(password).decode('utf-8')
-            )
+                )
 
             db.session.add(user)
             db.session.commit()
 
+
             user_datastore.add_role_to_user(user, 'client')
             db.session.commit()
             login_user(user)
-
-            next_page = request.form['next'] or request.args.get("next")
-            print(next_page)
-            if not next_page or not is_safe_url(next_page):
-                return redirect(url_for('main.index'))
-            
-            return redirect(next_page)
-            
-    
+            return redirect(url_for('main.index'))
+   
     return render_template('auth/register.html')
+
 
 @auth_bp.route('/user/register-update', methods=['GET', 'POST'])
 @login_required
 def register_update():
     if request.method == 'POST':
         name = request.form['name'].lower().capitalize()
-        age = int(request.form['age'])
+        birthdate = (request.form['data'])
         cpf = request.form['CPF']
         email = request.form['email'].lower()
 
         user = User.query.get(current_user.id)
         if user:
             user.name = name
-            user.age = age
+            user.birthdate = birthdate
             user.cpf = cpf
             user.email = email
 
@@ -72,9 +68,11 @@ def verify_existant_cpf():
     else: # first access
         existant_cpf = User.query.filter_by(cpf=cpf).first()
 
+
     if existant_cpf:
         return jsonify({"success" : False, "message" : "Já existe um usuário com mesmo CPF"})
     return jsonify({'success' : True, "message" : "Usuário cadastrado com sucesso"})
+
 
 @auth_bp.route('/register/api/existant-email', methods=['GET', 'POST'])
 def verify_existant_email():

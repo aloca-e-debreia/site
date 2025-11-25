@@ -1,0 +1,133 @@
+*{
+    box-sizing: border-box;
+}
+
+#register-vehicle-form {
+    background: #fa7921;
+    padding: 30px;
+    border-radius: 14px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: 'Overpass', sans-serif;
+    border: 2px solid #e6e6e6;
+    margin-bottom: 20px;
+}
+
+form fieldset {
+    border: none;
+    padding: 30px;
+    background: #e6e6e6;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.fieldset-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #114043;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+form label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 18px;
+    color: #114043;
+}
+
+form input {
+    width: 98%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 2px solid #c7d3d3;
+    background: #ffffff;
+    font-size: 16px;
+    transition: border 0.25s ease;
+}
+
+form input:focus {
+    border-color: #124649;
+    box-shadow: 0 0 6px rgba(13, 13, 14, 0.38);
+    outline: none;
+}
+
+.fuel-card {
+    background: #ffffff;
+    border: 2px solid #cdd9da;
+    padding: 20px;
+    border-radius: 14px;
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+.fuel-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: #114043;
+}
+
+.fuel-option input[type="radio"] {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.fuel-card:hover {
+    border-color: #124649;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.12);
+    transition: .25s;
+}
+
+.car-btn {
+    background-color: #114043;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 50%;
+}
+
+.car-btn:hover {
+    background-color: #124649;
+}
+
+form button[type="reset"] {
+    background-color: #bbbbbb;
+    color: #2c2c2c;
+    width: 50%;
+}
+
+form button[type="reset"]:hover {
+    background-color: #9d9d9d;
+    color: #fff;
+}
+
+#link-return {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #114043;
+    border-radius: 10px;
+    background-color: #f8f5f5;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    padding: 15px;
+}
+
+#link-return:hover {
+    background-color: #fff;
+}
+
+
